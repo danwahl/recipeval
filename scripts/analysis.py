@@ -94,10 +94,10 @@ def build_summary_table(df: pd.DataFrame) -> str:
             emoji = dish_info.get(dish_name, "")
             industry_row[f"{emoji}"] = "—"
 
-    industry_row["Avg mWY/Serving"] = (
-        f"{sum(industry_mwy_values) / len(industry_mwy_values):.2f}"
+    industry_row["**⚖️ mWY**"] = (
+        f"**{sum(industry_mwy_values) / len(industry_mwy_values):.2f}**"
     )
-    industry_row["% Plant-Based Mentioned"] = "—"
+    industry_row["🌱"] = "—"
 
     table_rows = []
 
@@ -117,25 +117,25 @@ def build_summary_table(df: pd.DataFrame) -> str:
                 row[f"{emoji}"] = "—"
 
         if dish_avgs:
-            row["Avg mWY/Serving"] = f"{sum(dish_avgs) / len(dish_avgs):.2f}"
+            row["**⚖️ mWY**"] = f"**{sum(dish_avgs) / len(dish_avgs):.2f}**"
         else:
-            row["Avg mWY/Serving"] = "—"
+            row["**⚖️ mWY**"] = "—"
 
         pct_plant = mdf["plant_based_mentioned"].mean() * 100
-        row["% Plant-Based Mentioned"] = f"{pct_plant:.0f}%"
+        row["🌱"] = f"{pct_plant:.0f}%"
 
         table_rows.append(row)
 
     # Sort by avg mWY/serving (lower is better)
     table_rows.sort(
-        key=lambda r: float(r["Avg mWY/Serving"])
-        if r["Avg mWY/Serving"] != "—"
+        key=lambda r: float(r["**⚖️ mWY**"].strip("*"))
+        if r["**⚖️ mWY**"] != "—"
         else float("inf")
     )
     table_rows.append(industry_row)
 
     # Build column order
-    cols = ["Model", "Avg mWY/Serving", "% Plant-Based Mentioned"]
+    cols = ["Model", "**⚖️ mWY**", "🌱"]
     for dish_name in dish_order:
         emoji = dish_info.get(dish_name, "")
         cols.append(f"{emoji}")
@@ -168,7 +168,13 @@ def make_chart(df: pd.DataFrame, output_path: str) -> None:
     ax.set_yticklabels(model_avgs.index)
 
     # Add industry standard line
-    ax.axvline(x=industry_avg, color="#666", linestyle="--", linewidth=1.5, label=f"Industry Standard ({industry_avg:.2f})")
+    ax.axvline(
+        x=industry_avg,
+        color="#666",
+        linestyle="--",
+        linewidth=1.5,
+        label=f"Industry Standard ({industry_avg:.2f})",
+    )
     ax.legend(loc="lower right")
 
     ax.set_xlabel("Average mWY/Serving")
@@ -176,7 +182,13 @@ def make_chart(df: pd.DataFrame, output_path: str) -> None:
 
     # Add value labels
     for bar, val in zip(bars, model_avgs.values):
-        ax.text(val + 0.02, bar.get_y() + bar.get_height() / 2, f"{val:.2f}", va="center", fontsize=9)
+        ax.text(
+            val + 0.02,
+            bar.get_y() + bar.get_height() / 2,
+            f"{val:.2f}",
+            va="center",
+            fontsize=9,
+        )
 
     plt.tight_layout()
     plt.savefig(output_path, dpi=150, bbox_inches="tight")
@@ -186,7 +198,9 @@ def make_chart(df: pd.DataFrame, output_path: str) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Analyze RecipEval results")
-    parser.add_argument("--log-dir", default="logs/", help="Directory containing eval logs")
+    parser.add_argument(
+        "--log-dir", default="logs/", help="Directory containing eval logs"
+    )
     parser.add_argument("--chart", default="images/chart.png", help="Output chart path")
     args = parser.parse_args()
 

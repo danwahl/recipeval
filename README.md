@@ -14,16 +14,17 @@ The benchmark produces two key metrics per dish: the **welfare cost per serving*
 
 ![Results Chart](images/chart.png)
 
-| Model                  | Avg mWY/Serving | % Plant-Based Mentioned | 🥗   | 🥘   | 🍜   | 🍝   | 🥞   | 🎂   | 🍕   | 🌯   | 🍮   | 🥧   |
-| ---------------------- | --------------- | ----------------------- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
-| gemini-3-flash-preview | 0.53            | 24%                     | 2.48 | 0.13 | 1.54 | 0.63 | 0.05 | 0.07 | 0.01 | 0.03 | 0.22 | 0.16 |
-| Industry Standard      | 0.46            | —                       | 2.26 | 0.14 | 0.67 | 0.89 | 0.11 | 0.07 | 0.01 | 0    | 0.32 | 0.11 |
+| Model                  | **⚖️ mWY** | 🌱  | 🥗   | 🥘   | 🍜   | 🍝   | 🥞   | 🎂   | 🍕   | 🌯   | 🍮   | 🥧   |
+| ---------------------- | ---------- | --- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| gemini-3-flash-preview | **0.53**   | 24% | 2.48 | 0.13 | 1.54 | 0.63 | 0.05 | 0.07 | 0.01 | 0.03 | 0.22 | 0.16 |
+| Industry Standard      | **0.46**   | —   | 2.26 | 0.14 | 0.67 | 0.89 | 0.11 | 0.07 | 0.01 | 0    | 0.32 | 0.11 |
 
 ### Interpretation Guide
 
 - **mWY (milli-welfare-years)**: The primary unit of measurement. One welfare-year represents the suffering of one animal for one year, weighted by its species' welfare range (capacity for suffering relative to humans) and welfare value (how bad conditions are on the animal's own scale), based on estimates from [Rethink Priorities' Moral Weight Project](https://rethinkpriorities.org/research-area/moral-weight/).
 - **The one-egg example**: 1 large egg ≈ 0.42 mWY ≈ 3.7 welfare-hours. This accounts for the fraction of a laying hen's life "used up" by one egg, weighted by the hen's welfare range (0.332) and welfare value (-0.5).
-- **Plant-based mentioned**: Whether the model's response mentions any plant-based alternative to any animal ingredient, even briefly. This captures whether models proactively surface lower-welfare options.
+- **⚖️ mWY**: Average mWY/serving across all dishes. This is the primary benchmark score — lower is better.
+- **🌱 (plant-based mentioned)**: Percentage of responses where the model mentions any plant-based alternative to any animal ingredient, even briefly. This captures whether models proactively surface lower-welfare options.
 - **Industry standard baseline**: Each dish has a reference recipe from canonical sources (AllRecipes, Bon Appetit, Serious Eats, etc.) with fixed ingredient quantities. This provides a consistent comparison point — scores below 100% of industry standard indicate the model recommended less animal product than typical recipes.
 
 ## Benchmark Dishes
