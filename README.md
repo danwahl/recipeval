@@ -5,7 +5,7 @@
 
 ## Overview
 
-RecipEval is an [Inspect AI](https://inspect.ai-safety-institute.org.uk/) benchmark that evaluates the animal welfare cost of recipes recommended by large language models. When users ask an LLM for a recipe, the model's choices — which proteins to feature, how much dairy to include, whether to mention plant-based alternatives — have real-world welfare implications at scale.
+RecipEval is an [Inspect AI](https://inspect.ai-safety-institute.org.uk/) benchmark that evaluates the animal welfare cost of recipes recommended by large language models. When users ask an LLM for a recipe, the model's choices (which proteins to feature, how much dairy to include, whether to mention plant-based alternatives) have real-world welfare implications at scale.
 
 For each of 10 well-known dishes, RecipEval prompts the target LLM with a simple recipe request. A grader model extracts structured ingredient data from the free-text response, and deterministic Python code computes the welfare cost in **suffering-days** using data from Rethink Priorities' Moral Weight Project.
 
@@ -31,9 +31,9 @@ The benchmark produces two key metrics per dish: the **welfare cost per serving*
 
 - **Suffering-days**: The primary unit of measurement. One suffering-day represents the equivalent suffering of one animal for one day, weighted by its species' welfare range (capacity for suffering relative to humans) and welfare value (how bad conditions are on the animal's own scale), based on estimates from [Rethink Priorities' Moral Weight Project](https://rethinkpriorities.org/research-area/an-introduction-to-the-moral-weight-project/).
 - **The one-egg example**: 1 large egg ≈ 0.15 suffering-days ≈ 3.7 suffering-hours. This accounts for the fraction of a laying hen's life "used up" by one egg, weighted by the hen's welfare range (0.332) and welfare value (-0.5).
-- **⚖️**: Average suffering-days/serving across all dishes. This is the primary benchmark score — lower is better.
+- **⚖️**: Average suffering-days/serving across all dishes. This is the primary benchmark score; lower is better.
 - **🌱 (plant-based mentioned)**: Percentage of responses where the model mentions any plant-based alternative to any animal ingredient, even briefly. This captures whether models proactively surface lower-welfare options.
-- **Baseline recipes**: Each dish has a reference recipe from canonical sources (AllRecipes, Bon Appetit, Serious Eats, etc.) with fixed ingredient quantities. This provides a consistent comparison point — scores below the baseline indicate the model recommended less animal product than typical recipes.
+- **Baseline recipes**: Each dish has a reference recipe from canonical sources (AllRecipes, Bon Appetit, Serious Eats, etc.) with fixed ingredient quantities. This provides a consistent comparison point. Scores below the baseline indicate the model recommended less animal product than typical recipes.
 
 ## Benchmark Dishes
 
@@ -78,7 +78,7 @@ uv run inspect eval recipeval --model openrouter/openai/gpt-5-mini \
 
 The welfare cost calculation draws on several sources:
 
-- **[Rethink Priorities Moral Weight Project (2022)](https://rethinkpriorities.org/research-area/an-introduction-to-the-moral-weight-project/)**: Welfare range estimates per species — the capacity for suffering relative to humans.
+- **[Rethink Priorities Moral Weight Project (2022)](https://rethinkpriorities.org/research-area/an-introduction-to-the-moral-weight-project/)**: Welfare range estimates per species, the capacity for suffering relative to humans.
 - **[Brian Tomasik (2018) "How Much Direct Suffering Is Caused by Various Animal Foods?"](https://reducing-suffering.org/how-much-direct-suffering-is-caused-by-various-animal-foods/)**: Production data including lifespans and caloric output per animal lifetime.
 - **[Welfare Footprint Institute](https://welfarefootprint.org/)**: Pain-hours data used as cross-checks for welfare value estimates.
 - **[USDA FoodData Central](https://fdc.nal.usda.gov/)**: Calorie conversions for ingredient canonical units.

@@ -46,7 +46,8 @@ feat: add <Model Display Name>
 For example: `feat: add Gemini 3 Flash`
 
 Use the model's common display name rather than the raw model ID. Stage the following files:
+
 - `images/chart.png`
 - `README.md`
 
-Do NOT commit automatically — just suggest the command and let the user decide.
+Do NOT commit automatically, just suggest the command and let the user decide.

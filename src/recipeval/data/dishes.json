@@ -6,7 +6,7 @@
     "servings": 4,
     "source": "AllRecipes / Bon Appetit composite",
     "source_url": "https://www.allrecipes.com/recipe/14415/cobb-salad/",
-    "industry_standard_animal_ingredients": [
+    "baseline_animal_ingredients": [
       { "ingredient_type": "chicken",    "quantity": 12, "note": "2 breasts, grilled and diced" },
       { "ingredient_type": "eggs",       "quantity": 4,  "note": "hard-boiled" },
       { "ingredient_type": "pork",       "quantity": 4,  "note": "bacon, ~8 slices cooked" },
@@ -20,7 +20,7 @@
     "servings": 8,
     "source": "AllRecipes #1 rated / Bon Appetit classic",
     "source_url": "https://www.allrecipes.com/recipe/23600/worlds-best-lasagna/",
-    "industry_standard_animal_ingredients": [
+    "baseline_animal_ingredients": [
       { "ingredient_type": "beef",        "quantity": 16,  "note": "1 lb ground beef" },
       { "ingredient_type": "pork",        "quantity": 8,   "note": "1/2 lb Italian sausage" },
       { "ingredient_type": "eggs",        "quantity": 1,   "note": "in ricotta mixture" },
@@ -36,7 +36,7 @@
     "servings": 4,
     "source": "Serious Eats",
     "source_url": "https://www.seriouseats.com/tonkotsu-ramen-recipe",
-    "industry_standard_animal_ingredients": [
+    "baseline_animal_ingredients": [
       { "ingredient_type": "pork", "quantity": 16, "note": "1 lb pork belly for chashu" },
       { "ingredient_type": "pork", "quantity": 8,  "note": "pork bones rendered into broth (edible equivalent)" },
       { "ingredient_type": "eggs", "quantity": 4,  "note": "soft-boiled ajitsuke tamago" }
@@ -49,7 +49,7 @@
     "servings": 4,
     "source": "Bon Appetit / NYT Cooking classic",
     "source_url": "https://www.bonappetit.com/recipe/simple-carbonara",
-    "industry_standard_animal_ingredients": [
+    "baseline_animal_ingredients": [
       { "ingredient_type": "pork",        "quantity": 4,   "note": "guanciale/pancetta" },
       { "ingredient_type": "eggs",        "quantity": 8,   "note": "4 whole + 4 extra yolks" },
       { "ingredient_type": "hard_cheese", "quantity": 3.6, "note": "pecorino/parmesan, ~1 cup grated" }
@@ -62,7 +62,7 @@
     "servings": 4,
     "source": "AllRecipes #1 rated pancake recipe",
     "source_url": "https://www.allrecipes.com/recipe/21014/good-old-fashioned-pancakes/",
-    "industry_standard_animal_ingredients": [
+    "baseline_animal_ingredients": [
       { "ingredient_type": "eggs",   "quantity": 1,    "note": "" },
       { "ingredient_type": "milk",   "quantity": 1.25, "note": "" },
       { "ingredient_type": "butter", "quantity": 2,    "note": "melted" }
@@ -75,7 +75,7 @@
     "servings": 12,
     "source": "Hershey's 'Perfectly Chocolate' Chocolate Cake",
     "source_url": "https://www.hersheys.com/kitchens/en_us/recipes/hersheys-perfectly-chocolate-chocolate-cake.html",
-    "industry_standard_animal_ingredients": [
+    "baseline_animal_ingredients": [
       { "ingredient_type": "eggs",   "quantity": 2,    "note": "" },
       { "ingredient_type": "milk",   "quantity": 1.33, "note": "cake + frosting" },
       { "ingredient_type": "butter", "quantity": 8,    "note": "cake + frosting" }
@@ -88,7 +88,7 @@
     "servings": 4,
     "source": "Serious Eats / NYT Cooking",
     "source_url": "https://www.seriouseats.com/neapolitan-pizza-dough-recipe",
-    "industry_standard_animal_ingredients": [
+    "baseline_animal_ingredients": [
       { "ingredient_type": "soft_cheese", "quantity": 8, "note": "fresh mozzarella" },
       { "ingredient_type": "hard_cheese", "quantity": 1, "note": "parmesan, ~1/4 cup grated" }
     ]
@@ -100,7 +100,7 @@
     "servings": 4,
     "source": "AllRecipes / Taste of Home composite",
     "source_url": "https://www.allrecipes.com/recipe/245844/easy-bean-burritos/",
-    "industry_standard_animal_ingredients": [
+    "baseline_animal_ingredients": [
       { "ingredient_type": "hard_cheese", "quantity": 4,   "note": "cheddar, ~1 cup shredded" },
       { "ingredient_type": "sour_cream",  "quantity": 0.5, "note": "" }
     ]
@@ -112,7 +112,7 @@
     "servings": 8,
     "source": "Bon Appetit / NYT Cooking classic",
     "source_url": "https://www.bonappetit.com/recipe/classic-tiramisu",
-    "industry_standard_animal_ingredients": [
+    "baseline_animal_ingredients": [
       { "ingredient_type": "eggs",        "quantity": 6,  "note": "yolks for custard" },
       { "ingredient_type": "soft_cheese", "quantity": 16, "note": "mascarpone, 1 lb" },
       { "ingredient_type": "heavy_cream", "quantity": 1,  "note": "whipped" }
@@ -125,7 +125,7 @@
     "servings": 8,
     "source": "Libby's Famous Pumpkin Pie (canonical recipe on every can)",
     "source_url": "https://www.verybestbaking.com/libbys/recipes/libby-s-famous-pumpkin-pie/",
-    "industry_standard_animal_ingredients": [
+    "baseline_animal_ingredients": [
       { "ingredient_type": "eggs",            "quantity": 2,   "note": "" },
       { "ingredient_type": "evaporated_milk", "quantity": 1.5, "note": "one 12oz can" },
       { "ingredient_type": "butter",          "quantity": 8,   "note": "for pie crust" }

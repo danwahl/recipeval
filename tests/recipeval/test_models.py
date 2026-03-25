@@ -1,11 +1,10 @@
 import pytest
-
 from recipeval.models.welfare import (
     DISHES,
     INGREDIENTS,
     PRODUCTS,
     SPECIES,
-    compute_industry_standard,
+    compute_baseline,
     ingredient_welfare_cost,
     recipe_welfare_cost,
     suffering_per_kcal,
@@ -56,21 +55,21 @@ def test_recipe_skips_unknown_ingredients():
     assert len(result.per_ingredient) == 1
 
 
-def test_industry_standard_cobb_salad():
-    result = compute_industry_standard("Cobb Salad")
+def test_baseline_cobb_salad():
+    result = compute_baseline("Cobb Salad")
     days = result.total_suffering_days
     assert 2.5 < days < 4.5  # ~3.3 days expected
 
 
 def test_all_dishes_have_positive_cost():
     for dish in DISHES:
-        result = compute_industry_standard(dish["dish"])
-        assert result.total_suffering_days > 0, f"{dish['dish']} has zero welfare cost"
+        result = compute_baseline(dish["dish"])
+        assert result.total_suffering_days > 0, f"{dish['dish']} has zero cost"
 
 
 def test_per_serving_less_than_total():
     for dish in DISHES:
-        result = compute_industry_standard(dish["dish"])
+        result = compute_baseline(dish["dish"])
         assert result.suffering_days_per_serving <= result.total_suffering_days
 
 
@@ -83,16 +82,16 @@ def test_data_files_load():
 
 def test_ingredient_product_references():
     for name, ing in INGREDIENTS.items():
-        assert ing["product"] in PRODUCTS, (
-            f"{name} references unknown product {ing['product']}"
-        )
+        assert (
+            ing["product"] in PRODUCTS
+        ), f"{name} references unknown product {ing['product']}"
 
 
 def test_product_species_references():
     for name, prod in PRODUCTS.items():
-        assert prod["species"] in SPECIES, (
-            f"{name} references unknown species {prod['species']}"
-        )
+        assert (
+            prod["species"] in SPECIES
+        ), f"{name} references unknown species {prod['species']}"
 
 
 def test_fish_large_much_cheaper_than_fish_small():
@@ -103,4 +102,4 @@ def test_fish_large_much_cheaper_than_fish_small():
 
 def test_unknown_dish_raises():
     with pytest.raises(ValueError):
-        compute_industry_standard("Nonexistent Dish")
+        compute_baseline("Nonexistent Dish")

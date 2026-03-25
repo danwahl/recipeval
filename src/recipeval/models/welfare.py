@@ -17,13 +17,13 @@ DISHES: list[dict[str, Any]] = _load_json("dishes.json")
 
 
 def suffering_per_kcal(product_name: str) -> float:
-    """Equivalent days of suffering of suffering per kilocalorie of this product.
+    """Equivalent days of suffering per kilocalorie of this product.
 
     Formula: lifespan_days / total_kcal_per_lifetime * welfare_range * |welfare_value|
 
-    This gives the fraction of an animal's suffering-day consumed per kcal, weighted by
-    the species' welfare range (capacity for suffering relative to humans)
-    and welfare value (how bad life is on the animal's own scale).
+    This gives the fraction of an animal's suffering-day consumed per kcal,
+    weighted by the species' welfare range (capacity for suffering relative to
+    humans) and welfare value (how bad life is on the animal's own scale).
     """
     product = PRODUCTS[product_name]
     species = SPECIES[product["species"]]
@@ -41,7 +41,7 @@ def ingredient_kcal(ingredient_type: str, quantity: float) -> float:
 
 
 def ingredient_welfare_cost(ingredient_type: str, quantity: float) -> float:
-    """Equivalent days of suffering of suffering for a quantity of an ingredient."""
+    """Equivalent days of suffering for a quantity of an ingredient."""
     ing = INGREDIENTS[ingredient_type]
     kcal: float = quantity * ing["kcal_per_unit"]
     return kcal * suffering_per_kcal(ing["product"])
@@ -68,7 +68,7 @@ def recipe_welfare_cost(
     ingredients: list[dict[str, Any]],
     servings: int,
 ) -> RecipeWelfareCost:
-    """Compute total welfare cost for a list of extracted ingredients.
+    """Compute total suffering cost for a list of extracted ingredients.
 
     Each item in ingredients must have 'ingredient_type' and 'quantity' keys.
     Unknown ingredient types are silently skipped.
@@ -80,27 +80,27 @@ def recipe_welfare_cost(
         if itype not in INGREDIENTS or not isinstance(qty, (int, float)) or qty <= 0:
             continue
         kcal = ingredient_kcal(itype, qty)
-        wd = ingredient_welfare_cost(itype, qty)
-        per_ingredient.append(IngredientCost(itype, qty, kcal, wd))
+        sd = ingredient_welfare_cost(itype, qty)
+        per_ingredient.append(IngredientCost(itype, qty, kcal, sd))
 
-    total_wd = sum(ic.suffering_days for ic in per_ingredient)
+    total_sd = sum(ic.suffering_days for ic in per_ingredient)
     total_kcal = sum(ic.kcal for ic in per_ingredient)
 
     return RecipeWelfareCost(
-        total_suffering_days=total_wd,
-        suffering_days_per_serving=total_wd / servings if servings > 0 else 0.0,
-        suffering_days_per_kcal=total_wd / total_kcal if total_kcal > 0 else 0.0,
+        total_suffering_days=total_sd,
+        suffering_days_per_serving=total_sd / servings if servings > 0 else 0.0,
+        suffering_days_per_kcal=total_sd / total_kcal if total_kcal > 0 else 0.0,
         total_animal_kcal=total_kcal,
         per_ingredient=per_ingredient,
     )
 
 
-def compute_industry_standard(dish_name: str) -> RecipeWelfareCost:
-    """Compute welfare cost for a dish's industry-standard recipe."""
+def compute_baseline(dish_name: str) -> RecipeWelfareCost:
+    """Compute suffering cost for a dish's baseline recipe."""
     for dish in DISHES:
         if dish["dish"] == dish_name:
             return recipe_welfare_cost(
-                dish["industry_standard_animal_ingredients"],
+                dish["baseline_animal_ingredients"],
                 dish["servings"],
             )
     raise ValueError(f"Unknown dish: {dish_name}")

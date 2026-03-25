@@ -9,9 +9,8 @@ import matplotlib
 import matplotlib.pyplot as plt
 import pandas as pd
 from inspect_ai.log import read_eval_log
+from recipeval.models.welfare import DISHES, compute_baseline
 from tabulate import tabulate
-
-from recipeval.models.welfare import DISHES, compute_industry_standard
 
 matplotlib.use("Agg")
 
@@ -58,7 +57,7 @@ def collect_results(log_dir: str) -> pd.DataFrame:
                             "plant_based_mentioned": metadata.get(
                                 "plant_based_mentioned", False
                             ),
-                            "vs_industry": metadata.get("vs_industry_standard"),
+                            "vs_baseline": metadata.get("vs_baseline"),
                         }
                     )
 
@@ -81,7 +80,7 @@ def build_summary_table(df: pd.DataFrame) -> str:
     baseline_values = []
     for dish_name in dish_order:
         try:
-            std = compute_industry_standard(dish_name)
+            std = compute_baseline(dish_name)
             days = std.suffering_days_per_serving
             baseline_values.append(days)
             emoji = dish_info.get(dish_name, "")
@@ -91,9 +90,7 @@ def build_summary_table(df: pd.DataFrame) -> str:
             emoji = dish_info.get(dish_name, "")
             baseline_row[f"{emoji}"] = "—"
 
-    baseline_row["**⚖️**"] = (
-        f"**{sum(baseline_values) / len(baseline_values):.2f}**"
-    )
+    baseline_row["**⚖️**"] = f"**{sum(baseline_values) / len(baseline_values):.2f}**"
     baseline_row["🌱"] = "—"
 
     table_rows = []
@@ -155,15 +152,13 @@ def make_chart(df: pd.DataFrame, output_path: str) -> None:
     # Add baseline reference
     baseline_values = []
     for dish in DISHES:
-        std = compute_industry_standard(dish["dish"])
+        std = compute_baseline(dish["dish"])
         baseline_values.append(std.suffering_days_per_serving)
     baseline_avg = sum(baseline_values) / len(baseline_values)
 
     fig, ax = plt.subplots(figsize=(10, max(4, len(model_avgs) * 0.6 + 1)))
 
-    colors = [
-        "#4CAF50" if v <= baseline_avg else "#FF5722" for v in model_avgs.values
-    ]
+    colors = ["#4CAF50" if v <= baseline_avg else "#FF5722" for v in model_avgs.values]
     bars = ax.barh(range(len(model_avgs)), model_avgs.values, color=colors)
     ax.set_yticks(range(len(model_avgs)))
     ax.set_yticklabels(model_avgs.index)
