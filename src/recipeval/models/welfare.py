@@ -78,8 +78,8 @@ def recipe_welfare_cost(
     per_ingredient = []
     for item in ingredients:
         itype = item.get("ingredient_type", "")
-        qty = item.get("quantity", 0)
-        if itype not in INGREDIENTS or qty <= 0:
+        qty = item.get("quantity") or 0
+        if itype not in INGREDIENTS or not isinstance(qty, (int, float)) or qty <= 0:
             continue
         kcal = ingredient_kcal(itype, qty)
         wy = ingredient_welfare_cost(itype, qty)
