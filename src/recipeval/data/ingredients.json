@@ -11,7 +11,8 @@
   "chicken":         { "canonical_unit": "oz",     "kcal_per_unit": 47,  "product": "chicken_meat" },
   "beef":            { "canonical_unit": "oz",     "kcal_per_unit": 72,  "product": "beef" },
   "pork":            { "canonical_unit": "oz",     "kcal_per_unit": 66,  "product": "pork" },
-  "anchovies":       { "canonical_unit": "fillet", "kcal_per_unit": 8,   "product": "fish_anchovy" },
-  "fish_sauce":      { "canonical_unit": "tbsp",   "kcal_per_unit": 6,   "product": "fish_sauce" },
+  "anchovies":       { "canonical_unit": "fillet", "kcal_per_unit": 8,   "product": "fish_small" },
+  "fish_large":      { "canonical_unit": "oz",     "kcal_per_unit": 32,  "product": "fish_large" },
+  "fish_sauce":      { "canonical_unit": "tbsp",   "kcal_per_unit": 6,   "product": "fish_small" },
   "shrimp":          { "canonical_unit": "oz",     "kcal_per_unit": 30,  "product": "shrimp" }
 }

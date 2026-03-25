@@ -77,7 +77,7 @@ def test_per_serving_less_than_total():
 def test_data_files_load():
     assert len(SPECIES) == 5
     assert len(PRODUCTS) == 8
-    assert len(INGREDIENTS) == 15
+    assert len(INGREDIENTS) == 16
     assert len(DISHES) == 10
 
 
@@ -93,6 +93,12 @@ def test_product_species_references():
         assert prod["species"] in SPECIES, (
             f"{name} references unknown species {prod['species']}"
         )
+
+
+def test_fish_large_much_cheaper_than_fish_small():
+    """Large fish should be ~150x cheaper per kcal than small fish."""
+    ratio = suffering_per_kcal("fish_small") / suffering_per_kcal("fish_large")
+    assert 100 < ratio < 200
 
 
 def test_unknown_dish_raises():

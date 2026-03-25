@@ -24,6 +24,8 @@ Unit conversion reference:
 - 1 slice bacon ≈ 0.5 oz cooked
 - 1 average chicken breast ≈ 6 oz boneless
 - If recipe uses only egg yolks or whites, still count each as 1 whole egg
+- Bonito flakes (katsuobushi), tuna, salmon, cod, mackerel, and other large fish → fish_large (measured in oz)
+- Anchovies and sardines → anchovies (measured in fillet)
 
 Return a JSON object with exactly these fields:
 {{{{
