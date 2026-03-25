@@ -80,7 +80,7 @@ def build_summary_table(df: pd.DataFrame) -> str:
     models = sorted(df["model"].unique())
 
     # Build industry standard row
-    industry_row = {"Model": "Industry Standard"}
+    industry_row = {"🤖": "*Baseline Recipes*"}
     industry_mwy_values = []
     for dish_name in dish_order:
         try:
@@ -94,7 +94,7 @@ def build_summary_table(df: pd.DataFrame) -> str:
             emoji = dish_info.get(dish_name, "")
             industry_row[f"{emoji}"] = "—"
 
-    industry_row["**⚖️ mWY**"] = (
+    industry_row["**⚖️**"] = (
         f"**{sum(industry_mwy_values) / len(industry_mwy_values):.2f}**"
     )
     industry_row["🌱"] = "—"
@@ -103,7 +103,7 @@ def build_summary_table(df: pd.DataFrame) -> str:
 
     for model in models:
         mdf = df[df["model"] == model]
-        row = {"Model": model}
+        row = {"🤖": model}
 
         dish_avgs = []
         for dish_name in dish_order:
@@ -117,9 +117,9 @@ def build_summary_table(df: pd.DataFrame) -> str:
                 row[f"{emoji}"] = "—"
 
         if dish_avgs:
-            row["**⚖️ mWY**"] = f"**{sum(dish_avgs) / len(dish_avgs):.2f}**"
+            row["**⚖️**"] = f"**{sum(dish_avgs) / len(dish_avgs):.2f}**"
         else:
-            row["**⚖️ mWY**"] = "—"
+            row["**⚖️**"] = "—"
 
         pct_plant = mdf["plant_based_mentioned"].mean() * 100
         row["🌱"] = f"{pct_plant:.0f}%"
@@ -127,15 +127,15 @@ def build_summary_table(df: pd.DataFrame) -> str:
         table_rows.append(row)
 
     # Sort by avg mWY/serving (lower is better)
-    table_rows.sort(
-        key=lambda r: float(r["**⚖️ mWY**"].strip("*"))
-        if r["**⚖️ mWY**"] != "—"
-        else float("inf")
-    )
     table_rows.append(industry_row)
+    table_rows.sort(
+        key=lambda r: (
+            float(r["**⚖️**"].strip("*")) if r["**⚖️**"] != "—" else float("inf")
+        )
+    )
 
     # Build column order
-    cols = ["Model", "**⚖️ mWY**", "🌱"]
+    cols = ["🤖", "**⚖️**", "🌱"]
     for dish_name in dish_order:
         emoji = dish_info.get(dish_name, "")
         cols.append(f"{emoji}")
@@ -151,7 +151,9 @@ def make_chart(df: pd.DataFrame, output_path: str) -> None:
         return
 
     # Compute per-model averages
-    model_avgs = df.groupby("model")["mwy_per_serving"].mean().sort_values()
+    model_avgs = (
+        df.groupby("model")["mwy_per_serving"].mean().sort_values(ascending=False)
+    )
 
     # Add industry standard
     industry_values = []
@@ -173,9 +175,9 @@ def make_chart(df: pd.DataFrame, output_path: str) -> None:
         color="#666",
         linestyle="--",
         linewidth=1.5,
-        label=f"Industry Standard ({industry_avg:.2f})",
+        label=f"Baseline Recipes ({industry_avg:.2f})",
     )
-    ax.legend(loc="lower right")
+    ax.legend(loc="upper right")
 
     ax.set_xlabel("Average mWY/Serving")
     ax.set_title("RecipEval: Animal Welfare Cost by Model")
@@ -190,6 +192,7 @@ def make_chart(df: pd.DataFrame, output_path: str) -> None:
             fontsize=9,
         )
 
+    ax.set_xlim(right=ax.get_xlim()[1] * 1.1)
     plt.tight_layout()
     plt.savefig(output_path, dpi=150, bbox_inches="tight")
     plt.close()

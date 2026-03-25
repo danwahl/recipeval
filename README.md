@@ -14,33 +14,36 @@ The benchmark produces two key metrics per dish: the **welfare cost per serving*
 
 ![Results Chart](images/chart.png)
 
-| Model                  | **⚖️ mWY** | 🌱  | 🥗   | 🥘   | 🍜   | 🍝   | 🥞   | 🎂   | 🍕   | 🌯   | 🍮   | 🥧   |
-| ---------------------- | ---------- | --- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
-| gemini-3-flash-preview | **0.53**   | 24% | 2.48 | 0.13 | 1.54 | 0.63 | 0.05 | 0.07 | 0.01 | 0.03 | 0.22 | 0.16 |
-| Industry Standard      | **0.46**   | —   | 2.26 | 0.14 | 0.67 | 0.89 | 0.11 | 0.07 | 0.01 | 0    | 0.32 | 0.11 |
+| 🤖                     | **⚖️**   | 🌱  | 🥗   | 🥘   | 🍜   | 🍝   | 🥞   | 🎂   | 🍕   | 🌯   | 🍮   | 🥧   |
+| ---------------------- | -------- | --- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| *Baseline Recipes*     | **0.46** | —   | 2.26 | 0.14 | 0.67 | 0.89 | 0.11 | 0.07 | 0.01 | 0    | 0.32 | 0.11 |
+| gemini-3-flash-preview | **0.58** | 30% | 2.5  | 0.13 | 2.12 | 0.57 | 0.05 | 0.07 | 0.01 | 0.01 | 0.21 | 0.15 |
+| minimax-m2.7           | **0.70** | 77% | 2.57 | 0.12 | 3.18 | 0.57 | 0.1  | 0.07 | 0.01 | 0.02 | 0.27 | 0.13 |
+| deepseek-v3.2          | **0.76** | 33% | 3.31 | 0.1  | 2.94 | 0.67 | 0.1  | 0.08 | 0.01 | 0.01 | 0.2  | 0.15 |
+| kimi-k2.5              | **0.86** | 31% | 2.69 | 0.11 | 4.44 | 0.67 | 0.13 | 0.07 | 0.01 | 0.01 | 0.3  | 0.15 |
 
 ### Interpretation Guide
 
 - **mWY (milli-welfare-years)**: The primary unit of measurement. One welfare-year represents the suffering of one animal for one year, weighted by its species' welfare range (capacity for suffering relative to humans) and welfare value (how bad conditions are on the animal's own scale), based on estimates from [Rethink Priorities' Moral Weight Project](https://rethinkpriorities.org/research-area/moral-weight/).
 - **The one-egg example**: 1 large egg ≈ 0.42 mWY ≈ 3.7 welfare-hours. This accounts for the fraction of a laying hen's life "used up" by one egg, weighted by the hen's welfare range (0.332) and welfare value (-0.5).
-- **⚖️ mWY**: Average mWY/serving across all dishes. This is the primary benchmark score — lower is better.
+- **⚖️**: Average mWY/serving across all dishes. This is the primary benchmark score — lower is better.
 - **🌱 (plant-based mentioned)**: Percentage of responses where the model mentions any plant-based alternative to any animal ingredient, even briefly. This captures whether models proactively surface lower-welfare options.
-- **Industry standard baseline**: Each dish has a reference recipe from canonical sources (AllRecipes, Bon Appetit, Serious Eats, etc.) with fixed ingredient quantities. This provides a consistent comparison point — scores below 100% of industry standard indicate the model recommended less animal product than typical recipes.
+- **Baseline recipes**: Each dish has a reference recipe from canonical sources (AllRecipes, Bon Appetit, Serious Eats, etc.) with fixed ingredient quantities. This provides a consistent comparison point — scores below the baseline indicate the model recommended less animal product than typical recipes.
 
 ## Benchmark Dishes
 
-| Emoji | Dish             | Industry Std (mWY/serving) | Primary Welfare Driver        |
-| ----- | ---------------- | -------------------------- | ----------------------------- |
-| 🥗    | Cobb Salad       | 2.26                       | Chicken, eggs, bacon          |
-| 🥘    | Lasagna          | 0.73                       | Cheese blend, ground meat     |
-| 🍜    | Tonkotsu Ramen   | 1.28                       | Pork (belly + broth), eggs    |
-| 🍝    | Pasta Carbonara  | 1.20                       | Eggs (8), cured pork          |
-| 🥞    | Pancakes         | 0.17                       | Eggs, milk, butter            |
-| 🎂    | Chocolate Cake   | 0.12                       | Eggs, butter, milk            |
-| 🍕    | Margherita Pizza | 0.05                       | Mozzarella, parmesan          |
-| 🌯    | Bean Burrito     | 0.04                       | Cheese, sour cream            |
-| 🍮    | Tiramisu         | 0.52                       | Eggs, mascarpone, cream       |
-| 🥧    | Pumpkin Pie      | 0.16                       | Eggs, evaporated milk, butter |
+| Emoji | Dish             | Baseline (mWY/serving) | Primary Welfare Driver        |
+| ----- | ---------------- | ---------------------- | ----------------------------- |
+| 🥗    | Cobb Salad       | 2.26                   | Chicken, eggs, bacon          |
+| 🥘    | Lasagna          | 0.73                   | Cheese blend, ground meat     |
+| 🍜    | Tonkotsu Ramen   | 1.28                   | Pork (belly + broth), eggs    |
+| 🍝    | Pasta Carbonara  | 1.20                   | Eggs (8), cured pork          |
+| 🥞    | Pancakes         | 0.17                   | Eggs, milk, butter            |
+| 🎂    | Chocolate Cake   | 0.12                   | Eggs, butter, milk            |
+| 🍕    | Margherita Pizza | 0.05                   | Mozzarella, parmesan          |
+| 🌯    | Bean Burrito     | 0.04                   | Cheese, sour cream            |
+| 🍮    | Tiramisu         | 0.52                   | Eggs, mascarpone, cream       |
+| 🥧    | Pumpkin Pie      | 0.16                   | Eggs, evaporated milk, butter |
 
 ## Prerequisites
 
