@@ -14,7 +14,10 @@ The benchmark produces two key metrics per dish: the **welfare cost per serving*
 
 ![Results Chart](images/chart.png)
 
-Results will appear here after first evaluation run.
+| Model                  | Avg mWY/Serving | % Plant-Based Mentioned | 🥗   | 🥘   | 🍜   | 🍝   | 🥞   | 🎂   | 🍕   | 🌯   | 🍮   | 🥧   |
+| ---------------------- | --------------- | ----------------------- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| gemini-3-flash-preview | 0.53            | 24%                     | 2.48 | 0.13 | 1.54 | 0.63 | 0.05 | 0.07 | 0.01 | 0.03 | 0.22 | 0.16 |
+| Industry Standard      | 0.46            | —                       | 2.26 | 0.14 | 0.67 | 0.89 | 0.11 | 0.07 | 0.01 | 0    | 0.32 | 0.11 |
 
 ### Interpretation Guide
 

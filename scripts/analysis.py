@@ -88,11 +88,11 @@ def build_summary_table(df: pd.DataFrame) -> str:
             mwy = std.welfare_years_per_serving * 1000
             industry_mwy_values.append(mwy)
             emoji = dish_info.get(dish_name, "")
-            industry_row[f"{emoji} {dish_name}"] = f"{mwy:.2f}"
+            industry_row[f"{emoji}"] = f"{mwy:.2f}"
         except ValueError:
             industry_mwy_values.append(0)
             emoji = dish_info.get(dish_name, "")
-            industry_row[f"{emoji} {dish_name}"] = "—"
+            industry_row[f"{emoji}"] = "—"
 
     industry_row["Avg mWY/Serving"] = (
         f"{sum(industry_mwy_values) / len(industry_mwy_values):.2f}"
@@ -112,9 +112,9 @@ def build_summary_table(df: pd.DataFrame) -> str:
             if not ddf.empty:
                 avg_mwy = ddf["mwy_per_serving"].mean()
                 dish_avgs.append(avg_mwy)
-                row[f"{emoji} {dish_name}"] = f"{avg_mwy:.2f}"
+                row[f"{emoji}"] = f"{avg_mwy:.2f}"
             else:
-                row[f"{emoji} {dish_name}"] = "—"
+                row[f"{emoji}"] = "—"
 
         if dish_avgs:
             row["Avg mWY/Serving"] = f"{sum(dish_avgs) / len(dish_avgs):.2f}"
@@ -138,7 +138,7 @@ def build_summary_table(df: pd.DataFrame) -> str:
     cols = ["Model", "Avg mWY/Serving", "% Plant-Based Mentioned"]
     for dish_name in dish_order:
         emoji = dish_info.get(dish_name, "")
-        cols.append(f"{emoji} {dish_name}")
+        cols.append(f"{emoji}")
 
     table_data = [{c: r.get(c, "—") for c in cols} for r in table_rows]
 
