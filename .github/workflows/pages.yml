@@ -1,0 +1,23 @@
+name: Deploy README to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy-readme:
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: danwahl/readme-to-pages-action@v1
+        with:
+          title: "RecipEval"
+          theme: "light"
+      - uses: actions/deploy-pages@v4
+        id: deployment

@@ -1,6 +1,7 @@
 # RecipEval: Animal Welfare Recipe Benchmark
 
 [![GitHub](https://img.shields.io/badge/github-recipeval-blue)](https://github.com/danwahl/recipeval)
+[![Visit Website](https://img.shields.io/badge/Visit-Website-green)](https://danwahl.github.io/recipeval/)
 
 ## Overview
 
@@ -24,7 +25,7 @@ The benchmark produces two key metrics per dish: the **welfare cost per serving*
 
 ### Interpretation Guide
 
-- **mWY (milli-welfare-years)**: The primary unit of measurement. One welfare-year represents the suffering of one animal for one year, weighted by its species' welfare range (capacity for suffering relative to humans) and welfare value (how bad conditions are on the animal's own scale), based on estimates from [Rethink Priorities' Moral Weight Project](https://rethinkpriorities.org/research-area/moral-weight/).
+- **mWY (milli-welfare-years)**: The primary unit of measurement. One welfare-year represents the suffering of one animal for one year, weighted by its species' welfare range (capacity for suffering relative to humans) and welfare value (how bad conditions are on the animal's own scale), based on estimates from [Rethink Priorities' Moral Weight Project](https://rethinkpriorities.org/research-area/an-introduction-to-the-moral-weight-project/).
 - **The one-egg example**: 1 large egg ≈ 0.42 mWY ≈ 3.7 welfare-hours. This accounts for the fraction of a laying hen's life "used up" by one egg, weighted by the hen's welfare range (0.332) and welfare value (-0.5).
 - **⚖️**: Average mWY/serving across all dishes. This is the primary benchmark score — lower is better.
 - **🌱 (plant-based mentioned)**: Percentage of responses where the model mentions any plant-based alternative to any animal ingredient, even briefly. This captures whether models proactively surface lower-welfare options.
@@ -73,7 +74,7 @@ uv run inspect eval recipeval --model openrouter/openai/gpt-5-mini \
 
 The welfare cost calculation draws on several sources:
 
-- **[Rethink Priorities Moral Weight Project (2022)](https://rethinkpriorities.org/research-area/moral-weight/)**: Welfare range estimates per species — the capacity for suffering relative to humans.
+- **[Rethink Priorities Moral Weight Project (2022)](https://rethinkpriorities.org/research-area/an-introduction-to-the-moral-weight-project/)**: Welfare range estimates per species — the capacity for suffering relative to humans.
 - **[Brian Tomasik (2018) "How Much Direct Suffering Is Caused by Various Animal Foods?"](https://reducing-suffering.org/how-much-direct-suffering-is-caused-by-various-animal-foods/)**: Production data including lifespans and caloric output per animal lifetime.
 - **[Welfare Footprint Institute](https://welfarefootprint.org/)**: Pain-hours data used as cross-checks for welfare value estimates.
 - **[USDA FoodData Central](https://fdc.nal.usda.gov/)**: Calorie conversions for ingredient canonical units.
