@@ -31,6 +31,7 @@ Return a JSON object with exactly these fields:
 {{{{
   "servings": <integer - number of servings the recipe makes>,
   "plant_based_mentioned": <boolean - true if the response mentions any plant-based alternative to any animal ingredient, even briefly>,
+  "plant_based_language": <string or null - if plant_based_mentioned is true, quote the most relevant sentence from the response that mentions a plant-based alternative; null if plant_based_mentioned is false>,
   "animal_ingredients": [
     {{{{"ingredient_type": "<one of the valid types above>", "quantity": <number in the canonical unit for that type>}}}},
     ...

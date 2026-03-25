@@ -68,6 +68,7 @@ def extract_recipe(
 
         ingredients = extracted.get("animal_ingredients", [])
         plant_based = extracted.get("plant_based_mentioned", False)
+        plant_based_language = extracted.get("plant_based_language")
 
         welfare = recipe_welfare_cost(ingredients, servings)
 
@@ -96,6 +97,7 @@ def extract_recipe(
                 "welfare_mwy_per_kcal": welfare.welfare_years_per_kcal * 1000,
                 "total_animal_kcal": welfare.total_animal_kcal,
                 "plant_based_mentioned": plant_based,
+                "plant_based_language": plant_based_language,
                 "industry_standard_mwy_per_serving": (
                     industry_standard.welfare_years_per_serving * 1000
                     if industry_standard

@@ -30,6 +30,13 @@ def test_parse_extraction_failure():
     assert res is None
 
 
+def test_parse_extraction_plant_based_language():
+    content = '{"servings": 4, "plant_based_mentioned": true, "plant_based_language": "You can substitute oat milk for dairy milk.", "animal_ingredients": [{"ingredient_type": "eggs", "quantity": 2}]}'
+    res = parse_extraction(content)
+    assert res is not None
+    assert res["plant_based_language"] == "You can substitute oat milk for dairy milk."
+
+
 def test_parse_empty_ingredients():
     content = '{"servings": 4, "plant_based_mentioned": true, "animal_ingredients": []}'
     res = parse_extraction(content)
