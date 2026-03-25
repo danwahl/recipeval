@@ -1,0 +1,52 @@
+[project]
+name = "recipeval"
+version = "0.1.0"
+description = "RecipEval: Animal Welfare Recipe Benchmark"
+readme = "README.md"
+requires-python = ">=3.13"
+license = { text = "MIT" }
+authors = [{ name = "Dan Wahl", email = "hi@danwahl.net" }]
+dependencies = [
+    "inspect-ai",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-asyncio",
+    "ruff",
+    "mypy",
+    "pre-commit",
+    "mdformat",
+    "mdformat-gfm",
+    "mdformat-frontmatter",
+]
+analysis = [
+    "pandas",
+    "tabulate",
+    "matplotlib",
+]
+
+[project.entry-points.inspect_ai]
+recipeval = "recipeval.tasks"
+
+[build-system]
+requires = ["uv_build>=0.9.7,<0.10.0"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

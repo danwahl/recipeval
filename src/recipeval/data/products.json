@@ -1,0 +1,10 @@
+{
+  "chicken_meat":  { "species": "chickens", "lifespan_days": 42,   "total_kcal_per_lifetime": 1500 },
+  "chicken_egg":   { "species": "chickens", "lifespan_days": 501,  "total_kcal_per_lifetime": 39000 },
+  "beef":          { "species": "cattle",   "lifespan_days": 395,  "total_kcal_per_lifetime": 530000 },
+  "pork":          { "species": "pigs",     "lifespan_days": 183,  "total_kcal_per_lifetime": 162500 },
+  "dairy":         { "species": "cattle",   "lifespan_days": 1825, "total_kcal_per_lifetime": 18300000 },
+  "fish_anchovy":  { "species": "fish",     "lifespan_days": 365,  "total_kcal_per_lifetime": 8 },
+  "fish_sauce":    { "species": "fish",     "lifespan_days": 365,  "total_kcal_per_lifetime": 8 },
+  "shrimp":        { "species": "shrimp",   "lifespan_days": 153,  "total_kcal_per_lifetime": 10 }
+}

@@ -1,0 +1,17 @@
+{
+  "eggs":            { "canonical_unit": "large",  "kcal_per_unit": 72,  "product": "chicken_egg" },
+  "milk":            { "canonical_unit": "cup",    "kcal_per_unit": 149, "product": "dairy" },
+  "butter":          { "canonical_unit": "tbsp",   "kcal_per_unit": 102, "product": "dairy" },
+  "heavy_cream":     { "canonical_unit": "cup",    "kcal_per_unit": 821, "product": "dairy" },
+  "sour_cream":      { "canonical_unit": "cup",    "kcal_per_unit": 455, "product": "dairy" },
+  "evaporated_milk": { "canonical_unit": "cup",    "kcal_per_unit": 338, "product": "dairy" },
+  "hard_cheese":     { "canonical_unit": "oz",     "kcal_per_unit": 111, "product": "dairy" },
+  "soft_cheese":     { "canonical_unit": "oz",     "kcal_per_unit": 85,  "product": "dairy" },
+  "yogurt":          { "canonical_unit": "cup",    "kcal_per_unit": 157, "product": "dairy" },
+  "chicken":         { "canonical_unit": "oz",     "kcal_per_unit": 47,  "product": "chicken_meat" },
+  "beef":            { "canonical_unit": "oz",     "kcal_per_unit": 72,  "product": "beef" },
+  "pork":            { "canonical_unit": "oz",     "kcal_per_unit": 66,  "product": "pork" },
+  "anchovies":       { "canonical_unit": "fillet", "kcal_per_unit": 8,   "product": "fish_anchovy" },
+  "fish_sauce":      { "canonical_unit": "tbsp",   "kcal_per_unit": 6,   "product": "fish_sauce" },
+  "shrimp":          { "canonical_unit": "oz",     "kcal_per_unit": 30,  "product": "shrimp" }
+}
