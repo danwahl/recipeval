@@ -9,15 +9,17 @@ import matplotlib
 import matplotlib.pyplot as plt
 import pandas as pd
 from inspect_ai.log import read_eval_log
-from recipeval.models.welfare import DISHES, compute_baseline
 from tabulate import tabulate
+
+from recipeval.models.welfare import DISHES, compute_baseline
 
 matplotlib.use("Agg")
 
 
 def simplify_model_name(model: str) -> str:
-    """Extract the display name from a model ID."""
-    return model.split("/")[-1]
+    """Extract company/model slug from a model ID (e.g. 'anthropic/claude-opus-4.6')."""
+    parts = model.split("/")
+    return "/".join(parts[-2:]) if len(parts) >= 2 else parts[-1]
 
 
 def collect_results(log_dir: str) -> pd.DataFrame:
