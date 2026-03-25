@@ -11,7 +11,7 @@ from recipeval.scorers.extractor import extract_recipe
 
 
 @task
-def recipe_welfare(
+def welfare(
     epochs: int = 10,
     max_connections: int = 5,
     grader_model: str | None = None,
@@ -47,5 +47,5 @@ def recipe_welfare(
             max_connections=max_connections,
             temperature=0.7,
         ),
-        name="recipe_welfare",
+        name="welfare",
     )

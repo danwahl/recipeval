@@ -8,6 +8,7 @@ license = { text = "MIT" }
 authors = [{ name = "Dan Wahl", email = "hi@danwahl.net" }]
 dependencies = [
     "inspect-ai",
+    "openai>=2.29.0",
 ]
 
 [project.optional-dependencies]

@@ -1,3 +1,3 @@
-from .welfare import recipe_welfare
+from .welfare import welfare
 
-__all__ = ["recipe_welfare"]
+__all__ = ["welfare"]
