@@ -87,7 +87,7 @@ The welfare cost calculation draws on several sources:
 The core formula computes suffering-days per kilocalorie of each animal product:
 
 ```
-welfare-days/kcal = lifespan_days / total_kcal_per_lifetime × welfare_range × |welfare_value|
+suffering-days/kcal = lifespan_days / total_kcal_per_lifetime × welfare_range × |welfare_value|
 ```
 
 This is then multiplied by the caloric content of each ingredient to get suffering-days per recipe.

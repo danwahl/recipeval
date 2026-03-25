@@ -52,14 +52,14 @@ class IngredientCost:
     ingredient_type: str
     quantity: float
     kcal: float
-    welfare_days: float
+    suffering_days: float
 
 
 @dataclass
 class RecipeWelfareCost:
-    total_welfare_days: float
-    welfare_days_per_serving: float
-    welfare_days_per_kcal: float
+    total_suffering_days: float
+    suffering_days_per_serving: float
+    suffering_days_per_kcal: float
     total_animal_kcal: float
     per_ingredient: list[IngredientCost] = field(default_factory=list)
 
@@ -83,13 +83,13 @@ def recipe_welfare_cost(
         wd = ingredient_welfare_cost(itype, qty)
         per_ingredient.append(IngredientCost(itype, qty, kcal, wd))
 
-    total_wd = sum(ic.welfare_days for ic in per_ingredient)
+    total_wd = sum(ic.suffering_days for ic in per_ingredient)
     total_kcal = sum(ic.kcal for ic in per_ingredient)
 
     return RecipeWelfareCost(
-        total_welfare_days=total_wd,
-        welfare_days_per_serving=total_wd / servings if servings > 0 else 0.0,
-        welfare_days_per_kcal=total_wd / total_kcal if total_kcal > 0 else 0.0,
+        total_suffering_days=total_wd,
+        suffering_days_per_serving=total_wd / servings if servings > 0 else 0.0,
+        suffering_days_per_kcal=total_wd / total_kcal if total_kcal > 0 else 0.0,
         total_animal_kcal=total_kcal,
         per_ingredient=per_ingredient,
     )

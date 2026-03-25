@@ -40,8 +40,8 @@ def test_recipe_welfare_cost():
         ],
         servings=4,
     )
-    assert result.total_welfare_days > 0
-    assert result.welfare_days_per_serving < result.total_welfare_days
+    assert result.total_suffering_days > 0
+    assert result.suffering_days_per_serving < result.total_suffering_days
     assert len(result.per_ingredient) == 2
 
 
@@ -58,20 +58,20 @@ def test_recipe_skips_unknown_ingredients():
 
 def test_industry_standard_cobb_salad():
     result = compute_industry_standard("Cobb Salad")
-    days = result.total_welfare_days
+    days = result.total_suffering_days
     assert 2.5 < days < 4.5  # ~3.3 days expected
 
 
 def test_all_dishes_have_positive_cost():
     for dish in DISHES:
         result = compute_industry_standard(dish["dish"])
-        assert result.total_welfare_days > 0, f"{dish['dish']} has zero welfare cost"
+        assert result.total_suffering_days > 0, f"{dish['dish']} has zero welfare cost"
 
 
 def test_per_serving_less_than_total():
     for dish in DISHES:
         result = compute_industry_standard(dish["dish"])
-        assert result.welfare_days_per_serving <= result.total_welfare_days
+        assert result.suffering_days_per_serving <= result.total_suffering_days
 
 
 def test_data_files_load():

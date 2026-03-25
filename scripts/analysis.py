@@ -52,8 +52,8 @@ def collect_results(log_dir: str) -> pd.DataFrame:
                             "emoji": sample.metadata.get("emoji", "")
                             if sample.metadata
                             else "",
-                            "welfare_days": metadata.get(
-                                "welfare_days_per_serving", 0
+                            "suffering_days": metadata.get(
+                                "suffering_days_per_serving", 0
                             ),
                             "plant_based_mentioned": metadata.get(
                                 "plant_based_mentioned", False
@@ -82,7 +82,7 @@ def build_summary_table(df: pd.DataFrame) -> str:
     for dish_name in dish_order:
         try:
             std = compute_industry_standard(dish_name)
-            days = std.welfare_days_per_serving
+            days = std.suffering_days_per_serving
             baseline_values.append(days)
             emoji = dish_info.get(dish_name, "")
             baseline_row[f"{emoji}"] = f"{days:.2f}"
@@ -107,7 +107,7 @@ def build_summary_table(df: pd.DataFrame) -> str:
             ddf = mdf[mdf["dish"] == dish_name]
             emoji = dish_info.get(dish_name, "")
             if not ddf.empty:
-                avg_days = ddf["welfare_days"].mean()
+                avg_days = ddf["suffering_days"].mean()
                 dish_avgs.append(avg_days)
                 row[f"{emoji}"] = f"{avg_days:.2f}"
             else:
@@ -149,14 +149,14 @@ def make_chart(df: pd.DataFrame, output_path: str) -> None:
 
     # Compute per-model averages
     model_avgs = (
-        df.groupby("model")["welfare_days"].mean().sort_values(ascending=False)
+        df.groupby("model")["suffering_days"].mean().sort_values(ascending=False)
     )
 
     # Add baseline reference
     baseline_values = []
     for dish in DISHES:
         std = compute_industry_standard(dish["dish"])
-        baseline_values.append(std.welfare_days_per_serving)
+        baseline_values.append(std.suffering_days_per_serving)
     baseline_avg = sum(baseline_values) / len(baseline_values)
 
     fig, ax = plt.subplots(figsize=(10, max(4, len(model_avgs) * 0.6 + 1)))

@@ -10,8 +10,8 @@ User prompt ("Could you give me a recipe for Cobb salad?")
   → Grader LLM extracts structured JSON:
       { servings, plant_based_mentioned, animal_ingredients: [{ingredient_type, quantity}] }
   → Deterministic Python scorer computes welfare cost:
-      ingredient → product → species → welfare-days
-  → Score: welfare_days_per_serving, plant_based_mentioned (bool)
+      ingredient → product → species → suffering-days
+  → Score: suffering_days_per_serving, plant_based_mentioned (bool)
 ```
 
 Data flows through four JSON files as a flat relational database:
