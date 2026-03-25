@@ -17,21 +17,19 @@ DISHES: list[dict[str, Any]] = _load_json("dishes.json")
 
 
 def suffering_per_kcal(product_name: str) -> float:
-    """Welfare-years of suffering per kilocalorie of this product.
+    """Equivalent days of suffering of suffering per kilocalorie of this product.
 
-    Formula: (lifespan_days / 365) / total_kcal_per_lifetime * welfare_range * |welfare_value|
+    Formula: lifespan_days / total_kcal_per_lifetime * welfare_range * |welfare_value|
 
-    This gives the fraction of an animal-year consumed per kcal, weighted by
+    This gives the fraction of an animal's suffering-day consumed per kcal, weighted by
     the species' welfare range (capacity for suffering relative to humans)
     and welfare value (how bad life is on the animal's own scale).
     """
     product = PRODUCTS[product_name]
     species = SPECIES[product["species"]]
-    animal_years_per_kcal = (product["lifespan_days"] / 365.0) / product[
-        "total_kcal_per_lifetime"
-    ]
+    animal_days_per_kcal = product["lifespan_days"] / product["total_kcal_per_lifetime"]
     result: float = (
-        animal_years_per_kcal * species["welfare_range"] * abs(species["welfare_value"])
+        animal_days_per_kcal * species["welfare_range"] * abs(species["welfare_value"])
     )
     return result
 
@@ -43,7 +41,7 @@ def ingredient_kcal(ingredient_type: str, quantity: float) -> float:
 
 
 def ingredient_welfare_cost(ingredient_type: str, quantity: float) -> float:
-    """Welfare-years of suffering for a quantity of an ingredient."""
+    """Equivalent days of suffering of suffering for a quantity of an ingredient."""
     ing = INGREDIENTS[ingredient_type]
     kcal: float = quantity * ing["kcal_per_unit"]
     return kcal * suffering_per_kcal(ing["product"])
@@ -54,14 +52,14 @@ class IngredientCost:
     ingredient_type: str
     quantity: float
     kcal: float
-    welfare_years: float
+    welfare_days: float
 
 
 @dataclass
 class RecipeWelfareCost:
-    total_welfare_years: float
-    welfare_years_per_serving: float
-    welfare_years_per_kcal: float
+    total_welfare_days: float
+    welfare_days_per_serving: float
+    welfare_days_per_kcal: float
     total_animal_kcal: float
     per_ingredient: list[IngredientCost] = field(default_factory=list)
 
@@ -82,16 +80,16 @@ def recipe_welfare_cost(
         if itype not in INGREDIENTS or not isinstance(qty, (int, float)) or qty <= 0:
             continue
         kcal = ingredient_kcal(itype, qty)
-        wy = ingredient_welfare_cost(itype, qty)
-        per_ingredient.append(IngredientCost(itype, qty, kcal, wy))
+        wd = ingredient_welfare_cost(itype, qty)
+        per_ingredient.append(IngredientCost(itype, qty, kcal, wd))
 
-    total_wy = sum(ic.welfare_years for ic in per_ingredient)
+    total_wd = sum(ic.welfare_days for ic in per_ingredient)
     total_kcal = sum(ic.kcal for ic in per_ingredient)
 
     return RecipeWelfareCost(
-        total_welfare_years=total_wy,
-        welfare_years_per_serving=total_wy / servings if servings > 0 else 0.0,
-        welfare_years_per_kcal=total_wy / total_kcal if total_kcal > 0 else 0.0,
+        total_welfare_days=total_wd,
+        welfare_days_per_serving=total_wd / servings if servings > 0 else 0.0,
+        welfare_days_per_kcal=total_wd / total_kcal if total_kcal > 0 else 0.0,
         total_animal_kcal=total_kcal,
         per_ingredient=per_ingredient,
     )

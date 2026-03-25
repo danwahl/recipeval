@@ -52,16 +52,13 @@ def collect_results(log_dir: str) -> pd.DataFrame:
                             "emoji": sample.metadata.get("emoji", "")
                             if sample.metadata
                             else "",
-                            "mwy_per_serving": metadata.get(
-                                "welfare_mwy_per_serving", 0
+                            "welfare_days": metadata.get(
+                                "welfare_days_per_serving", 0
                             ),
                             "plant_based_mentioned": metadata.get(
                                 "plant_based_mentioned", False
                             ),
                             "vs_industry": metadata.get("vs_industry_standard"),
-                            "industry_mwy": metadata.get(
-                                "industry_standard_mwy_per_serving"
-                            ),
                         }
                     )
 
@@ -79,25 +76,25 @@ def build_summary_table(df: pd.DataFrame) -> str:
 
     models = sorted(df["model"].unique())
 
-    # Build industry standard row
-    industry_row = {"🤖": "*Baseline Recipes*"}
-    industry_mwy_values = []
+    # Build baseline row
+    baseline_row = {"🤖": "*Baseline Recipes*"}
+    baseline_values = []
     for dish_name in dish_order:
         try:
             std = compute_industry_standard(dish_name)
-            mwy = std.welfare_years_per_serving * 1000
-            industry_mwy_values.append(mwy)
+            days = std.welfare_days_per_serving
+            baseline_values.append(days)
             emoji = dish_info.get(dish_name, "")
-            industry_row[f"{emoji}"] = f"{mwy:.2f}"
+            baseline_row[f"{emoji}"] = f"{days:.2f}"
         except ValueError:
-            industry_mwy_values.append(0)
+            baseline_values.append(0)
             emoji = dish_info.get(dish_name, "")
-            industry_row[f"{emoji}"] = "—"
+            baseline_row[f"{emoji}"] = "—"
 
-    industry_row["**⚖️**"] = (
-        f"**{sum(industry_mwy_values) / len(industry_mwy_values):.2f}**"
+    baseline_row["**⚖️**"] = (
+        f"**{sum(baseline_values) / len(baseline_values):.2f}**"
     )
-    industry_row["🌱"] = "—"
+    baseline_row["🌱"] = "—"
 
     table_rows = []
 
@@ -110,9 +107,9 @@ def build_summary_table(df: pd.DataFrame) -> str:
             ddf = mdf[mdf["dish"] == dish_name]
             emoji = dish_info.get(dish_name, "")
             if not ddf.empty:
-                avg_mwy = ddf["mwy_per_serving"].mean()
-                dish_avgs.append(avg_mwy)
-                row[f"{emoji}"] = f"{avg_mwy:.2f}"
+                avg_days = ddf["welfare_days"].mean()
+                dish_avgs.append(avg_days)
+                row[f"{emoji}"] = f"{avg_days:.2f}"
             else:
                 row[f"{emoji}"] = "—"
 
@@ -126,8 +123,8 @@ def build_summary_table(df: pd.DataFrame) -> str:
 
         table_rows.append(row)
 
-    # Sort by avg mWY/serving (lower is better)
-    table_rows.append(industry_row)
+    # Sort by avg suffering-days/serving (lower is better)
+    table_rows.append(baseline_row)
     table_rows.sort(
         key=lambda r: (
             float(r["**⚖️**"].strip("*")) if r["**⚖️**"] != "—" else float("inf")
@@ -146,40 +143,42 @@ def build_summary_table(df: pd.DataFrame) -> str:
 
 
 def make_chart(df: pd.DataFrame, output_path: str) -> None:
-    """Create a bar chart of avg mWY/serving by model."""
+    """Create a bar chart of avg suffering-days/serving by model."""
     if df.empty:
         return
 
     # Compute per-model averages
     model_avgs = (
-        df.groupby("model")["mwy_per_serving"].mean().sort_values(ascending=False)
+        df.groupby("model")["welfare_days"].mean().sort_values(ascending=False)
     )
 
-    # Add industry standard
-    industry_values = []
+    # Add baseline reference
+    baseline_values = []
     for dish in DISHES:
         std = compute_industry_standard(dish["dish"])
-        industry_values.append(std.welfare_years_per_serving * 1000)
-    industry_avg = sum(industry_values) / len(industry_values)
+        baseline_values.append(std.welfare_days_per_serving)
+    baseline_avg = sum(baseline_values) / len(baseline_values)
 
     fig, ax = plt.subplots(figsize=(10, max(4, len(model_avgs) * 0.6 + 1)))
 
-    colors = ["#4CAF50" if v <= industry_avg else "#FF5722" for v in model_avgs.values]
+    colors = [
+        "#4CAF50" if v <= baseline_avg else "#FF5722" for v in model_avgs.values
+    ]
     bars = ax.barh(range(len(model_avgs)), model_avgs.values, color=colors)
     ax.set_yticks(range(len(model_avgs)))
     ax.set_yticklabels(model_avgs.index)
 
-    # Add industry standard line
+    # Add baseline line
     ax.axvline(
-        x=industry_avg,
+        x=baseline_avg,
         color="#666",
         linestyle="--",
         linewidth=1.5,
-        label=f"Baseline Recipes ({industry_avg:.2f})",
+        label=f"Baseline Recipes ({baseline_avg:.2f})",
     )
     ax.legend(loc="upper right")
 
-    ax.set_xlabel("Average mWY/Serving")
+    ax.set_xlabel("Average Suffering-Days/Serving")
     ax.set_title("RecipEval: Animal Welfare Cost by Model")
 
     # Add value labels

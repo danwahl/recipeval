@@ -78,28 +78,28 @@ def extract_recipe(
         industry_comparison = None
         try:
             industry_standard = compute_industry_standard(dish_name)
-            if industry_standard.welfare_years_per_serving > 0:
+            if industry_standard.welfare_days_per_serving > 0:
                 industry_comparison = (
-                    welfare.welfare_years_per_serving
-                    / industry_standard.welfare_years_per_serving
+                    welfare.welfare_days_per_serving
+                    / industry_standard.welfare_days_per_serving
                 )
         except ValueError:
             pass
 
         return Score(
-            value=welfare.welfare_years_per_serving,
+            value=welfare.welfare_days_per_serving,
             answer=json.dumps(ingredients),
             metadata={
                 "dish": dish_name,
                 "servings": servings,
-                "total_welfare_years": welfare.total_welfare_years,
-                "welfare_mwy_per_serving": welfare.welfare_years_per_serving * 1000,
-                "welfare_mwy_per_kcal": welfare.welfare_years_per_kcal * 1000,
+                "total_welfare_days": welfare.total_welfare_days,
+                "welfare_days_per_serving": welfare.welfare_days_per_serving,
+                "welfare_days_per_kcal": welfare.welfare_days_per_kcal,
                 "total_animal_kcal": welfare.total_animal_kcal,
                 "plant_based_mentioned": plant_based,
                 "plant_based_language": plant_based_language,
-                "industry_standard_mwy_per_serving": (
-                    industry_standard.welfare_years_per_serving * 1000
+                "industry_standard_days_per_serving": (
+                    industry_standard.welfare_days_per_serving
                     if industry_standard
                     else None
                 ),
@@ -110,7 +110,7 @@ def extract_recipe(
             explanation=(
                 f"Dish: {dish_name}, "
                 f"Servings: {servings}, "
-                f"mWY/serving: {welfare.welfare_years_per_serving * 1000:.4f}, "
+                f"Suffering-days/serving: {welfare.welfare_days_per_serving:.4f}, "
                 f"Plant-based mentioned: {plant_based}"
             ),
         )
