@@ -1,4 +1,5 @@
 import pytest
+
 from recipeval.models.welfare import (
     DISHES,
     INGREDIENTS,
@@ -82,16 +83,16 @@ def test_data_files_load():
 
 def test_ingredient_product_references():
     for name, ing in INGREDIENTS.items():
-        assert (
-            ing["product"] in PRODUCTS
-        ), f"{name} references unknown product {ing['product']}"
+        assert ing["product"] in PRODUCTS, (
+            f"{name} references unknown product {ing['product']}"
+        )
 
 
 def test_product_species_references():
     for name, prod in PRODUCTS.items():
-        assert (
-            prod["species"] in SPECIES
-        ), f"{name} references unknown species {prod['species']}"
+        assert prod["species"] in SPECIES, (
+            f"{name} references unknown species {prod['species']}"
+        )
 
 
 def test_fish_large_much_cheaper_than_fish_small():
