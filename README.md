@@ -5,11 +5,9 @@
 
 ## Overview
 
-RecipEval is an [Inspect AI](https://inspect.ai-safety-institute.org.uk/) benchmark that evaluates the animal welfare cost of recipes recommended by large language models. When users ask an LLM for a recipe, the model's choices (which proteins to feature, how much dairy to include, whether to mention plant-based alternatives) have real-world welfare implications at scale.
+RecipEval is an [Inspect AI](https://inspect.ai-safety-institute.org.uk/) benchmark that measures the animal suffering caused by LLM-recommended recipes. For each of 10 common dishes, the model is asked for a recipe. A grader extracts the animal ingredients, and deterministic code computes the cost in **suffering-days** per serving (lower is better).
 
-For each of 10 well-known dishes, RecipEval prompts the target LLM with a simple recipe request. A grader model extracts structured ingredient data from the free-text response, and deterministic Python code computes the welfare cost in **suffering-days** using data from Rethink Priorities' Moral Weight Project.
-
-The benchmark produces two key metrics per dish: the **welfare cost per serving** (in equivalent days of suffering) and whether the model **mentioned plant-based alternatives** anywhere in its response.
+The benchmark tracks two metrics: how much suffering each recommended recipe causes, and whether the model mentions plant-based alternatives.
 
 ## Results
 
@@ -32,26 +30,25 @@ The benchmark produces two key metrics per dish: the **welfare cost per serving*
 
 ### Interpretation Guide
 
-- **Suffering-days**: The primary unit of measurement. One suffering-day represents the equivalent suffering of one animal for one day, weighted by its species' welfare range (capacity for suffering relative to humans), welfare value (how bad conditions are on the animal's own scale), and factory farm fraction (the percentage of that species raised in intensive confinement). Welfare range and value estimates come from [Rethink Priorities' Moral Weight Project](https://rethinkpriorities.org/research-area/an-introduction-to-the-moral-weight-project/). Factory farm fractions come from [Sentience Institute](https://www.sentienceinstitute.org/us-factory-farming-estimates) (land animals) and [FAO SOFIA 2024](https://www.fao.org/state-of-fisheries-aquaculture) (aquatic animals).
-- **The one-egg example**: 1 large egg ≈ 0.15 suffering-days ≈ 3.7 suffering-hours. This accounts for the fraction of a laying hen's life "used up" by one egg, weighted by the hen's welfare range (0.332) and welfare value (-0.5).
-- **⚖️**: Average suffering-days/serving across all dishes. This is the primary benchmark score; lower is better.
-- **🌱 (plant-based mentioned)**: Percentage of responses where the model mentions any plant-based alternative to any animal ingredient, even briefly. This captures whether models proactively surface lower-welfare options.
-- **Baseline recipes**: Each dish has a reference recipe from canonical sources (AllRecipes, Bon Appetit, Serious Eats, etc.) with fixed ingredient quantities. This provides a consistent comparison point. Scores below the baseline indicate the model recommended less animal product than typical recipes.
+- **Suffering-days**: One suffering-day equals the equivalent suffering of one factory-farmed animal for one day, weighted by welfare range (capacity for suffering relative to humans), welfare value (quality of life), and factory farm fraction (percentage raised in intensive confinement). For example, 1 egg ≈ 0.15 suffering-days ≈ 3.6 hours.
+- **⚖️**: Average suffering-days per serving across all 10 dishes. The primary score; lower is better.
+- **🌱**: Percentage of responses mentioning any plant-based alternative.
+- **Baseline**: Reference recipes from canonical sources (AllRecipes, Bon Appetit, Serious Eats) with fixed ingredient quantities.
 
 ## Benchmark Dishes
 
-| Emoji | Dish             | Baseline (days/serving) | Primary Welfare Driver        |
-| ----- | ---------------- | ----------------------- | ----------------------------- |
-| 🥗    | Cobb Salad       | 0.82                    | Chicken, eggs, bacon          |
-| 🥘    | Lasagna          | 0.05                    | Cheese blend, ground meat     |
-| 🍜    | Tonkotsu Ramen   | 0.25                    | Pork (belly + broth), eggs    |
-| 🍝    | Pasta Carbonara  | 0.32                    | Eggs (8), cured pork          |
-| 🥞    | Pancakes         | 0.04                    | Eggs, milk, butter            |
-| 🎂    | Chocolate Cake   | 0.03                    | Eggs, butter, milk            |
-| 🍕    | Margherita Pizza | 0.00                    | Mozzarella, parmesan          |
-| 🌯    | Bean Burrito     | 0.00                    | Cheese, sour cream            |
-| 🍮    | Tiramisu         | 0.12                    | Eggs, mascarpone, cream       |
-| 🥧    | Pumpkin Pie      | 0.04                    | Eggs, evaporated milk, butter |
+| Emoji | Dish             | Baseline | Primary Driver                |
+| ----- | ---------------- | -------- | ----------------------------- |
+| 🥗    | Cobb Salad       | 0.82     | Chicken, eggs, bacon          |
+| 🥘    | Lasagna          | 0.05     | Cheese blend, ground meat     |
+| 🍜    | Tonkotsu Ramen   | 0.25     | Pork (belly + broth), eggs    |
+| 🍝    | Pasta Carbonara  | 0.32     | Eggs, cured pork              |
+| 🥞    | Pancakes         | 0.04     | Eggs, milk, butter            |
+| 🎂    | Chocolate Cake   | 0.03     | Eggs, butter, milk            |
+| 🍕    | Margherita Pizza | 0.00     | Mozzarella, parmesan          |
+| 🌯    | Bean Burrito     | 0.00     | Cheese, sour cream            |
+| 🍮    | Tiramisu         | 0.12     | Eggs, mascarpone, cream       |
+| 🥧    | Pumpkin Pie      | 0.04     | Eggs, evaporated milk, butter |
 
 ## Prerequisites
 
@@ -79,20 +76,20 @@ uv run inspect eval recipeval --model openrouter/openai/gpt-5-mini \
 
 ## Methodology
 
-The welfare cost calculation draws on several sources:
-
-- **[Rethink Priorities Moral Weight Project (2022)](https://rethinkpriorities.org/research-area/an-introduction-to-the-moral-weight-project/)**: Welfare range estimates per species, the capacity for suffering relative to humans.
-- **[Brian Tomasik (2018) "How Much Direct Suffering Is Caused by Various Animal Foods?"](https://reducing-suffering.org/how-much-direct-suffering-is-caused-by-various-animal-foods/)**: Production data including lifespans and caloric output per animal lifetime.
-- **[Welfare Footprint Institute](https://welfarefootprint.org/)**: Pain-hours data used as cross-checks for welfare value estimates.
-- **[USDA FoodData Central](https://fdc.nal.usda.gov/)**: Calorie conversions for ingredient canonical units.
-- **[Faunalytics Animal Product Impact Scales (2022)](https://faunalytics.org/animal-product-impact-scales/)**: Cross-checks for relative welfare impacts across products.
-- **[Sentience Institute US Factory Farming Estimates (2019)](https://www.sentienceinstitute.org/us-factory-farming-estimates)**: Percentage of each land animal species raised in factory farm conditions (e.g. 99% of chickens, 98% of pigs, 73% of cattle).
-- **[FAO State of World Fisheries and Aquaculture (2024)](https://www.fao.org/state-of-fisheries-aquaculture)**: Aquaculture vs wild-caught split for fish (~50%) and shrimp (~55%).
-
-The core formula computes suffering-days per kilocalorie of each animal product:
+The suffering-days formula combines four factors per animal product:
 
 ```
 suffering-days/kcal = lifespan_days / total_kcal_per_lifetime × welfare_range × |welfare_value| × factory_farm_fraction
 ```
 
-This is then multiplied by the caloric content of each ingredient to get suffering-days per recipe.
+This is multiplied by the caloric content of each ingredient to get suffering-days per recipe.
+
+Sources:
+
+- **[Rethink Priorities Moral Weight Project (2022)](https://rethinkpriorities.org/research-area/an-introduction-to-the-moral-weight-project/)**: Welfare range estimates per species (capacity for suffering relative to humans).
+- **[Brian Tomasik (2018) "How Much Direct Suffering Is Caused by Various Animal Foods?"](https://reducing-suffering.org/how-much-direct-suffering-is-caused-by-various-animal-foods/)**: Production data (lifespans, caloric output per animal lifetime).
+- **[Sentience Institute US Factory Farming Estimates (2019)](https://www.sentienceinstitute.org/us-factory-farming-estimates)**: Factory farm fractions for land animals (99% chickens, 98% pigs, 73% cattle).
+- **[FAO State of World Fisheries and Aquaculture (2024)](https://www.fao.org/state-of-fisheries-aquaculture)**: Aquaculture fractions for fish (~50%) and shrimp (~55%).
+- **[USDA FoodData Central](https://fdc.nal.usda.gov/)**: Calorie conversions for ingredient units.
+- **[Welfare Footprint Institute](https://welfarefootprint.org/)**: Cross-checks for welfare value estimates.
+- **[Faunalytics Animal Product Impact Scales (2022)](https://faunalytics.org/animal-product-impact-scales/)**: Cross-checks for relative welfare impacts.
