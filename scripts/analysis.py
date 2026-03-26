@@ -138,7 +138,9 @@ def build_summary_table(df: pd.DataFrame) -> str:
 
     table_data = [{c: r.get(c, "—") for c in cols} for r in table_rows]
 
-    return tabulate(table_data, headers="keys", tablefmt="github")
+    return tabulate(
+        table_data, headers="keys", tablefmt="github", disable_numparse=True
+    )
 
 
 def make_chart(df: pd.DataFrame, output_path: str) -> None:
