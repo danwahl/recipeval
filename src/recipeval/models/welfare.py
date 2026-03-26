@@ -19,17 +19,24 @@ DISHES: list[dict[str, Any]] = _load_json("dishes.json")
 def suffering_per_kcal(product_name: str) -> float:
     """Equivalent days of suffering per kilocalorie of this product.
 
-    Formula: lifespan_days / total_kcal_per_lifetime * welfare_range * |welfare_value|
+    Formula:
+        lifespan_days / total_kcal_per_lifetime
+        * welfare_range * |welfare_value|
+        * factory_farm_fraction
 
     This gives the fraction of an animal's suffering-day consumed per kcal,
     weighted by the species' welfare range (capacity for suffering relative to
-    humans) and welfare value (how bad life is on the animal's own scale).
+    humans), welfare value (how bad life is on the animal's own scale), and the
+    fraction of animals raised in factory farm conditions.
     """
     product = PRODUCTS[product_name]
     species = SPECIES[product["species"]]
     animal_days_per_kcal = product["lifespan_days"] / product["total_kcal_per_lifetime"]
     result: float = (
-        animal_days_per_kcal * species["welfare_range"] * abs(species["welfare_value"])
+        animal_days_per_kcal
+        * species["welfare_range"]
+        * abs(species["welfare_value"])
+        * species["factory_farm_fraction"]
     )
     return result
 

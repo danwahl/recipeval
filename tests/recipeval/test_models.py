@@ -13,9 +13,9 @@ from recipeval.models.welfare import (
 
 
 def test_one_egg():
-    """Canonical sanity check: 1 egg ≈ 0.153 suffering-days (≈3.7 hours)."""
+    """Canonical sanity check: 1 egg ≈ 0.152 suffering-days (≈3.6 hours)."""
     cost = ingredient_welfare_cost("eggs", 1)
-    assert abs(cost - 0.153) < 0.01
+    assert abs(cost - 0.152) < 0.01
 
 
 def test_suffering_per_kcal_ordering():
@@ -27,9 +27,9 @@ def test_suffering_per_kcal_ordering():
 
 
 def test_suffering_per_kcal_chicken_dairy_ratio():
-    """Chicken meat is ~450x worse than dairy per calorie."""
+    """Chicken meat is ~610x worse than dairy per calorie."""
     ratio = suffering_per_kcal("chicken_meat") / suffering_per_kcal("dairy")
-    assert 400 < ratio < 500
+    assert 550 < ratio < 700
 
 
 def test_recipe_welfare_cost():

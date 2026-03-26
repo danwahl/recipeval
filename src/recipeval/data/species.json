@@ -1,7 +1,7 @@
 {
-  "cattle":   { "welfare_range": 0.515, "welfare_value": -0.2 },
-  "chickens": { "welfare_range": 0.332, "welfare_value": -0.5 },
-  "pigs":     { "welfare_range": 0.515, "welfare_value": -0.4 },
-  "fish":     { "welfare_range": 0.089, "welfare_value": -0.44 },
-  "shrimp":   { "welfare_range": 0.031, "welfare_value": -0.4 }
+  "cattle":   { "welfare_range": 0.515, "welfare_value": -0.2, "factory_farm_fraction": 0.73 },
+  "chickens": { "welfare_range": 0.332, "welfare_value": -0.5, "factory_farm_fraction": 0.99 },
+  "pigs":     { "welfare_range": 0.515, "welfare_value": -0.4, "factory_farm_fraction": 0.98 },
+  "fish":     { "welfare_range": 0.089, "welfare_value": -0.44, "factory_farm_fraction": 0.50 },
+  "shrimp":   { "welfare_range": 0.031, "welfare_value": -0.4, "factory_farm_fraction": 0.55 }
 }
