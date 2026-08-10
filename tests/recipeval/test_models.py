@@ -128,7 +128,7 @@ def test_data_files_load():
     assert len(SPECIES) == 6
     assert len(PRODUCTS) == 8
     assert len(INGREDIENTS) == 16
-    assert len(DISHES) == 8
+    assert len(DISHES) == 9
 
 
 def test_ingredient_product_references():

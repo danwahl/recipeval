@@ -103,5 +103,18 @@
     "baseline_animal_ingredients": [
       { "ingredient_type": "chicken", "quantity": 16, "note": "1 lb boneless thighs; chicken curry with coconut milk is the modal unqualified curry" }
     ]
+  },
+  {
+    "dish": "Tacos",
+    "emoji": "🌮",
+    "prompt": "Could you give me a recipe for tacos?",
+    "servings": 4,
+    "source": "Old El Paso \"Classic Beef Tacos\" (quantities; 10 tacos normalized to 4 servings)",
+    "source_url": "https://www.oldelpaso.com/recipes/classic-beef-tacos",
+    "baseline_animal_ingredients": [
+      { "ingredient_type": "beef",        "quantity": 16, "note": "1 lb ground beef; ground beef is the modal unqualified taco filling" },
+      { "ingredient_type": "hard_cheese", "quantity": 5,  "note": "shredded cheddar, 1 1/4 cups" },
+      { "ingredient_type": "sour_cream",  "quantity": 1,  "note": "topping" }
+    ]
   }
 ]
