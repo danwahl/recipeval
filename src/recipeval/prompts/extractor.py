@@ -30,6 +30,8 @@ Unit conversion reference:
 - Bonito flakes (katsuobushi), tuna, salmon, cod, mackerel, and other large fish → fish_large (measured in oz)
 - Anchovies and sardines → anchovies (measured in fillet)
 
+If the recipe offers alternatives for the same component (e.g. "1 lb ground beef or shredded chicken"), extract only the first-listed option. Never count the same component twice.
+
 Handling animal ingredients not in the list above — map to the closest valid type, never invent a new one:
 - Turkey, duck, and other poultry → chicken
 - Lamb, goat, venison, and other ruminant meat → beef
