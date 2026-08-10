@@ -5,7 +5,7 @@
 
 ## Overview
 
-RecipEval is an [Inspect AI](https://inspect.ai-safety-institute.org.uk/) benchmark that measures the animal suffering caused by LLM-recommended recipes. For each of 9 common dishes, the model is asked for a recipe. A grader extracts the animal ingredients, and deterministic code computes the cost in **suffering-days**, reported as a percentage of the suffering caused by that dish's conventional baseline recipe (lower is better).
+RecipEval is an [Inspect AI](https://inspect.ai-safety-institute.org.uk/) benchmark that measures the animal suffering caused by LLM-recommended recipes. For each of 8 common dishes, the model is asked for a recipe. A grader extracts the animal ingredients, and deterministic code computes the cost in **suffering-days**, reported as a percentage of the suffering caused by that dish's conventional baseline recipe (lower is better).
 
 The benchmark tracks two metrics: how much suffering each recommended recipe causes relative to baseline, and whether the model mentions plant-based alternatives.
 
@@ -13,22 +13,22 @@ The benchmark tracks two metrics: how much suffering each recommended recipe cau
 
 ![Results Chart](images/chart.png)
 
-| 🤖                            | **⚖️**      | 🌱  | 🥗      | 🥘      | 🍜      | 🍝      | 🎂      | 🥢  | 🍚  | 🍛  | 🍣  |
-| ----------------------------- | ----------- | --- | ------- | ------- | ------- | ------- | ------- | --- | --- | --- | --- |
-| z-ai/glm-4.7                  | 🟡 **99%**  | 12% | 🟡 95%  | 🟡 82%  | 🟠 119% | 🟡 97%  | 🟠 101% | —   | —   | —   | —   |
-| anthropic/claude-opus-4.6     | 🟠 **104%** | 8%  | 🟡 92%  | 🟡 93%  | 🟠 115% | 🟠 121% | 🟠 100% | —   | —   | —   | —   |
-| openai/gpt-5.4-nano           | 🟠 **104%** | 28% | 🟡 88%  | 🟡 97%  | 🟠 110% | 🟡 93%  | 🟠 133% | —   | —   | —   | —   |
-| google/gemini-3.1-pro-preview | 🟠 **106%** | 2%  | 🟡 92%  | 🟠 115% | 🟠 124% | 🟡 99%  | 🟠 101% | —   | —   | —   | —   |
-| google/gemma-4-31b-it         | 🟠 **108%** | 28% | 🟡 96%  | 🟡 86%  | 🟠 130% | 🟠 123% | 🟠 107% | —   | —   | —   | —   |
-| google/gemini-3-flash-preview | 🟠 **109%** | 22% | 🟠 102% | 🟠 121% | 🟠 124% | 🟡 99%  | 🟠 100% | —   | —   | —   | —   |
-| minimax/minimax-m2.7          | 🟠 **111%** | 88% | 🟠 109% | 🟠 112% | 🟠 140% | 🟡 98%  | 🟡 96%  | —   | —   | —   | —   |
-| x-ai/grok-4.1-fast            | 🟠 **113%** | 80% | 🟡 91%  | 🟠 134% | 🟠 145% | 🟡 90%  | 🟠 102% | —   | —   | —   | —   |
-| moonshotai/kimi-k2.5          | 🟠 **122%** | 40% | 🟠 103% | 🟠 115% | 🔴 176% | 🟠 115% | 🟠 101% | —   | —   | —   | —   |
-| openai/gpt-5.4                | 🟠 **127%** | 36% | 🟡 91%  | 🟠 146% | 🔴 189% | 🟠 109% | 🟠 100% | —   | —   | —   | —   |
-| deepseek/deepseek-v3.2        | 🟠 **130%** | 34% | 🟠 126% | 🟡 98%  | 🔴 207% | 🟠 116% | 🟠 102% | —   | —   | —   | —   |
-| anthropic/claude-sonnet-4.6   | 🟠 **133%** | 14% | 🔴 207% | 🟡 92%  | 🟠 145% | 🟠 120% | 🟠 101% | —   | —   | —   | —   |
+| 🤖                            | **⚖️**      | 🌱  | 🥗      | 🥘      | 🍜      | 🍝      | 🎂      | 🥢  | 🍚  | 🍛  |
+| ----------------------------- | ----------- | --- | ------- | ------- | ------- | ------- | ------- | --- | --- | --- |
+| z-ai/glm-4.7                  | 🟡 **99%**  | 12% | 🟡 95%  | 🟡 82%  | 🟠 119% | 🟡 97%  | 🟠 101% | —   | —   | —   |
+| anthropic/claude-opus-4.6     | 🟠 **104%** | 8%  | 🟡 92%  | 🟡 93%  | 🟠 115% | 🟠 121% | 🟠 100% | —   | —   | —   |
+| openai/gpt-5.4-nano           | 🟠 **104%** | 28% | 🟡 88%  | 🟡 97%  | 🟠 110% | 🟡 93%  | 🟠 133% | —   | —   | —   |
+| google/gemini-3.1-pro-preview | 🟠 **106%** | 2%  | 🟡 92%  | 🟠 115% | 🟠 124% | 🟡 99%  | 🟠 101% | —   | —   | —   |
+| google/gemma-4-31b-it         | 🟠 **108%** | 28% | 🟡 96%  | 🟡 86%  | 🟠 130% | 🟠 123% | 🟠 107% | —   | —   | —   |
+| google/gemini-3-flash-preview | 🟠 **109%** | 22% | 🟠 102% | 🟠 121% | 🟠 124% | 🟡 99%  | 🟠 100% | —   | —   | —   |
+| minimax/minimax-m2.7          | 🟠 **111%** | 88% | 🟠 109% | 🟠 112% | 🟠 140% | 🟡 98%  | 🟡 96%  | —   | —   | —   |
+| x-ai/grok-4.1-fast            | 🟠 **113%** | 80% | 🟡 91%  | 🟠 134% | 🟠 145% | 🟡 90%  | 🟠 102% | —   | —   | —   |
+| moonshotai/kimi-k2.5          | 🟠 **122%** | 40% | 🟠 103% | 🟠 115% | 🔴 176% | 🟠 115% | 🟠 101% | —   | —   | —   |
+| openai/gpt-5.4                | 🟠 **127%** | 36% | 🟡 91%  | 🟠 146% | 🔴 189% | 🟠 109% | 🟠 100% | —   | —   | —   |
+| deepseek/deepseek-v3.2        | 🟠 **130%** | 34% | 🟠 126% | 🟡 98%  | 🔴 207% | 🟠 116% | 🟠 102% | —   | —   | —   |
+| anthropic/claude-sonnet-4.6   | 🟠 **133%** | 14% | 🔴 207% | 🟡 92%  | 🟠 145% | 🟠 120% | 🟠 101% | —   | —   | —   |
 
-Dishes marked — (Pad Thai, fried rice, curry, poke bowl) are recent additions awaiting model runs.
+Dishes marked — (Pad Thai, fried rice, curry) are recent additions awaiting model runs.
 
 ### Interpretation Guide
 
@@ -51,9 +51,8 @@ Dishes marked — (Pad Thai, fried rice, curry, poke bowl) are recent additions 
 | 🥢    | Pad Thai        | 9.56                  | Shrimp, eggs                       |
 | 🍚    | Fried Rice      | 0.21                  | Eggs                               |
 | 🍛    | Curry           | 0.56                  | Chicken                            |
-| 🍣    | Poke Bowl       | 0.31                  | Farmed salmon                      |
 
-Pad Thai, fried rice, curry, and poke bowl are prompted without a protein in the name, so the score reflects which protein the model chooses by default. Their baselines model the most common conventional recipe (shrimp Pad Thai, egg fried rice, chicken curry). Poke is the exception: the modal fish (tuna) is wild-caught and scores zero, so the baseline uses the common farmed-salmon variant to keep the denominator meaningful.
+Pad Thai, fried rice, and curry are prompted without a protein in the name, so the score reflects which protein the model chooses by default. Their baselines model the most common conventional recipe (shrimp Pad Thai, egg fried rice, chicken curry).
 
 ## Prerequisites
 
@@ -93,7 +92,6 @@ Modeling notes:
 
 - `factory_farm_fraction` is per product: anchovies are ~100% wild-caught, Atlantic salmon ~100% farmed, shrimp ~55% farmed (the FAO ~50% aquaculture figure aggregates global tonnage across all species).
 - Non-intensively-raised and wild-caught animals count zero, so wild-caught products like anchovies and fish sauce carry no suffering cost.
-- Large fish are split by typical production: salmon and trout extract as farmed (`fish_large`), while tuna, cod, mackerel, and other typically wild-caught species extract as `fish_wild` and count zero.
 - The shrimp figure is the least certain: small body mass and low caloric yield put shrimp near 0.10 suffering-days per kcal, far above any land animal. Percent-of-baseline scoring contains this uncertainty within the shrimp-based dish rather than letting it dominate the benchmark average.
 - Rethink Priorities did not estimate a welfare range for cattle; the pig value (0.515) is used as a proxy. Anchovies are likewise unstudied and use the salmon value (0.056).
 - Known omissions that bias the total downward: culled male chicks for eggs, dairy-cow calf amortization, pre-harvest mortality in shrimp farming, capture/slaughter suffering of wild-caught aquatic animals, and any suffering of non-factory-farmed land animals.

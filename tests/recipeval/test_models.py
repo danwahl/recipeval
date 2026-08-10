@@ -34,10 +34,9 @@ def test_suffering_per_kcal_chicken_dairy_ratio():
 
 
 def test_wild_caught_fish_count_zero():
-    """Wild-caught products (anchovies, fish sauce, wild fish) are excluded
-    from the metric, like non-factory-farmed land animals."""
+    """Wild-caught products (anchovies, fish sauce) are excluded from the
+    metric, like non-factory-farmed land animals."""
     assert suffering_per_kcal("fish_small") == 0
-    assert suffering_per_kcal("fish_wild") == 0
     assert ingredient_welfare_cost("fish_sauce", 1) == 0
 
 
@@ -127,9 +126,9 @@ def test_per_serving_less_than_total():
 
 def test_data_files_load():
     assert len(SPECIES) == 6
-    assert len(PRODUCTS) == 9
-    assert len(INGREDIENTS) == 17
-    assert len(DISHES) == 9
+    assert len(PRODUCTS) == 8
+    assert len(INGREDIENTS) == 16
+    assert len(DISHES) == 8
 
 
 def test_ingredient_product_references():

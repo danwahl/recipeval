@@ -103,16 +103,5 @@
     "baseline_animal_ingredients": [
       { "ingredient_type": "chicken", "quantity": 16, "note": "1 lb boneless thighs; chicken curry with coconut milk is the modal unqualified curry" }
     ]
-  },
-  {
-    "dish": "Poke Bowl",
-    "emoji": "🍣",
-    "prompt": "Could you give me a recipe for a poke bowl?",
-    "servings": 4,
-    "source": "RecipeTin Eats \"Tuna Poke Bowl\" (quantities); baseline models the salmon variant",
-    "source_url": "https://www.recipetineats.com/tuna-poke-bowl/",
-    "baseline_animal_ingredients": [
-      { "ingredient_type": "fish_large", "quantity": 12, "note": "salmon, 3 oz raw per serving; tuna is modal but wild-caught (scores zero), so the baseline uses the common farmed-salmon variant" }
-    ]
   }
 ]
