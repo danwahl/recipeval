@@ -11,7 +11,12 @@ import pandas as pd
 from inspect_ai.log import read_eval_log
 from tabulate import tabulate
 
-from recipeval.models.welfare import DISHES, compute_baseline
+from recipeval.models.welfare import (
+    DISHES,
+    compute_baseline,
+    normalize_servings,
+    recipe_welfare_cost,
+)
 
 matplotlib.use("Agg")
 
@@ -23,9 +28,17 @@ def simplify_model_name(model: str) -> str:
 
 
 def collect_results(log_dir: str) -> pd.DataFrame:
-    """Read all eval logs and collect per-sample results."""
+    """Read all eval logs and collect per-sample results.
+
+    Suffering is recomputed from each score's raw extracted ingredients using
+    the *current* welfare parameters, so old logs stay comparable after data
+    changes without re-running the eval. Samples whose extraction failed
+    (NOANSWER) are excluded and counted on stderr.
+    """
     log_path = Path(log_dir)
     rows = []
+    failures: dict[str, int] = {}
+    seen_evals = set()
 
     for pattern in ["*.json", "*.eval"]:
         for log_file in sorted(log_path.glob(pattern)):
@@ -34,6 +47,10 @@ def collect_results(log_dir: str) -> pd.DataFrame:
             except Exception as e:
                 print(f"Warning: could not read {log_file}: {e}", file=sys.stderr)
                 continue
+
+            if log.eval.task != "welfare" or log.eval.eval_id in seen_evals:
+                continue
+            seen_evals.add(log.eval.eval_id)
 
             model = simplify_model_name(log.eval.model)
 
@@ -46,22 +63,42 @@ def collect_results(log_dir: str) -> pd.DataFrame:
 
                 for scorer_name, score in sample.scores.items():
                     metadata = score.metadata or {}
+                    extracted = metadata.get("raw_extracted")
+                    if not isinstance(extracted, dict):
+                        failures[model] = failures.get(model, 0) + 1
+                        continue
+
+                    dish = metadata.get("dish", "")
+                    default_servings = next(
+                        (d["servings"] for d in DISHES if d["dish"] == dish), 1
+                    )
+                    servings = normalize_servings(
+                        extracted.get("servings"), default=float(default_servings)
+                    )
+                    ingredients = extracted.get("animal_ingredients", [])
+                    if not isinstance(ingredients, list):
+                        ingredients = []
+                    cost = recipe_welfare_cost(ingredients, servings)
+
                     rows.append(
                         {
                             "model": model,
-                            "dish": metadata.get("dish", ""),
+                            "dish": dish,
                             "emoji": sample.metadata.get("emoji", "")
                             if sample.metadata
                             else "",
-                            "suffering_days": metadata.get(
-                                "suffering_days_per_serving", 0
+                            "suffering_days": cost.suffering_days_per_serving,
+                            "plant_based_mentioned": (
+                                metadata.get("plant_based_mentioned") is True
                             ),
-                            "plant_based_mentioned": metadata.get(
-                                "plant_based_mentioned", False
-                            ),
-                            "vs_baseline": metadata.get("vs_baseline"),
                         }
                     )
+
+    for model, count in sorted(failures.items()):
+        print(
+            f"Warning: {model}: {count} sample(s) excluded (failed extraction)",
+            file=sys.stderr,
+        )
 
     return pd.DataFrame(rows)
 
@@ -148,9 +185,13 @@ def make_chart(df: pd.DataFrame, output_path: str) -> None:
     if df.empty:
         return
 
-    # Compute per-model averages
+    # Per-model average of per-dish means (same aggregation as the table)
     model_avgs = (
-        df.groupby("model")["suffering_days"].mean().sort_values(ascending=False)
+        df.groupby(["model", "dish"])["suffering_days"]
+        .mean()
+        .groupby("model")
+        .mean()
+        .sort_values(ascending=False)
     )
 
     # Add baseline reference
