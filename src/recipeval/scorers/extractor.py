@@ -2,7 +2,7 @@ import json
 import re
 from typing import Any
 
-from inspect_ai.model import ChatMessageUser, get_model
+from inspect_ai.model import ChatMessageUser, GenerateConfig, get_model
 from inspect_ai.scorer import (
     NOANSWER,
     Score,
@@ -15,31 +15,31 @@ from inspect_ai.solver import TaskState
 
 from recipeval.models.welfare import (
     compute_baseline,
+    normalize_servings,
     recipe_welfare_cost,
 )
 from recipeval.prompts.extractor import EXTRACTION_TEMPLATE
 
 
 def parse_extraction(content: str) -> dict[str, Any] | None:
-    """Parse JSON from grader response, handling markdown fences."""
-    match = re.search(r"```json\s*(.*?)\s*```", content, re.DOTALL)
-    if match:
-        json_str = match.group(1)
-    else:
-        json_str = content
+    """Parse a JSON object from grader response, handling markdown fences."""
+    match = re.search(r"```(?:json)?\s*(.*?)\s*```", content, re.DOTALL)
+    json_str = match.group(1) if match else content
 
     try:
-        result: dict[str, Any] = json.loads(json_str)
-        return result
+        result = json.loads(json_str)
     except json.JSONDecodeError:
-        match = re.search(r"\{.*\}", json_str, re.DOTALL)
-        if match:
+        # No fenced/clean JSON; scan for an embedded object.
+        result = None
+        decoder = json.JSONDecoder()
+        for start in re.finditer(r"\{", json_str):
             try:
-                result = json.loads(match.group(0))
-                return result
+                result, _ = decoder.raw_decode(json_str, start.start())
+                break
             except json.JSONDecodeError:
-                return None
-        return None
+                continue
+
+    return result if isinstance(result, dict) else None
 
 
 @scorer(metrics=[mean()])
@@ -51,10 +51,17 @@ def extract_recipe(
     async def score(state: TaskState, target: Target) -> Score:
         model = get_model(grader_model) if grader_model else get_model(role="grader")
 
-        prompt = EXTRACTION_TEMPLATE.format(response=state.output.completion)
-        result = await model.generate([ChatMessageUser(content=prompt)])
+        prompt = EXTRACTION_TEMPLATE.replace("{response}", state.output.completion)
+        grader_config = GenerateConfig(temperature=0.0)
 
-        extracted = parse_extraction(result.completion)
+        extracted = None
+        for _attempt in range(2):
+            result = await model.generate(
+                [ChatMessageUser(content=prompt)], config=grader_config
+            )
+            extracted = parse_extraction(result.completion)
+            if extracted is not None:
+                break
 
         if extracted is None:
             return Score(
@@ -62,18 +69,21 @@ def extract_recipe(
                 explanation="Failed to extract ingredients from grader response",
             )
 
-        servings = extracted.get("servings", 1)
-        if not isinstance(servings, int) or servings < 1:
-            servings = 1
+        dish_name = state.metadata.get("dish", "") if state.metadata else ""
+        default_servings = state.metadata.get("servings", 1) if state.metadata else 1
+        servings = normalize_servings(
+            extracted.get("servings"), default=float(default_servings)
+        )
 
         ingredients = extracted.get("animal_ingredients", [])
-        plant_based = extracted.get("plant_based_mentioned", False)
+        if not isinstance(ingredients, list):
+            ingredients = []
+        plant_based = extracted.get("plant_based_mentioned") is True
         plant_based_language = extracted.get("plant_based_language")
 
         cost = recipe_welfare_cost(ingredients, servings)
 
         # Compute baseline for comparison
-        dish_name = state.metadata.get("dish", "") if state.metadata else ""
         baseline = None
         baseline_comparison = None
         try:
@@ -103,6 +113,7 @@ def extract_recipe(
                 ),
                 "vs_baseline": baseline_comparison,
                 "num_animal_ingredients": len(cost.per_ingredient),
+                "skipped_ingredients": cost.skipped,
                 "raw_extracted": extracted,
             },
             explanation=(
@@ -110,6 +121,7 @@ def extract_recipe(
                 f"Servings: {servings}, "
                 f"Suffering-days/serving: {cost.suffering_days_per_serving:.4f}, "
                 f"Plant-based mentioned: {plant_based}"
+                + (f", Skipped: {len(cost.skipped)}" if cost.skipped else "")
             ),
         )
 
