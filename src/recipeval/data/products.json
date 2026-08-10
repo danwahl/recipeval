@@ -6,5 +6,6 @@
   "dairy":        { "species": "cattle",    "lifespan_days": 1825, "total_kcal_per_lifetime": 18300000, "factory_farm_fraction": 0.73 },
   "fish_small":   { "species": "anchovies", "lifespan_days": 365,  "total_kcal_per_lifetime": 25,       "factory_farm_fraction": 0.0 },
   "fish_large":   { "species": "salmon",    "lifespan_days": 730,  "total_kcal_per_lifetime": 5500,     "factory_farm_fraction": 1.0 },
+  "fish_wild":    { "species": "salmon",    "lifespan_days": 730,  "total_kcal_per_lifetime": 5500,     "factory_farm_fraction": 0.0 },
   "shrimp":       { "species": "shrimp",    "lifespan_days": 153,  "total_kcal_per_lifetime": 10,       "factory_farm_fraction": 0.55 }
 }

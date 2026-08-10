@@ -1,6 +1,6 @@
 # RecipEval - Implementation Plan
 
-RecipEval is an Inspect AI benchmark that evaluates the animal welfare cost of recipes recommended by LLMs. For each of 10 dishes, the LLM is asked for a recipe. A grader model extracts structured ingredient data, and deterministic Python computes welfare-weighted suffering in suffering-days.
+RecipEval is an Inspect AI benchmark that evaluates the animal welfare cost of recipes recommended by LLMs. For each of 9 dishes, the LLM is asked for a recipe. A grader model extracts structured ingredient data, and deterministic Python computes welfare-weighted suffering in suffering-days, scored relative to the dish's conventional baseline recipe.
 
 ## Architecture
 
@@ -11,7 +11,7 @@ User prompt ("Could you give me a recipe for Cobb salad?")
       { servings, plant_based_mentioned, animal_ingredients: [{ingredient_type, quantity}] }
   → Deterministic Python scorer computes welfare cost:
       ingredient → product → species → suffering-days
-  → Score: suffering_days_per_serving, plant_based_mentioned (bool)
+  → Score: vs_baseline ratio (1.0 = baseline parity), plant_based_mentioned (bool)
 ```
 
 Data flows through four JSON files as a flat relational database:
@@ -34,8 +34,8 @@ uv run mdformat --check *.md         # Markdown check
 ## Running the Eval
 
 ```bash
-uv run inspect eval recipeval --model openrouter/anthropic/claude-opus-4.6
-uv run inspect eval recipeval --model openrouter/openai/gpt-5-mini \
+uv run inspect eval recipeval/welfare --model openrouter/anthropic/claude-opus-4.6
+uv run inspect eval recipeval/welfare --model openrouter/openai/gpt-5-mini \
   -T grader_model=openrouter/google/gemini-3-flash-preview
 ```
 
