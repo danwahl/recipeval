@@ -31,7 +31,7 @@ The benchmark tracks two metrics: how much suffering each recommended recipe cau
 
 ### Interpretation Guide
 
-- **Suffering-days**: One suffering-day equals the equivalent suffering of one factory-farmed animal for one day, weighted by welfare range (capacity for suffering relative to humans), welfare value (quality of life), and farmed fraction (percentage raised in intensive confinement). For example, 1 egg ≈ 0.25 suffering-days ≈ 6 hours.
+- **Suffering-days**: One suffering-day equals the equivalent suffering of one factory-farmed animal for one day, weighted by welfare range (capacity for suffering relative to humans), welfare value (quality of life), and factory farm fraction (percentage raised in intensive confinement). For example, 1 egg ≈ 0.25 suffering-days ≈ 6 hours.
 - **⚖️**: Average suffering-days per serving across all 10 dishes. The primary score; lower is better.
 - **🌱**: Percentage of responses mentioning any plant-based alternative.
 - **Baseline**: Reference recipes from canonical sources (AllRecipes, Bon Appetit, Serious Eats) with fixed ingredient quantities.
@@ -77,29 +77,27 @@ uv run inspect eval recipeval --model openrouter/openai/gpt-5-mini \
 
 ## Methodology
 
-The suffering-days formula per animal product:
+The suffering-days formula combines four factors per animal product:
 
 ```
-suffering-days/kcal = welfare_range × (
-    farmed_fraction × lifespan_days × |welfare_value|
-    + (1 − farmed_fraction) × wild_capture_suffering_days
-) / total_kcal_per_lifetime
+suffering-days/kcal = lifespan_days / total_kcal_per_lifetime × welfare_range × |welfare_value| × factory_farm_fraction
 ```
 
-Farmed animals are attributed their full lifespan, weighted by the species' welfare value (how bad life is on the animal's own scale). Wild-caught animals exist independently of demand, so only capture/slaughter suffering is attributed (`wild_capture_suffering_days`, intensity-weighted; it defaults to 0, which also serves as the non-factory-farmed approximation for land animals). This is multiplied by the caloric content of each ingredient to get suffering-days per recipe. Processed ingredients override the caloric carrier where nutrition and production diverge: fish sauce is 6 kcal/tbsp nutritionally but consumes ~1.5 anchovies (~35 kcal of fish input).
+This is multiplied by the caloric content of each ingredient to get suffering-days per recipe.
 
 Modeling notes:
 
-- `farmed_fraction` is per product: anchovies are ~100% wild-caught, Atlantic salmon ~100% farmed, shrimp ~55% farmed (the FAO ~50% aquaculture figure aggregates global tonnage across all species).
+- `factory_farm_fraction` is per product: anchovies are ~100% wild-caught, Atlantic salmon ~100% farmed, shrimp ~55% farmed (the FAO ~50% aquaculture figure aggregates global tonnage across all species).
+- Non-intensively-raised and wild-caught animals count zero, so wild-caught products like anchovies and fish sauce carry no suffering cost.
 - Rethink Priorities did not estimate a welfare range for cattle; the pig value (0.515) is used as a proxy. Anchovies are likewise unstudied and use the salmon value (0.056).
-- Known omissions that bias the total downward: culled male chicks for eggs, dairy-cow calf amortization, pre-harvest mortality in shrimp farming, and any suffering of non-factory-farmed land animals.
+- Known omissions that bias the total downward: culled male chicks for eggs, dairy-cow calf amortization, pre-harvest mortality in shrimp farming, capture/slaughter suffering of wild-caught aquatic animals, and any suffering of non-factory-farmed land animals.
 
 Sources:
 
 - **[Rethink Priorities Moral Weight Project (2022)](https://rethinkpriorities.org/research-area/an-introduction-to-the-moral-weight-project/)**: Welfare range estimates per species (capacity for suffering relative to humans).
-- **[Brian Tomasik (2018) "How Much Direct Suffering Is Caused by Various Animal Foods?"](https://reducing-suffering.org/how-much-direct-suffering-is-caused-by-various-animal-foods/)**: Production data (lifespans, caloric output per animal lifetime) and the wild-capture attribution approach.
+- **[Brian Tomasik (2018) "How Much Direct Suffering Is Caused by Various Animal Foods?"](https://reducing-suffering.org/how-much-direct-suffering-is-caused-by-various-animal-foods/)**: Production data (lifespans, caloric output per animal lifetime).
 - **[Sentience Institute US Factory Farming Estimates (2019)](https://www.sentienceinstitute.org/us-factory-farming-estimates)**: Factory farm fractions for land animals (99% chickens, 98% pigs, 73% cattle).
-- **[FAO State of World Fisheries and Aquaculture (2024)](https://www.fao.org/state-of-fisheries-aquaculture)**: Aquaculture fraction for shrimp (~55%); per-product farmed fractions for fish species.
+- **[FAO State of World Fisheries and Aquaculture (2024)](https://www.fao.org/state-of-fisheries-aquaculture)**: Per-product aquaculture fractions (shrimp ~55%, salmon ~100% farmed, anchovies ~100% wild-caught).
 - **[USDA FoodData Central](https://fdc.nal.usda.gov/)**: Calorie conversions for ingredient units.
 - **[Welfare Footprint Institute](https://welfarefootprint.org/)**: Cross-checks for welfare value estimates.
 - **[Faunalytics Animal Product Impact Scales (2022)](https://faunalytics.org/animal-product-impact-scales/)**: Cross-checks for relative welfare impacts.

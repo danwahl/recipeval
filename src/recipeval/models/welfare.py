@@ -20,27 +20,26 @@ def suffering_per_kcal(product_name: str) -> float:
     """Equivalent days of suffering per kilocalorie of this product.
 
     Formula:
-        welfare_range * (
-            farmed_fraction * lifespan_days * |welfare_value|
-            + (1 - farmed_fraction) * wild_capture_suffering_days
-        ) / total_kcal_per_lifetime
+        lifespan_days / total_kcal_per_lifetime
+        * welfare_range * |welfare_value|
+        * factory_farm_fraction
 
-    Farmed animals are attributed their full lifespan, weighted by the species'
-    welfare value (how bad life is on the animal's own scale). Wild-caught
-    animals exist independently of demand, so only capture/slaughter suffering
-    is attributed (wild_capture_suffering_days is already intensity-weighted on
-    the animal's own scale; it defaults to 0, which also serves as the
-    non-factory-farmed approximation for land animals). Everything is scaled by
-    welfare_range (capacity for suffering relative to humans).
+    This gives the fraction of an animal's suffering-day consumed per kcal,
+    weighted by the species' welfare range (capacity for suffering relative to
+    humans), welfare value (how bad life is on the animal's own scale), and the
+    fraction of animals raised in intensive confinement. factory_farm_fraction
+    is per product: non-intensive and wild-caught animals (e.g. anchovies,
+    ~100% wild) count zero.
     """
     product = PRODUCTS[product_name]
     species = SPECIES[product["species"]]
-    farmed = product["farmed_fraction"]
-    suffering_days_per_animal = species["welfare_range"] * (
-        farmed * product["lifespan_days"] * abs(species["welfare_value"])
-        + (1 - farmed) * product.get("wild_capture_suffering_days", 0.0)
+    animal_days_per_kcal = product["lifespan_days"] / product["total_kcal_per_lifetime"]
+    result: float = (
+        animal_days_per_kcal
+        * species["welfare_range"]
+        * abs(species["welfare_value"])
+        * product["factory_farm_fraction"]
     )
-    result: float = suffering_days_per_animal / product["total_kcal_per_lifetime"]
     return result
 
 
@@ -51,17 +50,10 @@ def ingredient_kcal(ingredient_type: str, quantity: float) -> float:
 
 
 def ingredient_welfare_cost(ingredient_type: str, quantity: float) -> float:
-    """Equivalent days of suffering for a quantity of an ingredient.
-
-    Suffering is carried by the kcal of animal product consumed in production
-    (product_kcal_per_unit, falling back to kcal_per_unit); processed
-    ingredients like fish sauce override it.
-    """
+    """Equivalent days of suffering for a quantity of an ingredient."""
     ing = INGREDIENTS[ingredient_type]
-    product_kcal: float = quantity * ing.get(
-        "product_kcal_per_unit", ing["kcal_per_unit"]
-    )
-    return product_kcal * suffering_per_kcal(ing["product"])
+    kcal: float = quantity * ing["kcal_per_unit"]
+    return kcal * suffering_per_kcal(ing["product"])
 
 
 def _coerce_quantity(value: Any) -> float | None:
