@@ -41,7 +41,7 @@ def test_wild_caught_fish_count_zero():
 
 
 def test_farmed_fish_counts():
-    """Farmed salmon gets full-lifespan attribution."""
+    """Farmed salmon is costlier per kcal than pork."""
     assert suffering_per_kcal("fish_large") > suffering_per_kcal("pork")
 
 
@@ -83,8 +83,21 @@ def test_recipe_accepts_numeric_string_quantity():
     assert result.per_ingredient[0].quantity == 2.0
 
 
+def test_recipe_rejects_non_finite_quantity():
+    result = recipe_welfare_cost(
+        [
+            {"ingredient_type": "eggs", "quantity": float("inf")},
+            {"ingredient_type": "eggs", "quantity": "NaN"},
+        ],
+        servings=1,
+    )
+    assert result.per_ingredient == []
+    assert [s["reason"] for s in result.skipped] == ["invalid_quantity"] * 2
+
+
 def test_normalize_servings():
     assert normalize_servings(4) == 4.0
+    assert normalize_servings(float("inf"), default=3.0) == 3.0
     assert normalize_servings(8.0) == 8.0
     assert normalize_servings("6") == 6.0
     assert normalize_servings(True, default=3.0) == 3.0

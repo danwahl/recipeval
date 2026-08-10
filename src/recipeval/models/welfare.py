@@ -1,4 +1,5 @@
 import json
+import math
 from dataclasses import dataclass, field
 from importlib.resources import files
 from typing import Any
@@ -61,14 +62,15 @@ def _coerce_quantity(value: Any) -> float | None:
     if isinstance(value, bool):
         return None
     if isinstance(value, (int, float)):
-        return float(value) if value > 0 else None
-    if isinstance(value, str):
+        qty = float(value)
+    elif isinstance(value, str):
         try:
             qty = float(value)
         except ValueError:
             return None
-        return qty if qty > 0 else None
-    return None
+    else:
+        return None
+    return qty if qty > 0 and math.isfinite(qty) else None
 
 
 @dataclass
@@ -131,7 +133,7 @@ def recipe_welfare_cost(
 
 
 def normalize_servings(value: Any, default: float = 1.0) -> float:
-    """Coerce a grader-emitted servings value to a positive number, else default.
+    """Coerce a grader-emitted servings value to a number >= 1, else default.
 
     Graders routinely emit 8.0 or "8" where an integer was requested.
     """
