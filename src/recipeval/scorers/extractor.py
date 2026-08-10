@@ -29,7 +29,7 @@ def parse_extraction(content: str) -> dict[str, Any] | None:
     try:
         result = json.loads(json_str)
     except json.JSONDecodeError:
-        # No fenced/clean JSON; scan for an embedded object.
+        # Direct parse failed; scan for an embedded object.
         result = None
         decoder = json.JSONDecoder()
         for start in re.finditer(r"\{", json_str):

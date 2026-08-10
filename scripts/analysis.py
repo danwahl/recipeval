@@ -31,7 +31,7 @@ def collect_results(log_dir: str) -> pd.DataFrame:
     """Read all eval logs and collect per-sample results.
 
     Suffering is recomputed from each score's raw extracted ingredients using
-    the *current* welfare parameters, so old logs stay comparable after data
+    the current welfare parameters, so old logs stay comparable after data
     changes without re-running the eval. Samples whose extraction failed
     (NOANSWER) are excluded and counted on stderr.
     """
