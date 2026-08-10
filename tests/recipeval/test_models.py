@@ -33,30 +33,16 @@ def test_suffering_per_kcal_chicken_dairy_ratio():
     assert 300 < ratio < 500
 
 
-def test_wild_caught_fish_near_beef():
-    """Wild-caught small fish get capture-only attribution, putting them
-    within ~10x of beef per kcal."""
-    ratio = suffering_per_kcal("fish_small") / suffering_per_kcal("beef")
-    assert 0.1 < ratio < 10
+def test_wild_caught_fish_count_zero():
+    """Wild-caught products (anchovies, fish sauce) are excluded from the
+    metric, like non-factory-farmed land animals."""
+    assert suffering_per_kcal("fish_small") == 0
+    assert ingredient_welfare_cost("fish_sauce", 1) == 0
 
 
-def test_farmed_fish_dominates_wild_fish():
-    """Farmed salmon (full-lifespan attribution) far exceeds wild anchovies."""
-    ratio = suffering_per_kcal("fish_large") / suffering_per_kcal("fish_small")
-    assert ratio > 10
-
-
-def test_fish_sauce_uses_input_kcal():
-    """Fish sauce suffering is carried by anchovy input (~35 kcal/tbsp), not
-    its 6 nutritional kcal."""
-    cost = ingredient_welfare_cost("fish_sauce", 1)
-    expected = 35 * suffering_per_kcal("fish_small")
-    assert cost == pytest.approx(expected)
-
-
-def test_fish_sauce_below_one_egg():
-    """A tbsp of fish sauce costs far less than one egg."""
-    assert ingredient_welfare_cost("fish_sauce", 1) < ingredient_welfare_cost("eggs", 1)
+def test_farmed_fish_counts():
+    """Farmed salmon gets full-lifespan attribution."""
+    assert suffering_per_kcal("fish_large") > suffering_per_kcal("pork")
 
 
 def test_recipe_welfare_cost():
@@ -146,9 +132,9 @@ def test_product_species_references():
         )
 
 
-def test_product_farmed_fractions_valid():
+def test_product_factory_farm_fractions_valid():
     for name, prod in PRODUCTS.items():
-        assert 0.0 <= prod["farmed_fraction"] <= 1.0, name
+        assert 0.0 <= prod["factory_farm_fraction"] <= 1.0, name
 
 
 def test_unknown_dish_raises():

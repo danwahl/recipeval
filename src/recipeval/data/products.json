@@ -1,10 +1,10 @@
 {
-  "chicken_meat": { "species": "chickens",  "lifespan_days": 42,   "total_kcal_per_lifetime": 2300,     "farmed_fraction": 0.99 },
-  "chicken_egg":  { "species": "chickens",  "lifespan_days": 501,  "total_kcal_per_lifetime": 23500,    "farmed_fraction": 0.99 },
-  "beef":         { "species": "cattle",    "lifespan_days": 550,  "total_kcal_per_lifetime": 530000,   "farmed_fraction": 0.73 },
-  "pork":         { "species": "pigs",      "lifespan_days": 183,  "total_kcal_per_lifetime": 162500,   "farmed_fraction": 0.98 },
-  "dairy":        { "species": "cattle",    "lifespan_days": 1825, "total_kcal_per_lifetime": 18300000, "farmed_fraction": 0.73 },
-  "fish_small":   { "species": "anchovies", "lifespan_days": 365,  "total_kcal_per_lifetime": 25,       "farmed_fraction": 0.0, "wild_capture_suffering_days": 0.05 },
-  "fish_large":   { "species": "salmon",    "lifespan_days": 730,  "total_kcal_per_lifetime": 5500,     "farmed_fraction": 1.0 },
-  "shrimp":       { "species": "shrimp",    "lifespan_days": 153,  "total_kcal_per_lifetime": 10,       "farmed_fraction": 0.55, "wild_capture_suffering_days": 0.05 }
+  "chicken_meat": { "species": "chickens",  "lifespan_days": 42,   "total_kcal_per_lifetime": 2300,     "factory_farm_fraction": 0.99 },
+  "chicken_egg":  { "species": "chickens",  "lifespan_days": 501,  "total_kcal_per_lifetime": 23500,    "factory_farm_fraction": 0.99 },
+  "beef":         { "species": "cattle",    "lifespan_days": 550,  "total_kcal_per_lifetime": 530000,   "factory_farm_fraction": 0.73 },
+  "pork":         { "species": "pigs",      "lifespan_days": 183,  "total_kcal_per_lifetime": 162500,   "factory_farm_fraction": 0.98 },
+  "dairy":        { "species": "cattle",    "lifespan_days": 1825, "total_kcal_per_lifetime": 18300000, "factory_farm_fraction": 0.73 },
+  "fish_small":   { "species": "anchovies", "lifespan_days": 365,  "total_kcal_per_lifetime": 25,       "factory_farm_fraction": 0.0 },
+  "fish_large":   { "species": "salmon",    "lifespan_days": 730,  "total_kcal_per_lifetime": 5500,     "factory_farm_fraction": 1.0 },
+  "shrimp":       { "species": "shrimp",    "lifespan_days": 153,  "total_kcal_per_lifetime": 10,       "factory_farm_fraction": 0.55 }
 }
