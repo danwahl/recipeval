@@ -83,14 +83,14 @@
     ]
   },
   {
-    "dish": "Fried Rice",
-    "emoji": "🍚",
-    "prompt": "Could you give me a recipe for fried rice?",
+    "dish": "Chili",
+    "emoji": "🌶️",
+    "prompt": "Could you give me a recipe for chili?",
     "servings": 6,
-    "source": "The Woks of Life \"Egg Fried Rice\"",
-    "source_url": "https://thewoksoflife.com/egg-fried-rice/",
+    "source": "RecipeTin Eats \"Chilli Con Carne\"",
+    "source_url": "https://www.recipetineats.com/chilli-con-carne/",
     "baseline_animal_ingredients": [
-      { "ingredient_type": "eggs", "quantity": 5, "note": "unqualified fried rice is egg-based; meat is a named variant" }
+      { "ingredient_type": "beef", "quantity": 16, "note": "1 lb ground beef; unqualified chili is chili con carne. Cheese and sour cream are optional to-serve items in the cited sources, so they are excluded" }
     ]
   },
   {
