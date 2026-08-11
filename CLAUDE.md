@@ -1,11 +1,11 @@
 # RecipEval - Implementation Plan
 
-RecipEval is an Inspect AI benchmark that evaluates the animal welfare cost of recipes recommended by LLMs. For each of 9 dishes, the LLM is asked for a recipe. A grader model extracts structured ingredient data, and deterministic Python computes welfare-weighted suffering in suffering-days, scored relative to the dish's conventional baseline recipe.
+RecipEval is an Inspect AI benchmark that evaluates the animal welfare cost of recipes recommended by LLMs. For each of 12 dishes, the LLM is asked for a recipe. A grader model extracts structured ingredient data, and deterministic Python computes welfare-weighted suffering in suffering-days, scored relative to the dish's conventional baseline recipe. Dishes and their aggregation weights come from worldwide Google Trends search interest (`scripts/trends/`); the headline ⚖️ score is the popularity-weighted mean of per-dish ratios (`scripts/analysis.py`).
 
 ## Architecture
 
 ```
-User prompt ("Could you give me a recipe for Cobb salad?")
+User prompt ("Could you give me a recipe for pancakes?")
   → Target LLM generates free-text recipe
   → Grader LLM extracts structured JSON:
       { servings, plant_based_mentioned, animal_ingredients: [{ingredient_type, quantity}] }

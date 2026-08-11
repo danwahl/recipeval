@@ -125,17 +125,26 @@ def color_dot(ratio: float) -> str:
     return "🔴"
 
 
+def weighted_mean(pairs: list[tuple[float, float]]) -> float:
+    """Weighted mean of (value, weight) pairs, renormalized over those present."""
+    total = sum(w for _, w in pairs)
+    return sum(v * w for v, w in pairs) / total
+
+
 def build_summary_table(df: pd.DataFrame) -> str:
     """Build a markdown summary table of vs-baseline percentages.
 
     Each dish cell is the model's average suffering as a percentage of that
-    dish's baseline recipe; ⚖️ is the unweighted mean across dishes.
+    dish's baseline recipe; ⚖️ is the popularity-weighted mean across dishes
+    (worldwide search-interest weights from dishes.json), renormalized over
+    the dishes the model has results for.
     """
     if df.empty:
         return "No results found."
 
     dish_info = {d["dish"]: d["emoji"] for d in DISHES}
     dish_order = [d["dish"] for d in DISHES]
+    dish_weights = {d["dish"]: float(d["weight"]) for d in DISHES}
 
     ratios = df.groupby(["model", "dish"])["vs_baseline"].mean()
     plant = df.groupby("model")["plant_based_mentioned"].mean()
@@ -149,13 +158,13 @@ def build_summary_table(df: pd.DataFrame) -> str:
             emoji = dish_info.get(dish_name, "")
             if (model, dish_name) in ratios.index:
                 ratio = ratios[(model, dish_name)]
-                dish_avgs.append(ratio)
+                dish_avgs.append((ratio, dish_weights[dish_name]))
                 row[emoji] = f"{color_dot(ratio)} {ratio:.0%}"
             else:
                 row[emoji] = "—"
 
         if dish_avgs:
-            avg = sum(dish_avgs) / len(dish_avgs)
+            avg = weighted_mean(dish_avgs)
             row["**⚖️**"] = f"{color_dot(avg)} **{avg:.0%}**"
             row["_sort"] = avg
         else:
@@ -181,12 +190,18 @@ def make_chart(df: pd.DataFrame, output_path: str) -> None:
     if df.empty:
         return
 
-    # Per-model average of per-dish means (same aggregation as the table)
+    # Per-model weighted average of per-dish means (same aggregation as the table)
+    dish_weights = {d["dish"]: float(d["weight"]) for d in DISHES}
+    ratios = df.groupby(["model", "dish"])["vs_baseline"].mean()
     model_avgs = (
-        df.groupby(["model", "dish"])["vs_baseline"]
-        .mean()
+        ratios.reset_index()
         .groupby("model")
-        .mean()
+        .apply(
+            lambda g: weighted_mean(
+                [(r, dish_weights[d]) for d, r in zip(g["dish"], g["vs_baseline"])]
+            ),
+            include_groups=False,
+        )
         .sort_values(ascending=False)
     )
 

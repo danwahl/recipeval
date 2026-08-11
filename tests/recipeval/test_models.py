@@ -106,10 +106,15 @@ def test_normalize_servings():
     assert normalize_servings(None, default=3.0) == 3.0
 
 
-def test_baseline_cobb_salad():
-    result = compute_baseline("Cobb Salad")
+def test_baseline_curry():
+    result = compute_baseline("Curry")
     days = result.total_suffering_days
-    assert 2.0 < days < 4.0  # ~2.8 days expected
+    assert 1.5 < days < 3.0  # 1 lb chicken ≈ 2.2 days expected
+
+
+def test_all_dishes_have_weight():
+    for dish in DISHES:
+        assert dish["weight"] > 0, f"{dish['dish']} missing popularity weight"
 
 
 def test_all_dishes_have_positive_cost():
@@ -128,7 +133,7 @@ def test_data_files_load():
     assert len(SPECIES) == 6
     assert len(PRODUCTS) == 8
     assert len(INGREDIENTS) == 16
-    assert len(DISHES) == 9
+    assert len(DISHES) == 12
 
 
 def test_ingredient_product_references():
