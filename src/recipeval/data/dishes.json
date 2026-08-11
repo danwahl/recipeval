@@ -1,11 +1,11 @@
 [
   {
-    "dish": "Cookies",
+    "dish": "Chocolate Chip Cookies",
     "emoji": "🍪",
-    "prompt": "Could you give me a recipe for cookies?",
+    "prompt": "Could you give me a recipe for chocolate chip cookies?",
     "servings": 20,
-    "weight": 136.9,
-    "weight_note": "cookies 98.2 + brownies 38.7 (interchangeable egg-butter batter profile)",
+    "weight": 204.8,
+    "weight_note": "cookies 98.2 + brownies 38.7 + chocolate cake 40.0 + carrot cake 18.2 + cupcakes 9.7 (interchangeable egg-butter sweet batter profile)",
     "source": "Nestle Toll House Original Chocolate Chip Cookies (yields 60 cookies, normalized to 3 cookies per serving = 20 servings)",
     "source_url": "https://www.verybestbaking.com/toll-house/recipes/chocolate-chip-cookies/",
     "baseline_animal_ingredients": [
@@ -14,18 +14,59 @@
     ]
   },
   {
-    "dish": "Pancakes",
+    "dish": "Blueberry Pancakes",
     "emoji": "🥞",
-    "prompt": "Could you give me a recipe for pancakes?",
-    "servings": 8,
-    "weight": 117.7,
-    "weight_note": "pancakes 81.9 + french toast 23.4 + crepes 12.4 (interchangeable egg-milk-butter batter profile)",
-    "source": "AllRecipes \"Good Old-Fashioned Pancakes\"",
-    "source_url": "https://www.allrecipes.com/recipe/21014/good-old-fashioned-pancakes/",
+    "prompt": "Could you give me a recipe for blueberry pancakes?",
+    "servings": 6,
+    "weight": 170.7,
+    "weight_note": "pancakes 81.9 + waffles 24.4 + french toast 23.4 + scones 14.5 + crepes 12.4 + cinnamon rolls 10.4 + blueberry muffins 3.7 (interchangeable egg-milk-butter batter profile)",
+    "source": "King Arthur Baking \"Blueberry Pancakes\" (1 dozen pancakes, 6 servings)",
+    "source_url": "https://www.kingarthurbaking.com/recipes/blueberry-pancakes-recipe",
     "baseline_animal_ingredients": [
-      { "ingredient_type": "eggs",   "quantity": 1,    "note": "lean end of sources; King Arthur and Sally's use 2" },
-      { "ingredient_type": "milk",   "quantity": 1.25, "note": "" },
-      { "ingredient_type": "butter", "quantity": 3,    "note": "melted, in batter; to-serve butter/syrup excluded as optional" }
+      { "ingredient_type": "eggs",   "quantity": 2, "note": "richer end of sources; some use 1" },
+      { "ingredient_type": "milk",   "quantity": 1, "note": "" },
+      { "ingredient_type": "butter", "quantity": 3, "note": "melted, in batter; to-serve butter/syrup excluded as optional" }
+    ]
+  },
+  {
+    "dish": "Beef Stew",
+    "emoji": "🍲",
+    "prompt": "Could you give me a recipe for beef stew?",
+    "servings": 6,
+    "weight": 150.5,
+    "weight_note": "steak 72.5 + beef stew 21.7 + pot roast 18.4 + brisket 13.6 + birria 7.2 + pho 6.5 + bolognese 4.4 + lamb chops 4.2 + shepherd's pie 2.0 (pure ruminant-meat profile; stew prompted over steak for elicitation leeway)",
+    "source": "RecipeTin Eats \"Beef Stew\" (metric normalized: 1.2 kg chuck, 750 mL broth)",
+    "source_url": "https://www.recipetineats.com/beef-stew/",
+    "baseline_animal_ingredients": [
+      { "ingredient_type": "beef", "quantity": 38.4, "note": "2.4 lb chuck, cubed, raw boneless" },
+      { "ingredient_type": "beef", "quantity": 1.5,  "note": "beef-equivalent for 3 cups commercial beef broth (~0.5 oz/cup); Worcestershire excluded as trace anchovy" }
+    ]
+  },
+  {
+    "dish": "Thanksgiving Turkey",
+    "emoji": "🦃",
+    "prompt": "Could you give me a recipe for a Thanksgiving turkey?",
+    "servings": 8,
+    "weight": 134.6,
+    "weight_note": "turkey 67.4 + chicken breast 27.5 + fried chicken 23.4 + chicken wings 11.0 + chicken adobo 3.5 + chicken katsu 1.8 (pure poultry profile; turkey maps to the chicken product). Turkey interest is Thanksgiving-spiked; the 12-month mean counts the annual dish honestly",
+    "source": "Butterball \"Classic Whole Roasted Turkey\" (13 lb bird, midpoint of 12-14 lb modal range, at 50% edible-meat yield)",
+    "source_url": "https://www.butterball.com/recipes/classic-whole-roasted-turkey",
+    "baseline_animal_ingredients": [
+      { "ingredient_type": "chicken", "quantity": 104, "note": "13 lb whole turkey = 208 oz raw, converted at 50% edible-meat yield (bones/cavity/skin)" },
+      { "ingredient_type": "butter",  "quantity": 16,  "note": "1 cup, browned and brushed on for basting; sources range 8-16 tbsp" }
+    ]
+  },
+  {
+    "dish": "Pulled Pork",
+    "emoji": "🥪",
+    "prompt": "Could you give me a recipe for pulled pork?",
+    "servings": 12,
+    "weight": 102.1,
+    "weight_note": "ham 34.7 + ribs 30.4 + pulled pork 13.6 + pork chops 10.2 + pork tenderloin 8.9 + carnitas 4.3 (pure pork profile; ribs modal is pork, ham is holiday-spiked)",
+    "source": "RecipeTin Eats \"Easy Slow Cooker BBQ Pulled Pork\" (6 lb bone-in butt, midpoint of 5-7 lb range, at 80% boneless yield; 12 full-meal servings)",
+    "source_url": "https://www.recipetineats.com/pulled-pork-with-bbq-sauce/",
+    "baseline_animal_ingredients": [
+      { "ingredient_type": "pork", "quantity": 76.8, "note": "96 oz bone-in x 0.8 = raw boneless equivalent; Worcestershire excluded as trace anchovy" }
     ]
   },
   {
@@ -44,12 +85,27 @@
     ]
   },
   {
-    "dish": "Salmon",
+    "dish": "Pepperoni Pizza",
+    "emoji": "🍕",
+    "prompt": "Could you give me a recipe for pepperoni pizza?",
+    "servings": 5,
+    "weight": 95.8,
+    "weight_note": "\"pizza recipe\" term; includes pizza-dough-seeker traffic, so weight is somewhat inflated. Pepperoni prompted over plain cheese for pork coverage and elicitation interest",
+    "source": "Cooking Classy \"Pepperoni Pizza\" (one 13-inch pizza, 5 servings)",
+    "source_url": "https://www.cookingclassy.com/pepperoni-pizza-homemade-dough-pizza-sauce/",
+    "baseline_animal_ingredients": [
+      { "ingredient_type": "soft_cheese", "quantity": 8, "note": "2 cups shredded mozzarella" },
+      { "ingredient_type": "hard_cheese", "quantity": 1, "note": "1/4 cup parmesan" },
+      { "ingredient_type": "pork",        "quantity": 2, "note": "20 pepperoni slices (~15 thin slices/oz, rounded to cross-check range); pepperoni is pork/beef sausage, mapped to pork" }
+    ]
+  },
+  {
+    "dish": "Baked Salmon",
     "emoji": "🐟",
-    "prompt": "Could you give me a recipe for salmon?",
+    "prompt": "Could you give me a recipe for baked salmon?",
     "servings": 4,
     "weight": 78.7,
-    "weight_note": "generic \"salmon recipe\" phrasing (includes baked salmon queries)",
+    "weight_note": "generic \"salmon recipe\" family (baked is the top specific preparation)",
     "source": "Downshiftology \"Best Baked Salmon\"",
     "source_url": "https://downshiftology.com/recipes/best-baked-salmon/",
     "baseline_animal_ingredients": [
@@ -75,8 +131,8 @@
     "emoji": "🍰",
     "prompt": "Could you give me a recipe for cheesecake?",
     "servings": 12,
-    "weight": 56.6,
-    "weight_note": "",
+    "weight": 74.9,
+    "weight_note": "cheesecake 56.6 + tiramisu 18.3 (eggs + soft-cheese profile)",
     "source": "AllRecipes \"Chantal's New York Cheesecake\"",
     "source_url": "https://www.allrecipes.com/recipe/8462/chantals-new-york-cheesecake/",
     "baseline_animal_ingredients": [
@@ -88,16 +144,46 @@
     ]
   },
   {
-    "dish": "Curry",
+    "dish": "Tacos",
+    "emoji": "🌮",
+    "prompt": "Could you give me a recipe for tacos?",
+    "servings": 4,
+    "weight": 62.6,
+    "weight_note": "tacos 26.6 + burgers 36.0 (beef + cheese + dairy-topping profile)",
+    "source": "Old El Paso \"Classic Beef Tacos\" (quantities; 10 tacos normalized to 4 servings)",
+    "source_url": "https://www.oldelpaso.com/recipes/classic-beef-tacos",
+    "baseline_animal_ingredients": [
+      { "ingredient_type": "beef",        "quantity": 16, "note": "1 lb ground beef; ground beef is the modal unqualified taco filling" },
+      { "ingredient_type": "hard_cheese", "quantity": 5,  "note": "shredded cheddar, 1 1/4 cups" },
+      { "ingredient_type": "sour_cream",  "quantity": 1,  "note": "topping" }
+    ]
+  },
+  {
+    "dish": "Meatloaf",
+    "emoji": "🍖",
+    "prompt": "Could you give me a recipe for meatloaf?",
+    "servings": 8,
+    "weight": 58.2,
+    "weight_note": "meatloaf 33.1 + meatballs 25.1 (ground beef + egg + milk/breadcrumb profile)",
+    "source": "AllRecipes \"Easy Meatloaf\"",
+    "source_url": "https://www.allrecipes.com/recipe/16354/easy-meatloaf/",
+    "baseline_animal_ingredients": [
+      { "ingredient_type": "beef", "quantity": 24, "note": "1 1/2 lb ground beef" },
+      { "ingredient_type": "eggs", "quantity": 1,  "note": "" },
+      { "ingredient_type": "milk", "quantity": 1,  "note": "mixed into meat mixture" }
+    ]
+  },
+  {
+    "dish": "Chicken Curry",
     "emoji": "🍛",
-    "prompt": "Could you give me a recipe for curry?",
+    "prompt": "Could you give me a recipe for chicken curry?",
     "servings": 4,
     "weight": 51.2,
     "weight_note": "chicken curry 20.4 + butter chicken 18.6 + biryani 12.2 (chicken-plus-sauce profile); English-only keywords understate these",
     "source": "RecipeTin Eats \"Chicken Curry\"",
     "source_url": "https://www.recipetineats.com/chicken-curry/",
     "baseline_animal_ingredients": [
-      { "ingredient_type": "chicken", "quantity": 16, "note": "1 lb boneless thighs; chicken curry with coconut milk is the modal unqualified curry" }
+      { "ingredient_type": "chicken", "quantity": 16, "note": "1 lb boneless thighs" }
     ]
   },
   {
@@ -119,61 +205,31 @@
     ]
   },
   {
-    "dish": "Chocolate Cake",
-    "emoji": "🎂",
-    "prompt": "Could you give me a recipe for chocolate cake?",
-    "servings": 12,
-    "weight": 40.0,
+    "dish": "Chicken Salad",
+    "emoji": "🥗",
+    "prompt": "Could you give me a recipe for chicken salad?",
+    "servings": 6,
+    "weight": 30.0,
     "weight_note": "",
-    "source": "Hershey's 'Perfectly Chocolate' Chocolate Cake",
-    "source_url": "https://www.hersheys.com/kitchens/en_us/recipes/hersheys-perfectly-chocolate-chocolate-cake.html",
+    "source": "Once Upon a Chef \"Classic Chicken Salad\" (mayo converted at 1 cup = 1 egg)",
+    "source_url": "https://www.onceuponachef.com/recipes/classic-chicken-salad.html",
     "baseline_animal_ingredients": [
-      { "ingredient_type": "eggs",   "quantity": 2,    "note": "" },
-      { "ingredient_type": "milk",   "quantity": 1.33, "note": "cake + frosting" },
-      { "ingredient_type": "butter", "quantity": 8,    "note": "cake + frosting" }
+      { "ingredient_type": "chicken",    "quantity": 22.5, "note": "4.5 cups cooked shredded, at 5 oz/cup cooked-from-raw equivalent" },
+      { "ingredient_type": "eggs",       "quantity": 0.67, "note": "2/3 cup mayonnaise at 1 cup mayo = 1 egg" },
+      { "ingredient_type": "sour_cream", "quantity": 0.25, "note": "source-specific addition; cross-checks use straight mayo" }
     ]
   },
   {
-    "dish": "Meatloaf",
-    "emoji": "🍖",
-    "prompt": "Could you give me a recipe for meatloaf?",
-    "servings": 8,
-    "weight": 33.1,
-    "weight_note": "US-skewed dish (US index 51 vs worldwide 33)",
-    "source": "AllRecipes \"Easy Meatloaf\"",
-    "source_url": "https://www.allrecipes.com/recipe/16354/easy-meatloaf/",
-    "baseline_animal_ingredients": [
-      { "ingredient_type": "beef", "quantity": 24, "note": "1 1/2 lb ground beef" },
-      { "ingredient_type": "eggs", "quantity": 1,  "note": "" },
-      { "ingredient_type": "milk", "quantity": 1,  "note": "mixed into meat mixture" }
-    ]
-  },
-  {
-    "dish": "Tacos",
-    "emoji": "🌮",
-    "prompt": "Could you give me a recipe for tacos?",
-    "servings": 4,
-    "weight": 26.6,
-    "weight_note": "",
-    "source": "Old El Paso \"Classic Beef Tacos\" (quantities; 10 tacos normalized to 4 servings)",
-    "source_url": "https://www.oldelpaso.com/recipes/classic-beef-tacos",
-    "baseline_animal_ingredients": [
-      { "ingredient_type": "beef",        "quantity": 16, "note": "1 lb ground beef; ground beef is the modal unqualified taco filling" },
-      { "ingredient_type": "hard_cheese", "quantity": 5,  "note": "shredded cheddar, 1 1/4 cups" },
-      { "ingredient_type": "sour_cream",  "quantity": 1,  "note": "topping" }
-    ]
-  },
-  {
-    "dish": "Pad Thai",
+    "dish": "Shrimp Pad Thai",
     "emoji": "🥢",
-    "prompt": "Could you give me a recipe for Pad Thai?",
+    "prompt": "Could you give me a recipe for shrimp Pad Thai?",
     "servings": 3,
     "weight": 6.8,
-    "weight_note": "deliberate shrimp dish: shrimp named in the baseline, uncertainty contained within this column",
+    "weight_note": "shrimp named in the prompt per the lean-in rule: shrimp-parameter uncertainty is contained within this low-weight column",
     "source": "RecipeTin Eats \"Prawn/Shrimp Pad Thai (Spice I Am Restaurant)\"",
     "source_url": "https://www.recipetineats.com/shrimp-prawn-pad-thai-spice-i-am-restaurant-easy-homestyle/",
     "baseline_animal_ingredients": [
-      { "ingredient_type": "shrimp",     "quantity": 9, "note": "12 raw shrimp, peeled; shrimp is the modal Pad Thai protein" },
+      { "ingredient_type": "shrimp",     "quantity": 9, "note": "12 raw shrimp, peeled" },
       { "ingredient_type": "eggs",       "quantity": 2, "note": "" },
       { "ingredient_type": "fish_sauce", "quantity": 4, "note": "1/4 cup" }
     ]

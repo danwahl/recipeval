@@ -107,7 +107,7 @@ def test_normalize_servings():
 
 
 def test_baseline_curry():
-    result = compute_baseline("Curry")
+    result = compute_baseline("Chicken Curry")
     days = result.total_suffering_days
     assert 1.5 < days < 3.0  # 1 lb chicken ≈ 2.2 days expected
 
@@ -133,7 +133,7 @@ def test_data_files_load():
     assert len(SPECIES) == 6
     assert len(PRODUCTS) == 8
     assert len(INGREDIENTS) == 16
-    assert len(DISHES) == 12
+    assert len(DISHES) == 16
 
 
 def test_ingredient_product_references():
