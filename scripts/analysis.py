@@ -34,8 +34,8 @@ def collect_results(log_dir: str) -> pd.DataFrame:
     Suffering is recomputed from each score's raw extracted ingredients using
     the current welfare parameters, so old logs stay comparable after data
     changes without re-running the eval. Samples whose extraction failed
-    (NOANSWER) are excluded and counted on stderr; samples for dishes no
-    longer in the benchmark are silently dropped.
+    (NOANSWER) are excluded and counted on stderr; samples for dishes not in
+    the benchmark, or whose baseline is not positive, are silently dropped.
     """
     baselines = {
         d["dish"]: compute_baseline(d["dish"]).suffering_days_per_serving
@@ -207,7 +207,9 @@ def make_chart(df: pd.DataFrame, output_path: str) -> None:
 
     fig, ax = plt.subplots(figsize=(10, max(4, len(model_avgs) * 0.6 + 1)))
 
-    colors = ["#4CAF50" if v <= 1.0 else "#FF5722" for v in model_avgs.values]
+    # Same thresholds as color_dot
+    palette = {"🟢": "#4CAF50", "🟡": "#FFC107", "🟠": "#FF9800", "🔴": "#FF5722"}
+    colors = [palette[color_dot(v)] for v in model_avgs.values]
     bars = ax.barh(range(len(model_avgs)), model_avgs.values, color=colors)
     ax.set_yticks(range(len(model_avgs)))
     ax.set_yticklabels(model_avgs.index)

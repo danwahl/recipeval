@@ -100,12 +100,14 @@ def extract_recipe(
         except ValueError:
             pass
 
+        if baseline_comparison is None:
+            return Score(
+                value=NOANSWER,
+                explanation=f"No positive baseline for dish {dish_name!r}",
+            )
+
         return Score(
-            value=(
-                baseline_comparison
-                if baseline_comparison is not None
-                else cost.suffering_days_per_serving
-            ),
+            value=baseline_comparison,
             answer=json.dumps(ingredients),
             metadata={
                 "dish": dish_name,

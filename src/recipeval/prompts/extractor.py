@@ -24,8 +24,10 @@ Unit conversion reference:
 - 1 cup shredded soft cheese (mozzarella, ricotta, etc.) ≈ 4 oz
 - 1 lb = 16 oz; 100 g ≈ 3.5 oz; 1 oz ≈ 28 g
 - 1 cup milk/cream ≈ 240 mL
-- 1 slice bacon ≈ 0.5 oz cooked
-- 1 average chicken breast ≈ 6 oz boneless
+- 1 slice bacon ≈ 0.5 oz cooked; ~15 thin pepperoni or deli slices ≈ 1 oz
+- 1 average chicken breast ≈ 6 oz boneless; 1 cup diced or shredded cooked chicken ≈ 5 oz
+- Bone-in cuts (shoulder, ribs, thighs): count ~80% of the bone-in weight as meat
+- 1 cup mayonnaise ≈ 1 egg (count mayo as eggs)
 - If recipe uses only egg yolks or whites, still count each as 1 whole egg
 - Bonito flakes (katsuobushi), tuna, salmon, cod, mackerel, and other large fish → fish_large (measured in oz)
 - Anchovies and sardines → anchovies (measured in fillet)

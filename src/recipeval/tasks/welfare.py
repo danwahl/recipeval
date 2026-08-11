@@ -12,7 +12,7 @@ from recipeval.scorers.extractor import extract_recipe
 
 @task
 def welfare(
-    epochs: int = 10,
+    epochs: int = 5,
     max_connections: int = 5,
     grader_model: str = "openrouter/google/gemini-3-flash-preview",
 ) -> Task:

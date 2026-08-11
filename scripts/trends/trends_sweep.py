@@ -142,7 +142,7 @@ json.dump(
         "index_anchor100": out,
         "failed": failed,
     },
-    open("/home/dan/.claude/jobs/8a82ed5d/tmp/trends_sweep.json", "w"),
+    open("trends_sweep.json", "w"),
     indent=1,
 )
 for k, v in sorted(out.items(), key=lambda x: -x[1]):

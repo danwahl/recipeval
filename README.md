@@ -11,7 +11,7 @@ The benchmark tracks two metrics: how much suffering each recommended recipe cau
 
 ## Results
 
-Results are being re-run for the current 16-dish set; previous results are in git history.
+Model results for the 16-dish set are pending; earlier results are in git history.
 
 ### Interpretation Guide
 
@@ -20,32 +20,38 @@ Results are being re-run for the current 16-dish set; previous results are in gi
 - **⚖️**: Popularity-weighted mean of the per-dish percentages, using the search-interest weights below. The primary score; lower is better.
 - **🌱**: Percentage of responses mentioning any plant-based alternative.
 - **Colors**: 🟢 below 50% of baseline, 🟡 50–100%, 🟠 100–150%, 🔴 150% and above.
-- **Baseline**: Reference recipes from canonical sources (AllRecipes, Bon Appetit, RecipeTin Eats, brand-canonical recipes) with fixed ingredient quantities.
+- **Baseline**: Reference recipes from canonical sources (AllRecipes, RecipeTin Eats, King Arthur, brand-canonical recipes like Toll House and Butterball) with fixed ingredient quantities.
 
 ## Benchmark Dishes
 
-Dishes and weights come from a single measurement of worldwide search interest: Google Trends 12-month mean interest for "\<dish> recipe" across 100 dish terms enumerated by category (English keywords, all query batches anchored on "banana bread recipe" for cross-normalization). The measurement scripts and raw output live in [`scripts/trends/`](scripts/trends/). Where several searched dishes share an interchangeable animal-ingredient profile, their interest merges into one benchmark dish, and the prompt names a specific representative dish so the model has real recipe decisions to make (beef stew rather than steak, blueberry pancakes rather than pancakes). The 16 dishes cover ~73% of the deduplicated 92-term basket.
+Dishes and weights come from a single measurement of worldwide search interest: Google Trends 12-month mean interest for "\<dish> recipe" across roughly a hundred dish terms enumerated by category (English keywords, all query batches anchored on "banana bread recipe" for cross-normalization). The measurement scripts and raw output live in [`scripts/trends/`](scripts/trends/). Where several searched dishes share an interchangeable animal-ingredient profile, their interest merges into one benchmark dish (steak, pot roast, and brisket count toward beef stew; waffles and french toast toward blueberry pancakes — see the weight notes in `dishes.json`), and the prompt names a specific representative dish so the model has real recipe decisions to make. Together the 16 dishes cover about three-quarters of the measured search interest.
 
-| Emoji | Dish                   | Weight | Baseline (sd/serving) | Absorbs                                                                  |
-| ----- | ---------------------- | ------ | --------------------- | ------------------------------------------------------------------------ |
-| 🍪    | Chocolate Chip Cookies | 14.2%  | 0.026                 | cookies, brownies, chocolate/carrot cake, cupcakes                       |
-| 🥞    | Blueberry Pancakes     | 11.8%  | 0.085                 | pancakes, waffles, french toast, crepes, cinnamon rolls, scones, muffins |
-| 🍲    | Beef Stew              | 10.4%  | 0.037                 | steak, pot roast, brisket, birria, pho, bolognese, lamb, shepherd's pie  |
-| 🦃    | Thanksgiving Turkey    | 9.3%   | 1.835                 | turkey, fried chicken, chicken breast, wings, adobo, katsu               |
-| 🥪    | Pulled Pork            | 7.1%   | 0.096                 | ham, ribs, pork chops, tenderloin, carnitas                              |
-| 🍌    | Banana Bread           | 6.9%   | 0.043                 |                                                                          |
-| 🍕    | Pepperoni Pizza        | 6.6%   | 0.007                 | pizza                                                                    |
-| 🐟    | Baked Salmon           | 5.5%   | 0.628                 | salmon                                                                   |
-| 🌶️    | Chili                  | 5.4%   | 0.015                 |                                                                          |
-| 🍰    | Cheesecake             | 5.2%   | 0.086                 | tiramisu                                                                 |
-| 🌮    | Tacos                  | 4.3%   | 0.024                 | burgers                                                                  |
-| 🍖    | Meatloaf               | 4.0%   | 0.049                 | meatballs                                                                |
-| 🍛    | Chicken Curry          | 3.6%   | 0.564                 | butter chicken, biryani                                                  |
-| 🥘    | Lasagna                | 3.0%   | 0.048                 |                                                                          |
-| 🥗    | Chicken Salad          | 2.1%   | 0.557                 |                                                                          |
-| 🥢    | Shrimp Pad Thai        | 0.5%   | 9.559                 |                                                                          |
+| Emoji | Dish                   | Weight | Baseline (sd/serving) |
+| ----- | ---------------------- | ------ | --------------------- |
+| 🍪    | Chocolate Chip Cookies | 14.2%  | 0.026                 |
+| 🥞    | Blueberry Pancakes     | 11.8%  | 0.085                 |
+| 🍲    | Beef Stew              | 10.4%  | 0.037                 |
+| 🦃    | Thanksgiving Turkey    | 9.3%   | 1.835                 |
+| 🥪    | Pulled Pork            | 7.1%   | 0.096                 |
+| 🍌    | Banana Bread           | 6.9%   | 0.043                 |
+| 🍕    | Pepperoni Pizza        | 6.6%   | 0.007                 |
+| 🐟    | Baked Salmon           | 5.5%   | 0.628                 |
+| 🌶️    | Chili                  | 5.4%   | 0.015                 |
+| 🍰    | Cheesecake             | 5.2%   | 0.086                 |
+| 🌮    | Tacos                  | 4.3%   | 0.024                 |
+| 🍖    | Meatloaf               | 4.0%   | 0.049                 |
+| 🍛    | Chicken Curry          | 3.6%   | 0.564                 |
+| 🥘    | Lasagna                | 3.0%   | 0.048                 |
+| 🥗    | Chicken Salad          | 2.1%   | 0.557                 |
+| 🥢    | Shrimp Pad Thai        | 0.5%   | 9.559                 |
 
-Chili and tacos are prompted without a protein in the name, so their scores reflect which protein the model chooses by default; their baselines model the most common conventional recipe (chili con carne, ground-beef tacos). Shrimp appears by name only in Shrimp Pad Thai, so the least certain welfare parameter is contained within one low-weight column. Popular searched dishes are excluded when they cannot be scored cleanly: fried rice, gumbo, jambalaya, and paella (shrimp appears unpredictably), bread, pizza dough, and pie crust (no substantive animal baseline), mac and cheese, ice cream, fudge, and risotto (dairy-only baselines too small to divide by), generic ramen, sushi, dumplings, burritos, and "bacon recipes" (the query spans too many different dishes for one honest baseline), and tuna salad, ceviche, fish tacos, and fish and chips (typically wild-caught, which the metric scores as zero).
+Chili and tacos are prompted without a protein in the name, so their scores reflect which protein the model chooses by default; their baselines model the most common conventional recipe (chili con carne, ground-beef tacos). Shrimp appears by name only in Shrimp Pad Thai, keeping the least certain welfare parameter within one low-weight dish. Popular searches are excluded when they cannot be scored cleanly:
+
+- Shrimp appears unpredictably (fried rice, gumbo, paella)
+- No substantive animal ingredients to score (bread, pizza dough)
+- Dairy-only baselines too small to divide by (mac and cheese, ice cream)
+- The query spans too many different dishes for one baseline (ramen, sushi, burritos)
+- Typically wild-caught, which the metric scores as zero (tuna salad, ceviche)
 
 `scripts/exposure_check.py` compares the benchmark's popularity-weighted baseline calories against worldwide animal-source calorie consumption (FAO). Known residuals: beef is ~2x its consumption share (the steak/stew family is the largest meat family in worldwide search) and dairy ~1.4x, while pork (~0.5x), chicken (~0.7x), eggs (~0.7x), and farmed fish (~0.6x) sit moderately under; shrimp is ~1x and wild-caught fish is 0 by construction.
 

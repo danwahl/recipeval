@@ -48,7 +48,7 @@
     "prompt": "Could you give me a recipe for a Thanksgiving turkey?",
     "servings": 8,
     "weight": 134.6,
-    "weight_note": "turkey 67.4 + chicken breast 27.5 + fried chicken 23.4 + chicken wings 11.0 + chicken adobo 3.5 + chicken katsu 1.8 (pure poultry profile; turkey maps to the chicken product). Turkey interest is Thanksgiving-spiked; the 12-month mean counts the annual dish honestly",
+    "weight_note": "turkey 67.4 + chicken breast 27.5 + fried chicken 23.4 + chicken wings 11.0 + chicken adobo 3.5 + chicken katsu 1.8 (pure poultry profile; turkey maps to the chicken product). Turkey interest spikes each November; the 12-month mean includes that spike",
     "source": "Butterball \"Classic Whole Roasted Turkey\" (13 lb bird, midpoint of 12-14 lb modal range, at 50% edible-meat yield)",
     "source_url": "https://www.butterball.com/recipes/classic-whole-roasted-turkey",
     "baseline_animal_ingredients": [
@@ -225,7 +225,7 @@
     "prompt": "Could you give me a recipe for shrimp Pad Thai?",
     "servings": 3,
     "weight": 6.8,
-    "weight_note": "shrimp named in the prompt per the lean-in rule: shrimp-parameter uncertainty is contained within this low-weight column",
+    "weight_note": "shrimp named in the prompt; the least certain welfare parameter stays within this low-weight dish",
     "source": "RecipeTin Eats \"Prawn/Shrimp Pad Thai (Spice I Am Restaurant)\"",
     "source_url": "https://www.recipetineats.com/shrimp-prawn-pad-thai-spice-i-am-restaurant-easy-homestyle/",
     "baseline_animal_ingredients": [
