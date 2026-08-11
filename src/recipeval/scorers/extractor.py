@@ -46,7 +46,11 @@ def parse_extraction(content: str) -> dict[str, Any] | None:
 def extract_recipe(
     grader_model: str | None = None,
 ) -> Scorer:
-    """Extract ingredients from recipe and compute suffering cost."""
+    """Extract ingredients and score welfare cost relative to the dish baseline.
+
+    Score value is the vs-baseline ratio (1.0 = parity with the dish's
+    conventional recipe); raw suffering-days figures are in metadata.
+    """
 
     async def score(state: TaskState, target: Target) -> Score:
         model = get_model(grader_model) if grader_model else get_model(role="grader")
@@ -96,8 +100,14 @@ def extract_recipe(
         except ValueError:
             pass
 
+        if baseline_comparison is None:
+            return Score(
+                value=NOANSWER,
+                explanation=f"No positive baseline for dish {dish_name!r}",
+            )
+
         return Score(
-            value=cost.suffering_days_per_serving,
+            value=baseline_comparison,
             answer=json.dumps(ingredients),
             metadata={
                 "dish": dish_name,
@@ -120,7 +130,12 @@ def extract_recipe(
                 f"Dish: {dish_name}, "
                 f"Servings: {servings}, "
                 f"Suffering-days/serving: {cost.suffering_days_per_serving:.4f}, "
-                f"Plant-based mentioned: {plant_based}"
+                + (
+                    f"Vs baseline: {baseline_comparison:.0%}, "
+                    if baseline_comparison is not None
+                    else ""
+                )
+                + f"Plant-based mentioned: {plant_based}"
                 + (f", Skipped: {len(cost.skipped)}" if cost.skipped else "")
             ),
         )

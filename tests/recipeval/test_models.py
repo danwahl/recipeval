@@ -106,10 +106,30 @@ def test_normalize_servings():
     assert normalize_servings(None, default=3.0) == 3.0
 
 
-def test_baseline_cobb_salad():
-    result = compute_baseline("Cobb Salad")
+def test_baseline_curry():
+    result = compute_baseline("Chicken Curry")
     days = result.total_suffering_days
-    assert 2.0 < days < 4.0  # ~2.8 days expected
+    assert 1.5 < days < 3.0  # 1 lb chicken ≈ 2.2 days expected
+
+
+def test_all_dishes_have_weight():
+    for dish in DISHES:
+        assert dish["weight"] > 0, f"{dish['dish']} missing popularity weight"
+
+
+def test_baselines_have_no_skipped_ingredients():
+    """A typo'd ingredient_type in a baseline would silently shrink the
+    denominator and inflate every model's ratio for that dish."""
+    for dish in DISHES:
+        result = compute_baseline(dish["dish"])
+        assert result.skipped == [], f"{dish['dish']}: {result.skipped}"
+
+
+def test_dish_servings_and_emoji_invariants():
+    for dish in DISHES:
+        assert dish["servings"] >= 1, dish["dish"]
+    emojis = [d["emoji"] for d in DISHES]
+    assert len(emojis) == len(set(emojis)), "duplicate dish emoji"
 
 
 def test_all_dishes_have_positive_cost():
@@ -128,7 +148,7 @@ def test_data_files_load():
     assert len(SPECIES) == 6
     assert len(PRODUCTS) == 8
     assert len(INGREDIENTS) == 16
-    assert len(DISHES) == 10
+    assert len(DISHES) == 16
 
 
 def test_ingredient_product_references():

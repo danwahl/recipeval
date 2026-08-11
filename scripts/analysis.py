@@ -9,6 +9,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import pandas as pd
 from inspect_ai.log import read_eval_log
+from matplotlib.ticker import PercentFormatter
 from tabulate import tabulate
 
 from recipeval.models.welfare import (
@@ -33,8 +34,13 @@ def collect_results(log_dir: str) -> pd.DataFrame:
     Suffering is recomputed from each score's raw extracted ingredients using
     the current welfare parameters, so old logs stay comparable after data
     changes without re-running the eval. Samples whose extraction failed
-    (NOANSWER) are excluded and counted on stderr.
+    (NOANSWER) are excluded and counted on stderr; samples for dishes not in
+    the benchmark, or whose baseline is not positive, are silently dropped.
     """
+    baselines = {
+        d["dish"]: compute_baseline(d["dish"]).suffering_days_per_serving
+        for d in DISHES
+    }
     log_path = Path(log_dir)
     rows = []
     failures: dict[str, int] = {}
@@ -69,6 +75,8 @@ def collect_results(log_dir: str) -> pd.DataFrame:
                         continue
 
                     dish = metadata.get("dish", "")
+                    if dish not in baselines or baselines[dish] <= 0:
+                        continue
                     default_servings = next(
                         (d["servings"] for d in DISHES if d["dish"] == dish), 1
                     )
@@ -88,6 +96,9 @@ def collect_results(log_dir: str) -> pd.DataFrame:
                             if sample.metadata
                             else "",
                             "suffering_days": cost.suffering_days_per_serving,
+                            "vs_baseline": (
+                                cost.suffering_days_per_serving / baselines[dish]
+                            ),
                             "plant_based_mentioned": (
                                 metadata.get("plant_based_mentioned") is True
                             ),
@@ -103,76 +114,70 @@ def collect_results(log_dir: str) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+def color_dot(ratio: float) -> str:
+    """Traffic-light indicator for a vs-baseline ratio (1.0 = baseline parity)."""
+    if ratio < 0.5:
+        return "🟢"
+    if ratio < 1.0:
+        return "🟡"
+    if ratio < 1.5:
+        return "🟠"
+    return "🔴"
+
+
+def weighted_mean(pairs: list[tuple[float, float]]) -> float:
+    """Weighted mean of (value, weight) pairs, renormalized over those present."""
+    total = sum(w for _, w in pairs)
+    return sum(v * w for v, w in pairs) / total
+
+
 def build_summary_table(df: pd.DataFrame) -> str:
-    """Build a markdown summary table from results."""
+    """Build a markdown summary table of vs-baseline percentages.
+
+    Each dish cell is the model's average suffering as a percentage of that
+    dish's baseline recipe; ⚖️ is the popularity-weighted mean across dishes
+    (worldwide search-interest weights from dishes.json), renormalized over
+    the dishes the model has results for.
+    """
     if df.empty:
         return "No results found."
 
-    # Get dish info for columns
     dish_info = {d["dish"]: d["emoji"] for d in DISHES}
     dish_order = [d["dish"] for d in DISHES]
+    dish_weights = {d["dish"]: float(d["weight"]) for d in DISHES}
 
-    models = sorted(df["model"].unique())
-
-    # Build baseline row
-    baseline_row = {"🤖": "*Baseline Recipes*"}
-    baseline_values = []
-    for dish_name in dish_order:
-        try:
-            std = compute_baseline(dish_name)
-            days = std.suffering_days_per_serving
-            baseline_values.append(days)
-            emoji = dish_info.get(dish_name, "")
-            baseline_row[f"{emoji}"] = f"{days:.2f}"
-        except ValueError:
-            baseline_values.append(0)
-            emoji = dish_info.get(dish_name, "")
-            baseline_row[f"{emoji}"] = "—"
-
-    baseline_row["**⚖️**"] = f"**{sum(baseline_values) / len(baseline_values):.2f}**"
-    baseline_row["🌱"] = "—"
+    ratios = df.groupby(["model", "dish"])["vs_baseline"].mean()
+    plant = df.groupby("model")["plant_based_mentioned"].mean()
 
     table_rows = []
-
-    for model in models:
-        mdf = df[df["model"] == model]
+    for model in sorted(df["model"].unique()):
         row = {"🤖": model}
 
         dish_avgs = []
         for dish_name in dish_order:
-            ddf = mdf[mdf["dish"] == dish_name]
             emoji = dish_info.get(dish_name, "")
-            if not ddf.empty:
-                avg_days = ddf["suffering_days"].mean()
-                dish_avgs.append(avg_days)
-                row[f"{emoji}"] = f"{avg_days:.2f}"
+            if (model, dish_name) in ratios.index:
+                ratio = ratios[(model, dish_name)]
+                dish_avgs.append((ratio, dish_weights[dish_name]))
+                row[emoji] = f"{color_dot(ratio)} {ratio:.0%}"
             else:
-                row[f"{emoji}"] = "—"
+                row[emoji] = "—"
 
         if dish_avgs:
-            row["**⚖️**"] = f"**{sum(dish_avgs) / len(dish_avgs):.2f}**"
+            avg = weighted_mean(dish_avgs)
+            row["**⚖️**"] = f"{color_dot(avg)} **{avg:.0%}**"
+            row["_sort"] = avg
         else:
             row["**⚖️**"] = "—"
+            row["_sort"] = float("inf")
 
-        pct_plant = mdf["plant_based_mentioned"].mean() * 100
-        row["🌱"] = f"{pct_plant:.0f}%"
-
+        row["🌱"] = f"{plant[model]:.0%}"
         table_rows.append(row)
 
-    # Sort by avg suffering-days/serving (lower is better)
-    table_rows.append(baseline_row)
-    table_rows.sort(
-        key=lambda r: (
-            float(r["**⚖️**"].strip("*")) if r["**⚖️**"] != "—" else float("inf")
-        )
-    )
+    # Sort by avg vs-baseline percentage (lower is better)
+    table_rows.sort(key=lambda r: r["_sort"])
 
-    # Build column order
-    cols = ["🤖", "**⚖️**", "🌱"]
-    for dish_name in dish_order:
-        emoji = dish_info.get(dish_name, "")
-        cols.append(f"{emoji}")
-
+    cols = ["🤖", "**⚖️**", "🌱"] + [dish_info[d] for d in dish_order]
     table_data = [{c: r.get(c, "—") for c in cols} for r in table_rows]
 
     return tabulate(
@@ -181,52 +186,54 @@ def build_summary_table(df: pd.DataFrame) -> str:
 
 
 def make_chart(df: pd.DataFrame, output_path: str) -> None:
-    """Create a bar chart of avg suffering-days/serving by model."""
+    """Create a bar chart of avg vs-baseline percentage by model."""
     if df.empty:
         return
 
-    # Per-model average of per-dish means (same aggregation as the table)
+    # Per-model weighted average of per-dish means (same aggregation as the table)
+    dish_weights = {d["dish"]: float(d["weight"]) for d in DISHES}
+    ratios = df.groupby(["model", "dish"])["vs_baseline"].mean()
     model_avgs = (
-        df.groupby(["model", "dish"])["suffering_days"]
-        .mean()
+        ratios.reset_index()
         .groupby("model")
-        .mean()
+        .apply(
+            lambda g: weighted_mean(
+                [(r, dish_weights[d]) for d, r in zip(g["dish"], g["vs_baseline"])]
+            ),
+            include_groups=False,
+        )
         .sort_values(ascending=False)
     )
 
-    # Add baseline reference
-    baseline_values = []
-    for dish in DISHES:
-        std = compute_baseline(dish["dish"])
-        baseline_values.append(std.suffering_days_per_serving)
-    baseline_avg = sum(baseline_values) / len(baseline_values)
-
     fig, ax = plt.subplots(figsize=(10, max(4, len(model_avgs) * 0.6 + 1)))
 
-    colors = ["#4CAF50" if v <= baseline_avg else "#FF5722" for v in model_avgs.values]
+    # Same thresholds as color_dot
+    palette = {"🟢": "#4CAF50", "🟡": "#FFC107", "🟠": "#FF9800", "🔴": "#FF5722"}
+    colors = [palette[color_dot(v)] for v in model_avgs.values]
     bars = ax.barh(range(len(model_avgs)), model_avgs.values, color=colors)
     ax.set_yticks(range(len(model_avgs)))
     ax.set_yticklabels(model_avgs.index)
 
     # Add baseline line
     ax.axvline(
-        x=baseline_avg,
+        x=1.0,
         color="#666",
         linestyle="--",
         linewidth=1.5,
-        label=f"Baseline Recipes ({baseline_avg:.2f})",
+        label="Baseline Recipes (100%)",
     )
     ax.legend(loc="upper right")
 
-    ax.set_xlabel("Average Suffering-Days/Serving")
+    ax.xaxis.set_major_formatter(PercentFormatter(xmax=1.0))
+    ax.set_xlabel("Average Suffering vs Baseline Recipe")
     ax.set_title("RecipEval: Animal Welfare Cost by Model")
 
     # Add value labels
     for bar, val in zip(bars, model_avgs.values):
         ax.text(
-            val + 0.02,
+            val + 0.01,
             bar.get_y() + bar.get_height() / 2,
-            f"{val:.2f}",
+            f"{val:.0%}",
             va="center",
             fontsize=9,
         )
