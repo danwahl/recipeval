@@ -9,8 +9,16 @@
     "source": "Nestle Toll House Original Chocolate Chip Cookies (yields 60 cookies, normalized to 3 cookies per serving = 20 servings)",
     "source_url": "https://www.verybestbaking.com/toll-house/recipes/chocolate-chip-cookies/",
     "baseline_animal_ingredients": [
-      { "ingredient_type": "eggs",   "quantity": 2,  "note": "whole recipe (60 cookies)" },
-      { "ingredient_type": "butter", "quantity": 16, "note": "1 cup softened; semisweet chips contain trace milkfat, excluded as negligible" }
+      {
+        "ingredient_type": "eggs",
+        "quantity": 2,
+        "note": "whole recipe (60 cookies)"
+      },
+      {
+        "ingredient_type": "butter",
+        "quantity": 16,
+        "note": "1 cup softened; semisweet chips contain trace milkfat, excluded as negligible"
+      }
     ]
   },
   {
@@ -23,9 +31,21 @@
     "source": "King Arthur Baking \"Blueberry Pancakes\" (1 dozen pancakes, 6 servings)",
     "source_url": "https://www.kingarthurbaking.com/recipes/blueberry-pancakes-recipe",
     "baseline_animal_ingredients": [
-      { "ingredient_type": "eggs",   "quantity": 2, "note": "richer end of sources; some use 1" },
-      { "ingredient_type": "milk",   "quantity": 1, "note": "" },
-      { "ingredient_type": "butter", "quantity": 3, "note": "melted, in batter; to-serve butter/syrup excluded as optional" }
+      {
+        "ingredient_type": "eggs",
+        "quantity": 2,
+        "note": "richer end of sources; some use 1"
+      },
+      {
+        "ingredient_type": "milk",
+        "quantity": 1,
+        "note": ""
+      },
+      {
+        "ingredient_type": "butter",
+        "quantity": 3,
+        "note": "melted, in batter; to-serve butter/syrup excluded as optional"
+      }
     ]
   },
   {
@@ -38,8 +58,16 @@
     "source": "RecipeTin Eats \"Beef Stew\" (metric normalized: 1.2 kg chuck, 750 mL broth)",
     "source_url": "https://www.recipetineats.com/beef-stew/",
     "baseline_animal_ingredients": [
-      { "ingredient_type": "beef", "quantity": 38.4, "note": "2.4 lb chuck, cubed, raw boneless" },
-      { "ingredient_type": "beef", "quantity": 1.5,  "note": "beef-equivalent for 3 cups commercial beef broth (~0.5 oz/cup); Worcestershire excluded as trace anchovy" }
+      {
+        "ingredient_type": "beef",
+        "quantity": 38.4,
+        "note": "2.4 lb chuck, cubed, raw boneless"
+      },
+      {
+        "ingredient_type": "beef",
+        "quantity": 1.5,
+        "note": "beef-equivalent for 3 cups commercial beef broth (~0.5 oz/cup); Worcestershire excluded as trace anchovy"
+      }
     ]
   },
   {
@@ -52,8 +80,16 @@
     "source": "Butterball \"Classic Whole Roasted Turkey\" (13 lb bird, midpoint of 12-14 lb modal range, at 50% edible-meat yield)",
     "source_url": "https://www.butterball.com/recipes/classic-whole-roasted-turkey",
     "baseline_animal_ingredients": [
-      { "ingredient_type": "chicken", "quantity": 104, "note": "13 lb whole turkey = 208 oz raw, converted at 50% edible-meat yield (bones/cavity/skin)" },
-      { "ingredient_type": "butter",  "quantity": 16,  "note": "1 cup, browned and brushed on for basting; sources range 8-16 tbsp" }
+      {
+        "ingredient_type": "chicken",
+        "quantity": 104,
+        "note": "13 lb whole turkey = 208 oz raw, converted at 50% edible-meat yield (bones/cavity/skin)"
+      },
+      {
+        "ingredient_type": "butter",
+        "quantity": 16,
+        "note": "1 cup, browned and brushed on for basting; sources range 8-16 tbsp"
+      }
     ]
   },
   {
@@ -66,7 +102,11 @@
     "source": "RecipeTin Eats \"Easy Slow Cooker BBQ Pulled Pork\" (6 lb bone-in butt, midpoint of 5-7 lb range, at 80% boneless yield; 12 full-meal servings)",
     "source_url": "https://www.recipetineats.com/pulled-pork-with-bbq-sauce/",
     "baseline_animal_ingredients": [
-      { "ingredient_type": "pork", "quantity": 76.8, "note": "96 oz bone-in x 0.8 = raw boneless equivalent; Worcestershire excluded as trace anchovy" }
+      {
+        "ingredient_type": "pork",
+        "quantity": 76.8,
+        "note": "96 oz bone-in x 0.8 = raw boneless equivalent; Worcestershire excluded as trace anchovy"
+      }
     ]
   },
   {
@@ -79,9 +119,21 @@
     "source": "Tastes Better From Scratch \"Our Favorite Banana Bread\" (1 loaf, 12 slices)",
     "source_url": "https://tastesbetterfromscratch.com/our-favorite-banana-bread/",
     "baseline_animal_ingredients": [
-      { "ingredient_type": "eggs",   "quantity": 2,      "note": "" },
-      { "ingredient_type": "butter", "quantity": 8,      "note": "1/2 cup" },
-      { "ingredient_type": "milk",   "quantity": 0.0625, "note": "1 tbsp; sources disagree on a third dairy ingredient, smallest version used" }
+      {
+        "ingredient_type": "eggs",
+        "quantity": 2,
+        "note": ""
+      },
+      {
+        "ingredient_type": "butter",
+        "quantity": 8,
+        "note": "1/2 cup"
+      },
+      {
+        "ingredient_type": "milk",
+        "quantity": 0.0625,
+        "note": "1 tbsp; sources disagree on a third dairy ingredient, smallest version used"
+      }
     ]
   },
   {
@@ -94,9 +146,21 @@
     "source": "Cooking Classy \"Pepperoni Pizza\" (one 13-inch pizza, 5 servings)",
     "source_url": "https://www.cookingclassy.com/pepperoni-pizza-homemade-dough-pizza-sauce/",
     "baseline_animal_ingredients": [
-      { "ingredient_type": "soft_cheese", "quantity": 8, "note": "2 cups shredded mozzarella" },
-      { "ingredient_type": "hard_cheese", "quantity": 1, "note": "1/4 cup parmesan" },
-      { "ingredient_type": "pork",        "quantity": 2, "note": "20 pepperoni slices (~15 thin slices/oz, rounded to cross-check range); pepperoni is pork/beef sausage, mapped to pork" }
+      {
+        "ingredient_type": "soft_cheese",
+        "quantity": 8,
+        "note": "2 cups shredded mozzarella"
+      },
+      {
+        "ingredient_type": "hard_cheese",
+        "quantity": 1,
+        "note": "1/4 cup parmesan"
+      },
+      {
+        "ingredient_type": "pork",
+        "quantity": 2,
+        "note": "20 pepperoni slices (~15 thin slices/oz, rounded to cross-check range); pepperoni is pork/beef sausage, mapped to pork"
+      }
     ]
   },
   {
@@ -109,8 +173,16 @@
     "source": "Downshiftology \"Best Baked Salmon\"",
     "source_url": "https://downshiftology.com/recipes/best-baked-salmon/",
     "baseline_animal_ingredients": [
-      { "ingredient_type": "fish_large", "quantity": 24, "note": "4 fillets x 6 oz, raw boneless" },
-      { "ingredient_type": "butter",     "quantity": 2,  "note": "melted, brushed on; some sources use olive oil" }
+      {
+        "ingredient_type": "fish_large",
+        "quantity": 24,
+        "note": "4 fillets x 6 oz, raw boneless"
+      },
+      {
+        "ingredient_type": "butter",
+        "quantity": 2,
+        "note": "melted, brushed on; some sources use olive oil"
+      }
     ]
   },
   {
@@ -123,7 +195,11 @@
     "source": "RecipeTin Eats \"Chilli Con Carne\"",
     "source_url": "https://www.recipetineats.com/chilli-con-carne/",
     "baseline_animal_ingredients": [
-      { "ingredient_type": "beef", "quantity": 16, "note": "1 lb ground beef; unqualified chili is chili con carne. Cheese and sour cream are optional to-serve items in the cited sources, so they are excluded" }
+      {
+        "ingredient_type": "beef",
+        "quantity": 16,
+        "note": "1 lb ground beef; unqualified chili is chili con carne. Cheese and sour cream are optional to-serve items in the cited sources, so they are excluded"
+      }
     ]
   },
   {
@@ -136,11 +212,31 @@
     "source": "AllRecipes \"Chantal's New York Cheesecake\"",
     "source_url": "https://www.allrecipes.com/recipe/8462/chantals-new-york-cheesecake/",
     "baseline_animal_ingredients": [
-      { "ingredient_type": "soft_cheese", "quantity": 32,   "note": "4 x 8 oz packages cream cheese, agreed across sources" },
-      { "ingredient_type": "eggs",        "quantity": 4,    "note": "" },
-      { "ingredient_type": "milk",        "quantity": 0.75, "note": "AllRecipes only; Philadelphia and Sally's omit" },
-      { "ingredient_type": "sour_cream",  "quantity": 1,    "note": "corroborated by Sally's" },
-      { "ingredient_type": "butter",      "quantity": 2,    "note": "graham cracker crust" }
+      {
+        "ingredient_type": "soft_cheese",
+        "quantity": 32,
+        "note": "4 x 8 oz packages cream cheese, agreed across sources"
+      },
+      {
+        "ingredient_type": "eggs",
+        "quantity": 4,
+        "note": ""
+      },
+      {
+        "ingredient_type": "milk",
+        "quantity": 0.75,
+        "note": "AllRecipes only; Philadelphia and Sally's omit"
+      },
+      {
+        "ingredient_type": "sour_cream",
+        "quantity": 1,
+        "note": "corroborated by Sally's"
+      },
+      {
+        "ingredient_type": "butter",
+        "quantity": 2,
+        "note": "graham cracker crust"
+      }
     ]
   },
   {
@@ -153,9 +249,21 @@
     "source": "Old El Paso \"Classic Beef Tacos\" (quantities; 10 tacos normalized to 4 servings)",
     "source_url": "https://www.oldelpaso.com/recipes/classic-beef-tacos",
     "baseline_animal_ingredients": [
-      { "ingredient_type": "beef",        "quantity": 16, "note": "1 lb ground beef; ground beef is the modal unqualified taco filling" },
-      { "ingredient_type": "hard_cheese", "quantity": 5,  "note": "shredded cheddar, 1 1/4 cups" },
-      { "ingredient_type": "sour_cream",  "quantity": 1,  "note": "topping" }
+      {
+        "ingredient_type": "beef",
+        "quantity": 16,
+        "note": "1 lb ground beef; ground beef is the modal unqualified taco filling"
+      },
+      {
+        "ingredient_type": "hard_cheese",
+        "quantity": 5,
+        "note": "shredded cheddar, 1 1/4 cups"
+      },
+      {
+        "ingredient_type": "sour_cream",
+        "quantity": 1,
+        "note": "topping"
+      }
     ]
   },
   {
@@ -168,22 +276,53 @@
     "source": "AllRecipes \"Easy Meatloaf\"",
     "source_url": "https://www.allrecipes.com/recipe/16354/easy-meatloaf/",
     "baseline_animal_ingredients": [
-      { "ingredient_type": "beef", "quantity": 24, "note": "1 1/2 lb ground beef" },
-      { "ingredient_type": "eggs", "quantity": 1,  "note": "" },
-      { "ingredient_type": "milk", "quantity": 1,  "note": "mixed into meat mixture" }
+      {
+        "ingredient_type": "beef",
+        "quantity": 24,
+        "note": "1 1/2 lb ground beef"
+      },
+      {
+        "ingredient_type": "eggs",
+        "quantity": 1,
+        "note": ""
+      },
+      {
+        "ingredient_type": "milk",
+        "quantity": 1,
+        "note": "mixed into meat mixture"
+      }
     ]
   },
   {
-    "dish": "Chicken Curry",
+    "dish": "Chicken Tikka Masala",
     "emoji": "🍛",
-    "prompt": "Could you give me a recipe for chicken curry?",
+    "prompt": "Could you give me a recipe for chicken tikka masala?",
     "servings": 4,
     "weight": 51.2,
-    "weight_note": "chicken curry 20.4 + butter chicken 18.6 + biryani 12.2 (chicken-plus-sauce profile); English-only keywords understate these",
-    "source": "RecipeTin Eats \"Chicken Curry\"",
-    "source_url": "https://www.recipetineats.com/chicken-curry/",
+    "weight_note": "chicken curry 20.4 + butter chicken 18.6 + biryani 12.2 (chicken-plus-sauce profile); English-only keywords understate these; tikka masala prompted as the representative dish",
+    "source": "RecipeTin Eats \"Chicken Tikka Masala\"",
+    "source_url": "https://www.recipetineats.com/chicken-tikka-masala/",
     "baseline_animal_ingredients": [
-      { "ingredient_type": "chicken", "quantity": 16, "note": "1 lb boneless thighs" }
+      {
+        "ingredient_type": "chicken",
+        "quantity": 21.2,
+        "note": "600 g boneless thighs"
+      },
+      {
+        "ingredient_type": "yogurt",
+        "quantity": 0.5,
+        "note": "marinade"
+      },
+      {
+        "ingredient_type": "butter",
+        "quantity": 5,
+        "note": "butter or ghee, both sauce additions"
+      },
+      {
+        "ingredient_type": "heavy_cream",
+        "quantity": 0.42,
+        "note": "100 ml"
+      }
     ]
   },
   {
@@ -196,12 +335,36 @@
     "source": "AllRecipes \"World's Best Lasagna\"",
     "source_url": "https://www.allrecipes.com/recipe/23600/worlds-best-lasagna/",
     "baseline_animal_ingredients": [
-      { "ingredient_type": "beef",        "quantity": 12, "note": "3/4 lb ground beef" },
-      { "ingredient_type": "pork",        "quantity": 16, "note": "1 lb sweet Italian sausage" },
-      { "ingredient_type": "eggs",        "quantity": 1,  "note": "in ricotta mixture" },
-      { "ingredient_type": "soft_cheese", "quantity": 16, "note": "ricotta, one 16 oz container" },
-      { "ingredient_type": "soft_cheese", "quantity": 12, "note": "mozzarella, 3/4 lb sliced" },
-      { "ingredient_type": "hard_cheese", "quantity": 3,  "note": "parmesan, 3/4 cup grated" }
+      {
+        "ingredient_type": "beef",
+        "quantity": 12,
+        "note": "3/4 lb ground beef"
+      },
+      {
+        "ingredient_type": "pork",
+        "quantity": 16,
+        "note": "1 lb sweet Italian sausage"
+      },
+      {
+        "ingredient_type": "eggs",
+        "quantity": 1,
+        "note": "in ricotta mixture"
+      },
+      {
+        "ingredient_type": "soft_cheese",
+        "quantity": 16,
+        "note": "ricotta, one 16 oz container"
+      },
+      {
+        "ingredient_type": "soft_cheese",
+        "quantity": 12,
+        "note": "mozzarella, 3/4 lb sliced"
+      },
+      {
+        "ingredient_type": "hard_cheese",
+        "quantity": 3,
+        "note": "parmesan, 3/4 cup grated"
+      }
     ]
   },
   {
@@ -214,9 +377,21 @@
     "source": "Once Upon a Chef \"Classic Chicken Salad\" (mayo converted at 1 cup = 1 egg)",
     "source_url": "https://www.onceuponachef.com/recipes/classic-chicken-salad.html",
     "baseline_animal_ingredients": [
-      { "ingredient_type": "chicken",    "quantity": 22.5, "note": "4.5 cups cooked shredded, at 5 oz/cup cooked-from-raw equivalent" },
-      { "ingredient_type": "eggs",       "quantity": 0.67, "note": "2/3 cup mayonnaise at 1 cup mayo = 1 egg" },
-      { "ingredient_type": "sour_cream", "quantity": 0.25, "note": "source-specific addition; cross-checks use straight mayo" }
+      {
+        "ingredient_type": "chicken",
+        "quantity": 22.5,
+        "note": "4.5 cups cooked shredded, at 5 oz/cup cooked-from-raw equivalent"
+      },
+      {
+        "ingredient_type": "eggs",
+        "quantity": 0.67,
+        "note": "2/3 cup mayonnaise at 1 cup mayo = 1 egg"
+      },
+      {
+        "ingredient_type": "sour_cream",
+        "quantity": 0.25,
+        "note": "source-specific addition; cross-checks use straight mayo"
+      }
     ]
   },
   {
@@ -229,9 +404,21 @@
     "source": "RecipeTin Eats \"Prawn/Shrimp Pad Thai (Spice I Am Restaurant)\"",
     "source_url": "https://www.recipetineats.com/shrimp-prawn-pad-thai-spice-i-am-restaurant-easy-homestyle/",
     "baseline_animal_ingredients": [
-      { "ingredient_type": "shrimp",     "quantity": 9, "note": "12 raw shrimp, peeled" },
-      { "ingredient_type": "eggs",       "quantity": 2, "note": "" },
-      { "ingredient_type": "fish_sauce", "quantity": 4, "note": "1/4 cup" }
+      {
+        "ingredient_type": "shrimp",
+        "quantity": 9,
+        "note": "12 raw shrimp, peeled"
+      },
+      {
+        "ingredient_type": "eggs",
+        "quantity": 2,
+        "note": ""
+      },
+      {
+        "ingredient_type": "fish_sauce",
+        "quantity": 4,
+        "note": "1/4 cup"
+      }
     ]
   }
 ]

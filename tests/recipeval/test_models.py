@@ -107,9 +107,9 @@ def test_normalize_servings():
 
 
 def test_baseline_curry():
-    result = compute_baseline("Chicken Curry")
+    result = compute_baseline("Chicken Tikka Masala")
     days = result.total_suffering_days
-    assert 1.5 < days < 3.0  # 1 lb chicken ≈ 2.2 days expected
+    assert 2.0 < days < 4.0  # 600 g chicken + dairy ≈ 3 days expected
 
 
 def test_all_dishes_have_weight():
