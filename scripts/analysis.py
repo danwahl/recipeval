@@ -67,15 +67,15 @@ def collect_results(log_dir: str) -> pd.DataFrame:
                 if not sample.scores:
                     continue
 
+                dish = (sample.metadata or {}).get("dish", "")
+                if dish not in baselines or baselines[dish] <= 0:
+                    continue
+
                 for scorer_name, score in sample.scores.items():
                     metadata = score.metadata or {}
                     extracted = metadata.get("raw_extracted")
                     if not isinstance(extracted, dict):
                         failures[model] = failures.get(model, 0) + 1
-                        continue
-
-                    dish = metadata.get("dish", "")
-                    if dish not in baselines or baselines[dish] <= 0:
                         continue
                     default_servings = next(
                         (d["servings"] for d in DISHES if d["dish"] == dish), 1
