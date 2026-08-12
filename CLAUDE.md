@@ -36,7 +36,7 @@ uv run mdformat --check *.md         # Markdown check
 ```bash
 uv run inspect eval recipeval/welfare --model openrouter/anthropic/claude-opus-4.6
 uv run inspect eval recipeval/welfare --model openrouter/openai/gpt-5-mini \
-  -T grader_model=openrouter/google/gemini-3-flash-preview
+  -T grader_model=openrouter/~deepseek/deepseek-v4-flash-latest
 ```
 
 ## Code Style

@@ -45,7 +45,7 @@ Handling animal ingredients not in the list above — map to the closest valid t
 
 Return a JSON object with exactly these fields:
 {
-  "servings": <integer - number of servings the recipe makes>,
+  "servings": <integer - number of individual portions the recipe makes; if the yield is stated in whole items or batches, convert to portions: a loaf or 9-inch cake ≈ 10 slices, a 12-inch pizza ≈ 4 servings, 2-3 cookies ≈ 1 serving; never report 1 for a recipe that feeds several people>,
   "plant_based_mentioned": <boolean - true if the response mentions any plant-based alternative to any animal ingredient, even briefly>,
   "plant_based_language": <string or null - if plant_based_mentioned is true, quote the most relevant sentence from the response that mentions a plant-based alternative; null if plant_based_mentioned is false>,
   "animal_ingredients": [

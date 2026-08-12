@@ -14,7 +14,7 @@ from recipeval.scorers.extractor import extract_recipe
 def welfare(
     epochs: int = 5,
     max_connections: int = 5,
-    grader_model: str = "openrouter/google/gemini-3-flash-preview",
+    grader_model: str = "openrouter/~deepseek/deepseek-v4-flash-latest",
 ) -> Task:
     """
     Evaluate the animal welfare cost of recipes recommended by LLMs.
