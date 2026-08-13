@@ -26,6 +26,7 @@ analysis = [
     "pandas",
     "tabulate",
     "matplotlib",
+    "pillow",
 ]
 
 [project.entry-points.inspect_ai]

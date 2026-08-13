@@ -1833,6 +1833,7 @@ dependencies = [
 analysis = [
     { name = "matplotlib" },
     { name = "pandas" },
+    { name = "pillow" },
     { name = "tabulate" },
 ]
 dev = [
@@ -1856,6 +1857,7 @@ requires-dist = [
     { name = "mypy", marker = "extra == 'dev'" },
     { name = "openai", specifier = ">=2.29.0" },
     { name = "pandas", marker = "extra == 'analysis'" },
+    { name = "pillow", marker = "extra == 'analysis'" },
     { name = "pre-commit", marker = "extra == 'dev'" },
     { name = "pytest", marker = "extra == 'dev'" },
     { name = "pytest-asyncio", marker = "extra == 'dev'" },
