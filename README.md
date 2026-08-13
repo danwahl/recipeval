@@ -31,7 +31,7 @@ Dishes and weights reflect worldwide search interest for recipe queries (Google 
 | 🍪    | Chocolate Chip Cookies | 14.2%  | 0.052                 |
 | 🥞    | Blueberry Pancakes     | 11.8%  | 0.085                 |
 | 🍲    | Beef Stew              | 10.4%  | 0.037                 |
-| 🦃    | Thanksgiving Turkey    | 9.3%   | 1.835                 |
+| 🦃    | Thanksgiving Turkey    | 9.3%   | 1.468                 |
 | 🥪    | Pulled Pork            | 7.1%   | 0.096                 |
 | 🍌    | Banana Bread           | 6.9%   | 0.051                 |
 | 🍕    | Pepperoni Pizza        | 6.6%   | 0.009                 |
