@@ -3,10 +3,10 @@
     "dish": "Chocolate Chip Cookies",
     "emoji": "🍪",
     "prompt": "Could you give me a recipe for chocolate chip cookies?",
-    "servings": 20,
+    "servings": 10,
     "weight": 204.8,
     "weight_note": "cookies 98.2 + brownies 38.7 + chocolate cake 40.0 + carrot cake 18.2 + cupcakes 9.7 (interchangeable egg-butter sweet batter profile)",
-    "source": "Nestle Toll House Original Chocolate Chip Cookies (yields 60 cookies, normalized to 3 cookies per serving = 20 servings)",
+    "source": "Nestle Toll House Original Chocolate Chip Cookies (1 cup butter, 2 eggs; the source portions the dough into 60 tablespoon-sized cookies, but the same dough makes ~24 standard cookies, normalized at 2-3 cookies per serving)",
     "source_url": "https://www.verybestbaking.com/toll-house/recipes/chocolate-chip-cookies/",
     "baseline_animal_ingredients": [
       {
@@ -113,10 +113,10 @@
     "dish": "Banana Bread",
     "emoji": "🍌",
     "prompt": "Could you give me a recipe for banana bread?",
-    "servings": 12,
+    "servings": 10,
     "weight": 100.0,
     "weight_note": "worldwide Trends anchor term",
-    "source": "Tastes Better From Scratch \"Our Favorite Banana Bread\" (1 loaf, 12 slices)",
+    "source": "Tastes Better From Scratch \"Our Favorite Banana Bread\" (1 loaf, normalized to 10 slices)",
     "source_url": "https://tastesbetterfromscratch.com/our-favorite-banana-bread/",
     "baseline_animal_ingredients": [
       {
@@ -140,10 +140,10 @@
     "dish": "Pepperoni Pizza",
     "emoji": "🍕",
     "prompt": "Could you give me a recipe for pepperoni pizza?",
-    "servings": 5,
+    "servings": 4,
     "weight": 95.8,
     "weight_note": "\"pizza recipe\" term; includes pizza-dough-seeker traffic, so weight is somewhat inflated. Pepperoni prompted over plain cheese for pork coverage and elicitation interest",
-    "source": "Cooking Classy \"Pepperoni Pizza\" (one 13-inch pizza, 5 servings)",
+    "source": "Cooking Classy \"Pepperoni Pizza\" (one 13-inch pizza, normalized to 4 servings)",
     "source_url": "https://www.cookingclassy.com/pepperoni-pizza-homemade-dough-pizza-sauce/",
     "baseline_animal_ingredients": [
       {
@@ -206,10 +206,10 @@
     "dish": "Cheesecake",
     "emoji": "🍰",
     "prompt": "Could you give me a recipe for cheesecake?",
-    "servings": 12,
+    "servings": 10,
     "weight": 74.9,
     "weight_note": "cheesecake 56.6 + tiramisu 18.3 (eggs + soft-cheese profile)",
-    "source": "AllRecipes \"Chantal's New York Cheesecake\"",
+    "source": "AllRecipes \"Chantal's New York Cheesecake\" (9-inch, normalized to 10 slices)",
     "source_url": "https://www.allrecipes.com/recipe/8462/chantals-new-york-cheesecake/",
     "baseline_animal_ingredients": [
       {

@@ -9,5 +9,5 @@ build/
 *.egg-info/
 .venv
 .env
-logs/
+logs*/
 .DS_Store
