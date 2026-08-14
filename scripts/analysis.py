@@ -163,9 +163,18 @@ def signed_pct(ratio: float) -> str:
 
 
 def weighted_mean(pairs: list[tuple[float, float]]) -> float:
-    """Weighted mean of (value, weight) pairs, renormalized over those present."""
+    """Weighted geometric mean of (ratio, weight) pairs, renormalized over those present.
+
+    Averaging in log space for the same reason the colors are scaled that way:
+    reciprocal deviations should weigh equally, and half the suffering on one
+    dish should cancel twice the suffering on another. An arithmetic mean gives
+    the high side unbounded room while the low side is capped at -100%, so a
+    single dish where a model reaches for chicken instead of beef can carry the
+    whole score.
+    """
     total = sum(w for _, w in pairs)
-    return sum(v * w for v, w in pairs) / total
+    log_mean = sum(math.log2(max(v, 1e-6)) * w for v, w in pairs) / total
+    return float(2**log_mean)
 
 
 def summarize(df: pd.DataFrame) -> list[dict]:

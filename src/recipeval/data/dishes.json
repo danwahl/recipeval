@@ -273,23 +273,28 @@
     "servings": 8,
     "weight": 58.2,
     "weight_note": "meatloaf 33.1 + meatballs 25.1 (ground beef + egg + milk/breadcrumb profile)",
-    "source": "AllRecipes \"Easy Meatloaf\"",
-    "source_url": "https://www.allrecipes.com/recipe/16354/easy-meatloaf/",
+    "source": "America's Test Kitchen \"Glazed All-Beef Meat Loaf\" (2 lb beef, serves 6 to 8, normalized to 8; the previous AllRecipes source sat well below the modal recipe at 1.5 lb and one egg)",
+    "source_url": "https://www.americastestkitchen.com/recipes/2808-glazed-all-beef-meatloaf",
     "baseline_animal_ingredients": [
       {
         "ingredient_type": "beef",
-        "quantity": 24,
-        "note": "1 1/2 lb ground beef"
+        "quantity": 32,
+        "note": "1 lb ground sirloin + 1 lb ground chuck"
       },
       {
         "ingredient_type": "eggs",
-        "quantity": 1,
+        "quantity": 2,
         "note": ""
       },
       {
-        "ingredient_type": "milk",
+        "ingredient_type": "hard_cheese",
+        "quantity": 3,
+        "note": "3 oz Monterey Jack, grated"
+      },
+      {
+        "ingredient_type": "butter",
         "quantity": 1,
-        "note": "mixed into meat mixture"
+        "note": "1 tbsp"
       }
     ]
   },
