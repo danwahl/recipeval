@@ -118,7 +118,7 @@ async def show_diffs(
         rows.append((abs(ca / cb - 1), dish, cb, ca, b, a))
 
     print(f"\n{'dish':24} {'old':>9} {'new':>9}   change")
-    for delta, dish, cb, ca, b, a in sorted(rows, reverse=True)[:12]:
+    for _, dish, cb, ca, b, a in sorted(rows, key=lambda r: -r[0])[:12]:
         print(f"{dish:24} {cb:9.4f} {ca:9.4f}   {ca / cb - 1:+.0%}")
         print(f"    old: {json.dumps(b.get('animal_ingredients'))}")
         print(f"    new: {json.dumps(a.get('animal_ingredients'))}")
@@ -129,6 +129,7 @@ async def main() -> None:
     ap.add_argument("log_file")
     ap.add_argument("--model", default="openrouter/google/gemini-3.7-flash")
     ap.add_argument("--limit", type=int, default=None)
+    ap.add_argument("--dish", default=None, help="only grade this dish")
     ap.add_argument(
         "--baseline-prompt",
         default=None,
@@ -142,6 +143,8 @@ async def main() -> None:
     args = ap.parse_args()
 
     recipes = load_recipes(args.log_file, args.limit)
+    if args.dish:
+        recipes = [r for r in recipes if r[0] == args.dish]
     print(
         f"{len(recipes)} recipes from {Path(args.log_file).name}, graded twice each\n"
     )

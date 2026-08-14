@@ -32,8 +32,10 @@ What the units mean:
 - fillet: a count of fish fillets, or of anchovy fillets.
 - can: one standard can.
 - stick: a count of butter sticks.
-- count, large: a count of whole eggs. yolk, white: a count of yolks or whites, each of which counts as one.
+- count: a count of individual shrimp, anchovy fillets, or whole eggs. large: a count of whole eggs. yolk, white: a count of yolks or whites, each of which counts as one.
 - cup_mayo, tbsp_mayo: mayonnaise, reported under eggs.
+
+Never drop an animal ingredient because no unit fits it. If none of the units listed for that ingredient matches how the recipe states the amount, estimate the amount in the closest mass or volume unit that is listed and report that. An estimate is always better than an omission.
 
 Reading quantities:
 - If the recipe gives a range ("12-14 lbs", "1 to 2 lbs"), report the midpoint.

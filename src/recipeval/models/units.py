@@ -56,7 +56,9 @@ CONVERSIONS: dict[str, dict[str, float]] = {
         "cup_cooked": 5.0,
         "slice_deli": 1.0 / 15,
     },
-    "shrimp": _OZ,
+    # Recipes usually count shrimp rather than weigh them. "Large" is 31-40
+    # per pound shelled, so about half an ounce each.
+    "shrimp": {**_OZ, "count": 0.5},
     "fish_large": {**_OZ, "fillet": 6.0, "can": 5.0, "cup_broth": 0.5},
     "hard_cheese": {**_OZ, "cup": 3.6, "tbsp": 0.225},
     "soft_cheese": {**_OZ, "cup": 4.0, "tbsp": 0.25},

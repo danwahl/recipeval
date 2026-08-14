@@ -108,3 +108,14 @@ def test_recipe_cost_skips_unconvertible_units():
     )
     assert cost.per_ingredient == []
     assert len(cost.skipped) == 1
+
+
+def test_shrimp_can_be_counted():
+    """Recipes count shrimp rather than weighing them; a missing unit gets dropped."""
+    assert to_canonical("shrimp", 9, "count") == pytest.approx(4.5)
+
+
+def test_prompt_forbids_dropping_unmatched_ingredients():
+    from recipeval.prompts.extractor import EXTRACTION_TEMPLATE
+
+    assert "Never drop an animal ingredient because no unit fits" in EXTRACTION_TEMPLATE
