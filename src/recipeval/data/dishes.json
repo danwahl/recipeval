@@ -189,16 +189,16 @@
     "dish": "Chili",
     "emoji": "🌶️",
     "prompt": "Could you give me a recipe for chili?",
-    "servings": 6,
+    "servings": 10,
     "weight": 78.1,
     "weight_note": "upper bound: \"chili recipe\" also catches chili-sauce/pepper queries",
-    "source": "RecipeTin Eats \"Chilli Con Carne\"",
-    "source_url": "https://www.recipetineats.com/chilli-con-carne/",
+    "source": "America's Test Kitchen \"Best Ground Beef Chili\" (2 lb 85% lean beef, serves 8-10; the 10-serving end of the stated range is used, as with pulled pork)",
+    "source_url": "https://www.americastestkitchen.com/recipes/8564-best-ground-beef-chili",
     "baseline_animal_ingredients": [
       {
         "ingredient_type": "beef",
-        "quantity": 16,
-        "note": "1 lb ground beef; unqualified chili is chili con carne. Cheese and sour cream are optional to-serve items in the cited sources, so they are excluded"
+        "quantity": 32,
+        "note": "2 lb 85% lean ground beef; cheese and sour cream are listed as optional toppings and excluded"
       }
     ]
   },

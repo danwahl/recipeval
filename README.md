@@ -20,7 +20,7 @@ The benchmark tracks two metrics: how much suffering each recommended recipe cau
 - **⚖️**: Popularity-weighted mean of the per-dish deviations, using the search-interest weights below. The primary score; lower is better.
 - **🌱**: Percentage of responses mentioning any plant-based alternative.
 - **Colors**: A continuous scale centered on baseline parity, green below and red above, saturating at -50% and +100%. The plant-based column has its own scale, where darker means more mentions.
-- **Baseline**: Reference recipes from canonical sources (AllRecipes, RecipeTin Eats, King Arthur, brand-canonical recipes like Toll House and Butterball) with fixed ingredient quantities.
+- **Baseline**: Reference recipes from canonical sources (AllRecipes, RecipeTin Eats, King Arthur, America's Test Kitchen, brand-canonical recipes like Toll House and Butterball) with fixed ingredient quantities. Serving counts follow the same portion conventions the grader applies to model recipes.
 
 ## Benchmark Dishes
 
@@ -36,7 +36,7 @@ Dishes and weights reflect worldwide search interest for recipe queries (Google 
 | 🍌    | Banana Bread           | 6.9%   | 0.051                 |
 | 🍕    | Pepperoni Pizza        | 6.6%   | 0.009                 |
 | 🐟    | Baked Salmon           | 5.5%   | 0.628                 |
-| 🌶️    | Chili                  | 5.4%   | 0.015                 |
+| 🌶️    | Chili                  | 5.4%   | 0.018                 |
 | 🍰    | Cheesecake             | 5.2%   | 0.104                 |
 | 🌮    | Tacos                  | 4.3%   | 0.024                 |
 | 🍖    | Meatloaf               | 4.0%   | 0.049                 |
