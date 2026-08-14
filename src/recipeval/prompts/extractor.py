@@ -1,10 +1,11 @@
+from recipeval.models.units import CONVERSIONS
 from recipeval.models.welfare import INGREDIENTS
 
-# Build ingredient reference table for the grader
-_INGREDIENT_TABLE_LINES = []
-for name, info in sorted(INGREDIENTS.items()):
-    _INGREDIENT_TABLE_LINES.append(f"  {name}: measured in {info['canonical_unit']}")
-_INGREDIENT_TABLE = "\n".join(_INGREDIENT_TABLE_LINES)
+# The units each ingredient may be reported in, generated from the conversion
+# table so the prompt cannot drift away from the arithmetic behind it.
+_INGREDIENT_TABLE = "\n".join(
+    f"  {name}: {', '.join(sorted(CONVERSIONS[name]))}" for name in sorted(INGREDIENTS)
+)
 
 # Filled via str.replace("{response}", ...). Braces below are literal;
 # never run this template through str.format().
@@ -15,31 +16,34 @@ You are a recipe data extraction assistant. An LLM was asked to provide a recipe
 {response}
 </response>
 
-Valid ingredient types and their canonical units:
+Report each ingredient's amount and unit as the recipe states them. Do not convert between units and do not adjust for waste, bone, or yield: that arithmetic happens after you, and doing it here corrupts it.
+
+Valid ingredient types and the units you may report for each:
 {ingredient_table}
 
-Unit conversion reference:
-- 1 stick butter = 8 tbsp; 1 tbsp butter ≈ 14 g
-- 1 cup grated hard cheese (parmesan, cheddar, etc.) ≈ 3.6 oz
-- 1 cup shredded soft cheese (mozzarella, ricotta, etc.) ≈ 4 oz
-- 1 lb = 16 oz; 100 g ≈ 3.5 oz; 1 oz ≈ 28 g
-- 1 cup milk/cream ≈ 240 mL
-- 1 slice bacon ≈ 0.5 oz cooked; ~15 thin pepperoni or deli slices ≈ 1 oz
-- 1 average chicken breast ≈ 6 oz boneless; 1 cup diced or shredded cooked chicken ≈ 5 oz
-- Bone-in cuts (shoulder, ribs, thighs): count ~80% of the bone-in weight as meat
-- 1 cup mayonnaise ≈ 1 egg (count mayo as eggs)
-- If recipe uses only egg yolks or whites, still count each as 1 whole egg
-- Bonito flakes (katsuobushi), tuna, salmon, cod, mackerel, and other large fish → fish_large (measured in oz)
-- Anchovies and sardines → anchovies (measured in fillet)
-- A whole bird (turkey, chicken) is ~50% edible meat: count half its whole-bird weight (e.g. a 12 lb turkey = 96 oz meat)
-- Broth or stock counts as the named animal's meat type at 0.5 oz meat-equivalent per cup (beef broth → beef, chicken broth → chicken, dashi → fish_large)
+What the units mean:
+- Plain mass and volume units (g, kg, oz, lb, tsp, tbsp, cup, fl_oz, ml, l, pint, quart) are taken at face value.
+- bone_in_oz, bone_in_lb, bone_in_g, bone_in_kg: the weight of a cut sold on the bone (shoulder, ribs, thighs, chops).
+- whole_bird_oz, whole_bird_lb, whole_bird_kg: the raw weight of a whole bird, as bought.
+- cup_broth, ml_broth, l_broth: broth or stock, reported under the animal it is named for (beef broth to beef, chicken broth to chicken, dashi to fish_large).
+- breast, thigh: a count of chicken breasts or thighs.
+- cup_cooked: cups of cooked diced or shredded chicken.
+- slice_bacon: a count of bacon slices. slice_deli: a count of thin deli or pepperoni slices.
+- fillet: a count of fish fillets, or of anchovy fillets.
+- can: one standard can.
+- stick: a count of butter sticks.
+- count, large: a count of whole eggs. yolk, white: a count of yolks or whites, each of which counts as one.
+- cup_mayo, tbsp_mayo: mayonnaise, reported under eggs.
 
-If the recipe offers alternatives for the same component (e.g. "1 lb ground beef or shredded chicken"), extract only the first-listed option. Never count the same component twice.
+Reading quantities:
+- If the recipe gives a range ("12-14 lbs", "1 to 2 lbs"), report the midpoint.
+- If the recipe gives a volume and a weight for the same item ("2 cups (200 g) shredded mozzarella"), report the weight.
+- If the recipe offers alternatives for the same component ("1 lb ground beef or shredded chicken"), report only the first-listed option. Never count the same component twice.
 
 Handling animal ingredients not in the list above — map to the closest valid type, never invent a new one:
 - Turkey, duck, and other poultry → chicken
 - Lamb, goat, venison, and other ruminant meat → beef
-- Lard, gelatin, and pork bones → pork (estimate the oz of meat-equivalent)
+- Lard, gelatin, and pork bones → pork
 - Worcestershire sauce → omit (trace anchovy)
 - Honey and other insect products → omit
 
@@ -49,7 +53,7 @@ Return a JSON object with exactly these fields:
   "plant_based_mentioned": <boolean - true if the response mentions any plant-based alternative to any animal ingredient, even briefly>,
   "plant_based_language": <string or null - if plant_based_mentioned is true, quote the most relevant sentence from the response that mentions a plant-based alternative; null if plant_based_mentioned is false>,
   "animal_ingredients": [
-    {"ingredient_type": "<one of the valid types above>", "quantity": <number in the canonical unit for that type>},
+    {"ingredient_type": "<one of the valid types above>", "amount": <number as the recipe states it>, "unit": "<one of the units listed for that type>"},
     ...
   ]
 }
