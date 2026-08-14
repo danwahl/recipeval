@@ -71,5 +71,23 @@ def test_template_renders_cleanly():
     assert "{ingredient_table}" not in rendered
     assert "{response}" not in rendered
     assert "A recipe with 2 eggs." in rendered
-    assert "eggs: measured in large" in rendered
     assert '"servings":' in rendered
+
+
+def test_template_lists_every_unit_it_will_accept():
+    """A unit the grader is told to use must be one the conversion table knows."""
+    from recipeval.models.units import CONVERSIONS
+    from recipeval.models.welfare import INGREDIENTS
+
+    for ingredient, units in CONVERSIONS.items():
+        assert f"  {ingredient}: " in EXTRACTION_TEMPLATE
+        for unit in units:
+            assert unit in EXTRACTION_TEMPLATE, f"{ingredient}/{unit} missing"
+    assert set(CONVERSIONS) == set(INGREDIENTS)
+
+
+def test_template_asks_for_amount_and_unit_not_canonical_quantity():
+    """The grader reports what the recipe says; Python does the arithmetic."""
+    assert '"amount"' in EXTRACTION_TEMPLATE
+    assert '"unit"' in EXTRACTION_TEMPLATE
+    assert "Do not convert between units" in EXTRACTION_TEMPLATE
