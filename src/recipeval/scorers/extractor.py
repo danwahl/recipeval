@@ -20,12 +20,12 @@ from recipeval.models.welfare import (
 )
 from recipeval.prompts.extractor import EXTRACTION_TEMPLATE
 
-# Bounds on the grader's budget. Reasoning graders occasionally loop on this
-# prompt and generate tens of thousands of thinking tokens with no visible
-# output, which costs ~20 minutes per call; the model alias declares no
-# max_completion_tokens of its own, so nothing stops that without these.
-# Turning reasoning off entirely is faster still, but measurably changes what
-# gets extracted, so the budget is bounded rather than removed.
+# Bounds on the grader's budget. Some reasoning graders loop on this prompt and
+# generate tens of thousands of thinking tokens with no visible output, costing
+# ~20 minutes for a call that returns nothing, and a model alias may declare no
+# max_completion_tokens of its own to stop it. Turning reasoning off entirely is
+# faster still, but measurably changes what gets extracted, so the budget is
+# bounded rather than removed.
 GRADER_MAX_TOKENS = 8192
 GRADER_ATTEMPT_TIMEOUT = 120
 
