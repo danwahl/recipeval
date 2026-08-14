@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Analyze RecipEval log files and produce summary tables and charts."""
+"""Analyze RecipEval log files and produce the summary table."""
 
 import argparse
 import math
@@ -7,12 +7,10 @@ import sys
 from pathlib import Path
 
 import matplotlib
-import matplotlib.pyplot as plt
 import pandas as pd
 from inspect_ai.log import read_eval_log
 from matplotlib.colors import LinearSegmentedColormap
 from matplotlib.font_manager import FontProperties, findfont
-from matplotlib.ticker import PercentFormatter
 from PIL import Image, ImageDraw, ImageFont
 from tabulate import tabulate
 
@@ -33,7 +31,6 @@ RATIO_CMAP = LinearSegmentedColormap.from_list(
 # from parity: half the suffering is as green as twice the suffering is red.
 # One log2 unit puts the tails at 0.5x and 2x, where the scale saturates.
 RATIO_SPAN = 1.0
-PLANT_CMAP = plt.get_cmap("Greens")
 
 
 def simplify_model_name(model: str) -> str:
@@ -140,8 +137,12 @@ def ratio_color(ratio: float) -> tuple[float, float, float]:
 
 
 def plant_color(fraction: float) -> tuple[float, float, float]:
-    """RGB for a plant-based mention rate on a sequential scale."""
-    return PLANT_CMAP(0.12 + 0.55 * fraction)[:3]
+    """RGB for a plant-based mention rate, on the green half of the same scale.
+
+    Higher is better here, so the ramp runs from white at no mentions toward
+    the green the ratio scale uses for well below baseline.
+    """
+    return RATIO_CMAP(0.5 - 0.45 * fraction)[:3]
 
 
 def text_color(rgb: tuple[float, float, float]) -> tuple[int, int, int]:
@@ -277,9 +278,9 @@ def make_table_image(df: pd.DataFrame, output_path: str, scale: int = 2) -> None
     s = scale
     pad, name_w, col_w, row_h, head_h = 8 * s, 250 * s, 56 * s, 30 * s, 46 * s
     gap = 10 * s  # separates the summary columns from the per-dish grid
-    legend_h = 62 * s
+    foot = 8 * s
     width = pad * 2 + name_w + col_w * (2 + len(dish_order)) + gap
-    height = head_h + row_h * len(rows) + legend_h
+    height = head_h + row_h * len(rows) + foot
 
     image = Image.new("RGB", (width, height), (255, 255, 255))
     draw = ImageDraw.Draw(image)
@@ -287,7 +288,6 @@ def make_table_image(df: pd.DataFrame, output_path: str, scale: int = 2) -> None
     sans_bold = findfont(FontProperties(family="DejaVu Sans", weight="bold"))
     f_cell = ImageFont.truetype(sans, 13 * s)
     f_bold = ImageFont.truetype(sans_bold, 14 * s)
-    f_small = ImageFont.truetype(sans, 11 * s)
 
     columns = [("⚖️", pad + name_w), ("🌱", pad + name_w + col_w)]
     x = pad + name_w + col_w * 2 + gap
@@ -345,52 +345,6 @@ def make_table_image(df: pd.DataFrame, output_path: str, scale: int = 2) -> None
             else:
                 cell(x, y, signed_pct(value), ratio_color(value), f_cell)
 
-    # Gradient legend, drawn in the same log space as the cells
-    vmin, vmax = 2**-RATIO_SPAN, 2**RATIO_SPAN
-    bar_x, bar_y = pad + name_w, height - legend_h + 16 * s
-    bar_w, bar_h = 320 * s, 14 * s
-    for px in range(bar_w):
-        draw.line(
-            [(bar_x + px, bar_y), (bar_x + px, bar_y + bar_h)],
-            fill=to_rgb255(RATIO_CMAP(px / (bar_w - 1))[:3]),
-        )
-    draw.rectangle(
-        [bar_x, bar_y, bar_x + bar_w - 1, bar_y + bar_h], outline=(180, 180, 180)
-    )
-    # Reciprocal pairs, which sit symmetrically about parity on a log scale
-    for value in [vmin, 0.75, 1.0, 4 / 3, vmax]:
-        px = int(ratio_position(value) * (bar_w - 1))
-        draw.line(
-            [(bar_x + px, bar_y + bar_h), (bar_x + px, bar_y + bar_h + 4 * s)],
-            fill=(120, 120, 120),
-        )
-        label = signed_pct(value)
-        if value <= vmin:
-            label = "≤" + label
-        elif value >= vmax:
-            label = "≥" + label
-        draw.text(
-            (bar_x + px, bar_y + bar_h + 6 * s),
-            label,
-            font=f_small,
-            fill=(80, 80, 80),
-            anchor="ma",
-        )
-    draw.text(
-        (bar_x - 8 * s, bar_y + bar_h // 2),
-        "vs. baseline recipe",
-        font=f_small,
-        fill=(80, 80, 80),
-        anchor="rm",
-    )
-    draw.text(
-        (bar_x + bar_w + 24 * s, bar_y + bar_h // 2),
-        "plant-based column uses its own scale (darker = more mentions)",
-        font=f_small,
-        fill=(80, 80, 80),
-        anchor="lm",
-    )
-
     Path(output_path).parent.mkdir(parents=True, exist_ok=True)
     # Palette mode cuts the file to roughly a third with no visible loss.
     image.resize((width // s, height // s), Image.Resampling.LANCZOS).quantize(
@@ -399,70 +353,11 @@ def make_table_image(df: pd.DataFrame, output_path: str, scale: int = 2) -> None
     print(f"Table saved to {output_path}", file=sys.stderr)
 
 
-def make_chart(df: pd.DataFrame, output_path: str) -> None:
-    """Create a bar chart of avg vs-baseline percentage by model."""
-    if df.empty:
-        return
-
-    # Per-model weighted average of per-dish means (same aggregation as the table)
-    dish_weights = {d["dish"]: float(d["weight"]) for d in DISHES}
-    ratios = df.groupby(["model", "dish"])["vs_baseline"].mean()
-    model_avgs = (
-        ratios.reset_index()
-        .groupby("model")
-        .apply(
-            lambda g: weighted_mean(
-                [(r, dish_weights[d]) for d, r in zip(g["dish"], g["vs_baseline"])]
-            ),
-            include_groups=False,
-        )
-        .sort_values(ascending=False)
-    )
-
-    fig, ax = plt.subplots(figsize=(10, max(4, len(model_avgs) * 0.6 + 1)))
-
-    colors = [ratio_color(v) for v in model_avgs.values]
-    bars = ax.barh(range(len(model_avgs)), model_avgs.values, color=colors)
-    ax.set_yticks(range(len(model_avgs)))
-    ax.set_yticklabels(model_avgs.index)
-
-    # Add baseline line
-    ax.axvline(
-        x=1.0,
-        color="#666",
-        linestyle="--",
-        linewidth=1.5,
-        label="Baseline Recipes (100%)",
-    )
-    ax.legend(loc="upper right")
-
-    ax.xaxis.set_major_formatter(PercentFormatter(xmax=1.0))
-    ax.set_xlabel("Average Suffering vs Baseline Recipe")
-    ax.set_title("RecipEval: Animal Welfare Cost by Model")
-
-    # Add value labels
-    for bar, val in zip(bars, model_avgs.values):
-        ax.text(
-            val + 0.01,
-            bar.get_y() + bar.get_height() / 2,
-            f"{val:.0%}",
-            va="center",
-            fontsize=9,
-        )
-
-    ax.set_xlim(right=ax.get_xlim()[1] * 1.1)
-    plt.tight_layout()
-    plt.savefig(output_path, dpi=150, bbox_inches="tight")
-    plt.close()
-    print(f"Chart saved to {output_path}", file=sys.stderr)
-
-
 def main() -> None:
     parser = argparse.ArgumentParser(description="Analyze RecipEval results")
     parser.add_argument(
         "--log-dir", default="logs/", help="Directory containing eval logs"
     )
-    parser.add_argument("--chart", default="images/chart.png", help="Output chart path")
     parser.add_argument(
         "--table", default="images/table.png", help="Output table image path"
     )
@@ -476,8 +371,6 @@ def main() -> None:
     table = build_summary_table(df)
     print(table)
 
-    Path(args.chart).parent.mkdir(parents=True, exist_ok=True)
-    make_chart(df, args.chart)
     make_table_image(df, args.table)
 
 

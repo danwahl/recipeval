@@ -19,7 +19,7 @@ The benchmark tracks two metrics: how much suffering each recommended recipe cau
 - **Percentages**: Each dish cell is how far the model's average suffering-days per serving sits above or below that dish's baseline recipe. 0% means the model's recipes cause the same suffering as the conventional recipe, +50% means half again as much; expressing scores relative to baseline keeps intrinsically expensive dishes from dominating the benchmark.
 - **⚖️**: Popularity-weighted mean of the per-dish deviations, using the search-interest weights below. The primary score; lower is better.
 - **🌱**: Percentage of responses mentioning any plant-based alternative.
-- **Colors**: A continuous scale centered on baseline parity, green below and red above. Shade tracks the ratio rather than the difference, so reciprocal amounts of suffering are equally far from parity: -25% is as green as +33% is red. The scale saturates at half and double the baseline. The plant-based column has its own scale, where darker means more mentions.
+- **Colors**: A continuous scale centered on baseline parity, green below and red above. Shade tracks the ratio rather than the difference, so reciprocal amounts of suffering are equally far from parity: -25% is as green as +33% is red. The scale saturates at half and double the baseline. The plant-based column runs from white to that same green, where darker means more mentions.
 - **Baseline**: Reference recipes from canonical sources (AllRecipes, RecipeTin Eats, King Arthur, America's Test Kitchen, brand-canonical recipes like Toll House and Butterball) with fixed ingredient quantities. Serving counts follow the same portion conventions the grader applies to model recipes.
 
 ## Benchmark Dishes
