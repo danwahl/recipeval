@@ -66,7 +66,7 @@ uv run inspect eval recipeval/welfare --model openrouter/anthropic/claude-opus-4
 
 # With explicit grader model
 uv run inspect eval recipeval/welfare --model openrouter/openai/gpt-5-mini \
-  -T grader_model=openrouter/~deepseek/deepseek-v4-flash-latest
+  -T grader_model=openrouter/google/gemini-3.7-flash
 ```
 
 ## Methodology

@@ -20,6 +20,15 @@ from recipeval.models.welfare import (
 )
 from recipeval.prompts.extractor import EXTRACTION_TEMPLATE
 
+# Bounds on the grader's budget. Some reasoning graders loop on this prompt and
+# generate tens of thousands of thinking tokens with no visible output, costing
+# ~20 minutes for a call that returns nothing, and a model alias may declare no
+# max_completion_tokens of its own to stop it. Turning reasoning off entirely is
+# faster still, but measurably changes what gets extracted, so the budget is
+# bounded rather than removed.
+GRADER_MAX_TOKENS = 8192
+GRADER_ATTEMPT_TIMEOUT = 120
+
 
 def parse_extraction(content: str) -> dict[str, Any] | None:
     """Parse a JSON object from grader response, handling markdown fences."""
@@ -56,7 +65,12 @@ def extract_recipe(
         model = get_model(grader_model) if grader_model else get_model(role="grader")
 
         prompt = EXTRACTION_TEMPLATE.replace("{response}", state.output.completion)
-        grader_config = GenerateConfig(temperature=0.0)
+        grader_config = GenerateConfig(
+            temperature=0.0,
+            max_tokens=GRADER_MAX_TOKENS,
+            reasoning_effort="low",
+            attempt_timeout=GRADER_ATTEMPT_TIMEOUT,
+        )
 
         extracted = None
         for _attempt in range(2):
