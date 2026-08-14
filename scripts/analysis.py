@@ -2,6 +2,7 @@
 """Analyze RecipEval log files and produce summary tables and charts."""
 
 import argparse
+import math
 import sys
 from pathlib import Path
 
@@ -9,7 +10,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import pandas as pd
 from inspect_ai.log import read_eval_log
-from matplotlib.colors import TwoSlopeNorm
+from matplotlib.colors import LinearSegmentedColormap
 from matplotlib.font_manager import FontProperties, findfont
 from matplotlib.ticker import PercentFormatter
 from PIL import Image, ImageDraw, ImageFont
@@ -24,10 +25,14 @@ from recipeval.models.welfare import (
 
 matplotlib.use("Agg")
 
-# Diverging scale centered on baseline parity: green below, red above, with
-# both tails saturating so a single outlier does not flatten the rest.
-RATIO_CMAP = plt.get_cmap("RdYlGn_r")
-RATIO_NORM = TwoSlopeNorm(vmin=0.5, vcenter=1.0, vmax=2.0)
+# Diverging scale centered on baseline parity: green below, red above.
+RATIO_CMAP = LinearSegmentedColormap.from_list(
+    "welfare", ["#1a9850", "#ffffff", "#d73027"]
+)
+# Color tracks the log of the ratio, so reciprocal deviations are equally far
+# from parity: half the suffering is as green as twice the suffering is red.
+# One log2 unit puts the tails at 0.5x and 2x, where the scale saturates.
+RATIO_SPAN = 1.0
 PLANT_CMAP = plt.get_cmap("Greens")
 
 
@@ -123,9 +128,15 @@ def collect_results(log_dir: str) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+def ratio_position(ratio: float) -> float:
+    """Place a vs-baseline ratio on the color scale, 0 to 1 with parity at 0.5."""
+    offset = math.log2(max(ratio, 1e-6)) / (2 * RATIO_SPAN)
+    return min(max(0.5 + offset, 0.0), 1.0)
+
+
 def ratio_color(ratio: float) -> tuple[float, float, float]:
     """RGB for a vs-baseline ratio on the diverging scale (1.0 = parity)."""
-    return RATIO_CMAP(RATIO_NORM(ratio))[:3]
+    return RATIO_CMAP(ratio_position(ratio))[:3]
 
 
 def plant_color(fraction: float) -> tuple[float, float, float]:
@@ -334,21 +345,21 @@ def make_table_image(df: pd.DataFrame, output_path: str, scale: int = 2) -> None
             else:
                 cell(x, y, signed_pct(value), ratio_color(value), f_cell)
 
-    # Gradient legend for the diverging scale
-    vmin, vmax = RATIO_NORM.vmin, RATIO_NORM.vmax
+    # Gradient legend, drawn in the same log space as the cells
+    vmin, vmax = 2**-RATIO_SPAN, 2**RATIO_SPAN
     bar_x, bar_y = pad + name_w, height - legend_h + 16 * s
     bar_w, bar_h = 320 * s, 14 * s
     for px in range(bar_w):
-        value = vmin + (vmax - vmin) * px / (bar_w - 1)
         draw.line(
             [(bar_x + px, bar_y), (bar_x + px, bar_y + bar_h)],
-            fill=to_rgb255(ratio_color(value)),
+            fill=to_rgb255(RATIO_CMAP(px / (bar_w - 1))[:3]),
         )
     draw.rectangle(
         [bar_x, bar_y, bar_x + bar_w - 1, bar_y + bar_h], outline=(180, 180, 180)
     )
-    for value in [vmin, 0.75, 1.0, 1.5, vmax]:
-        px = int((value - vmin) / (vmax - vmin) * (bar_w - 1))
+    # Reciprocal pairs, which sit symmetrically about parity on a log scale
+    for value in [vmin, 0.75, 1.0, 4 / 3, vmax]:
+        px = int(ratio_position(value) * (bar_w - 1))
         draw.line(
             [(bar_x + px, bar_y + bar_h), (bar_x + px, bar_y + bar_h + 4 * s)],
             fill=(120, 120, 120),
