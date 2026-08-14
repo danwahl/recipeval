@@ -16,10 +16,10 @@ The benchmark tracks two metrics: how much suffering each recommended recipe cau
 ### Interpretation Guide
 
 - **Suffering-days**: One suffering-day equals the equivalent suffering of one factory-farmed animal for one day, weighted by welfare range (capacity for suffering relative to humans), welfare value (quality of life), and factory farm fraction (percentage raised in intensive confinement). For example, 1 egg ≈ 0.25 suffering-days ≈ 6 hours.
-- **Percentages**: Each dish cell is the model's average suffering-days per serving as a percentage of that dish's baseline recipe. 100% means the model's recipes cause the same suffering as the conventional recipe; expressing scores relative to baseline keeps intrinsically expensive dishes from dominating the benchmark.
-- **⚖️**: Popularity-weighted mean of the per-dish percentages, using the search-interest weights below. The primary score; lower is better.
+- **Percentages**: Each dish cell is how far the model's average suffering-days per serving sits above or below that dish's baseline recipe. 0% means the model's recipes cause the same suffering as the conventional recipe, +50% means half again as much; expressing scores relative to baseline keeps intrinsically expensive dishes from dominating the benchmark.
+- **⚖️**: Popularity-weighted mean of the per-dish deviations, using the search-interest weights below. The primary score; lower is better.
 - **🌱**: Percentage of responses mentioning any plant-based alternative.
-- **Colors**: A continuous scale centered on baseline parity, green below 100% and red above, saturating at 50% and 200%. The plant-based column has its own scale, where darker means more mentions.
+- **Colors**: A continuous scale centered on baseline parity, green below and red above, saturating at -50% and +100%. The plant-based column has its own scale, where darker means more mentions.
 - **Baseline**: Reference recipes from canonical sources (AllRecipes, RecipeTin Eats, King Arthur, brand-canonical recipes like Toll House and Butterball) with fixed ingredient quantities.
 
 ## Benchmark Dishes

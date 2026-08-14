@@ -144,6 +144,12 @@ def to_rgb255(rgb: tuple[float, float, float]) -> tuple[int, int, int]:
     return (r, g, b)
 
 
+def signed_pct(ratio: float) -> str:
+    """Deviation from baseline as a signed percentage (1.18 -> '+18%')."""
+    points = round(100 * (ratio - 1))
+    return "0%" if points == 0 else f"{points:+d}%"
+
+
 def weighted_mean(pairs: list[tuple[float, float]]) -> float:
     """Weighted mean of (value, weight) pairs, renormalized over those present."""
     total = sum(w for _, w in pairs)
@@ -192,15 +198,15 @@ def build_summary_table(df: pd.DataFrame) -> str:
     dish_info = {d["dish"]: d["emoji"] for d in DISHES}
     dish_order = [d["dish"] for d in DISHES]
 
-    def pct(value: float | None) -> str:
-        return "—" if value is None else f"{value:.0%}"
+    def dev(value: float | None) -> str:
+        return "—" if value is None else signed_pct(value)
 
     table_data = []
     for row in summarize(df):
-        cells = {"🤖": row["model"], "**⚖️**": f"**{pct(row['avg'])}**"}
-        cells["🌱"] = pct(row["plant"])
+        cells = {"🤖": row["model"], "**⚖️**": f"**{dev(row['avg'])}**"}
+        cells["🌱"] = f"{row['plant']:.0%}"
         for dish in dish_order:
-            cells[dish_info[dish]] = pct(row["dishes"][dish])
+            cells[dish_info[dish]] = dev(row["dishes"][dish])
         table_data.append(cells)
 
     return tabulate(
@@ -318,7 +324,7 @@ def make_table_image(df: pd.DataFrame, output_path: str, scale: int = 2) -> None
             fill=(30, 30, 30),
             anchor="lm",
         )
-        cell(columns[0][1], y, f"{row['avg']:.0%}", ratio_color(row["avg"]), f_bold)
+        cell(columns[0][1], y, signed_pct(row["avg"]), ratio_color(row["avg"]), f_bold)
         cell(columns[1][1], y, f"{row['plant']:.0%}", plant_color(row["plant"]), f_cell)
         for j, dish in enumerate(dish_order):
             value = row["dishes"][dish]
@@ -326,7 +332,7 @@ def make_table_image(df: pd.DataFrame, output_path: str, scale: int = 2) -> None
             if value is None:
                 cell(x, y, "—", (0.92, 0.92, 0.92), f_cell)
             else:
-                cell(x, y, f"{value:.0%}", ratio_color(value), f_cell)
+                cell(x, y, signed_pct(value), ratio_color(value), f_cell)
 
     # Gradient legend for the diverging scale
     vmin, vmax = RATIO_NORM.vmin, RATIO_NORM.vmax
@@ -347,16 +353,21 @@ def make_table_image(df: pd.DataFrame, output_path: str, scale: int = 2) -> None
             [(bar_x + px, bar_y + bar_h), (bar_x + px, bar_y + bar_h + 4 * s)],
             fill=(120, 120, 120),
         )
+        label = signed_pct(value)
+        if value <= vmin:
+            label = "≤" + label
+        elif value >= vmax:
+            label = "≥" + label
         draw.text(
             (bar_x + px, bar_y + bar_h + 6 * s),
-            f"{value:.0%}" + ("+" if value >= vmax else ""),
+            label,
             font=f_small,
             fill=(80, 80, 80),
             anchor="ma",
         )
     draw.text(
         (bar_x - 8 * s, bar_y + bar_h // 2),
-        "% of baseline recipe",
+        "vs. baseline recipe",
         font=f_small,
         fill=(80, 80, 80),
         anchor="rm",
