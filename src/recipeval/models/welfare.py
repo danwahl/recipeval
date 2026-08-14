@@ -4,6 +4,8 @@ from dataclasses import dataclass, field
 from importlib.resources import files
 from typing import Any
 
+from recipeval.models.units import to_canonical
+
 
 def _load_json(filename: str) -> Any:
     """Load a JSON file from the data directory."""
@@ -73,6 +75,20 @@ def _coerce_quantity(value: Any) -> float | None:
     return qty if qty > 0 and math.isfinite(qty) else None
 
 
+def _canonical_quantity(ingredient_type: str, item: dict[str, Any]) -> float | None:
+    """Quantity in the ingredient's canonical unit, from either extraction shape.
+
+    The grader reports `amount` plus a `unit` from a closed vocabulary and the
+    conversion happens here. Logs graded before that change carry a `quantity`
+    already in canonical units.
+    """
+    amount = _coerce_quantity(item.get("amount"))
+    unit = item.get("unit")
+    if amount is not None and isinstance(unit, str):
+        return to_canonical(ingredient_type, amount, unit)
+    return _coerce_quantity(item.get("quantity"))
+
+
 @dataclass
 class IngredientCost:
     ingredient_type: str
@@ -108,10 +124,10 @@ def recipe_welfare_cost(
             skipped.append({"item": item, "reason": "not_a_dict"})
             continue
         itype = item.get("ingredient_type", "")
-        qty = _coerce_quantity(item.get("quantity"))
         if itype not in INGREDIENTS:
             skipped.append({"item": item, "reason": "unknown_ingredient_type"})
             continue
+        qty = _canonical_quantity(itype, item)
         if qty is None:
             skipped.append({"item": item, "reason": "invalid_quantity"})
             continue
